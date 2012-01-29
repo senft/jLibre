@@ -84,7 +84,6 @@ public class QuoteDialog extends JDialog {
 			panel.setLayout(gbl_panel);
 			{
 
-				// TODO not exactly very elegant, especially with the clickOk()
 				ComboBoxModel cmbModel = new DefaultComboBoxModel() {
 					@Override
 					public int getSize() {
@@ -200,10 +199,10 @@ public class QuoteDialog extends JDialog {
 	public QuoteDialog(int id, String text, String comment, Book book) {
 		this();
 		setTitle("Edit quote...");
-		
+
 		txtText.setText(text);
 		txtComment.setText(comment);
-		
+
 		for (int i = 0; i < books.length; i++) {
 			if (Integer.valueOf(books[i][0].toString()) == book.getId()) {
 				cmbBook.setSelectedIndex(i);
@@ -222,7 +221,11 @@ public class QuoteDialog extends JDialog {
 		String comment = txtComment.getText().trim();
 		int bookId = -1;
 
-		// TODO Refactor plz
+		// Internally we keep an Object[][] in the JComboBox that holds
+		// Object<int><String>, or Object<ID><Title> (only the title
+		// Object[i][1] is displayed of course).
+		// Here we then fetch the selected book's title, and iterate over the
+		// Object[][] to get the book's id (Object[i][0])
 		String selectedBook = cmbBook.getSelectedItem().toString();
 		for (int i = 0; i < books.length; i++) {
 			if (books[i][1].toString().equals(selectedBook))

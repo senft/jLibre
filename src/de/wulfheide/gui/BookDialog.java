@@ -134,7 +134,6 @@ public class BookDialog extends JDialog {
 			gbl_panel.rowWeights = new double[] { 0.0, Double.MIN_VALUE };
 			panel.setLayout(gbl_panel);
 			{
-				// TODO not exactly very elegant, especially with the clickOk()
 				ComboBoxModel cmbModel = new DefaultComboBoxModel() {
 					@Override
 					public int getSize() {
@@ -338,7 +337,7 @@ public class BookDialog extends JDialog {
 		// Object<int><String>, or Object<ID><Authorname> (only the name
 		// Object[i][1] is displayed of course).
 		// Here we then fetch the selected author's name, and iterate over the
-		// Object[][] and return the author's id Object[i][0]
+		// Object[][] to get the author's id (Object[i][0])
 		String selectedAuthor = cmbAuthor.getSelectedItem().toString();
 		for (int i = 0; i < authors.length; i++) {
 			if (authors[i][1].toString().equals(selectedAuthor))

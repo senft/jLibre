@@ -55,7 +55,6 @@ public class AuthorOverviewPanel extends OverviewPanel {
 				int lastIndex = model.getMaxSelectionIndex();
 				if (firstIndex > -1 && firstIndex == lastIndex) {
 
-					
 					Author author = getSelected();
 
 					String firstname = author.getFirstname();
@@ -170,7 +169,8 @@ public class AuthorOverviewPanel extends OverviewPanel {
 						"Database error", JOptionPane.ERROR_MESSAGE);
 			}
 		}
-		// TODO return something real here
+		// TODO return something real here, or even return the index that has
+		// been updated
 		return false;
 	}
 

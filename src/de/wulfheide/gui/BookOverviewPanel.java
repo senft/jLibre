@@ -222,8 +222,8 @@ public class BookOverviewPanel extends OverviewPanel {
 						"Database error", JOptionPane.ERROR_MESSAGE);
 			}
 		}
-
-		// TODO return something real here
+		// TODO return something real here, or even return the index that has
+		// been updated
 		return false;
 	}
 
