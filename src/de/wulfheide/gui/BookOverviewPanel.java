@@ -197,6 +197,30 @@ public class BookOverviewPanel extends OverviewPanel {
 		Book newBook = dialog.showDialog();
 
 		if (newBook != null) {
+			newBook.setId(oldBook.getId()); // Set new books ID to old books ID,
+											// so we can overwrite
+
+			boolean success = dbHandler.updateBook(newBook);
+
+			if (success) {
+				// Publish changes to table
+				int selectedRow = table.getSelectedRow();
+
+				Vector<Object> vecBook = new Vector<Object>();
+				vecBook.add(newBook.getId());
+				vecBook.add(newBook.getTitle());
+				vecBook.add(newBook.getAuthor().toString());
+				vecBook.add(newBook.getPublicationYear());
+				vecBook.add(newBook.getEpoche());
+				vecBook.add(newBook.getGenre());
+
+				rowData.set(selectedRow, vecBook);
+
+				tableModel.fireTableDataChanged();
+			} else {
+				JOptionPane.showMessageDialog(this, "Could not edit quote.",
+						"Database error", JOptionPane.ERROR_MESSAGE);
+			}
 		}
 
 		// TODO return something real here

@@ -60,6 +60,13 @@ public class BookDialog extends JDialog {
 		txtPublished.setText(Integer.valueOf(published).toString());
 		txtEpoche.setText(epoche);
 		txtGenre.setText(genre);
+
+		for (int i = 0; i < authors.length; i++) {
+			if (Integer.valueOf(authors[i][0].toString()) == author.getId()) {
+				cmbAuthor.setSelectedIndex(i);
+				break;
+			}
+		}
 	}
 
 	/**

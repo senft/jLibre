@@ -85,7 +85,7 @@ public class QuoteOverviewPanel extends OverviewPanel {
 			boolean success = dbHandler.updateQuote(newQuote);
 
 			if (success) {
-				// "insert" changes
+				// Publish changes to table
 				int selectedRow = table.getSelectedRow();
 
 				Vector<Object> vecQuote = new Vector<Object>();

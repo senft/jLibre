@@ -203,6 +203,7 @@ public class QuoteDialog extends JDialog {
 		
 		txtText.setText(text);
 		txtComment.setText(comment);
+		
 		for (int i = 0; i < books.length; i++) {
 			if (Integer.valueOf(books[i][0].toString()) == book.getId()) {
 				cmbBook.setSelectedIndex(i);

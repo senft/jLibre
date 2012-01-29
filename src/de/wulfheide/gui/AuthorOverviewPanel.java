@@ -151,7 +151,7 @@ public class AuthorOverviewPanel extends OverviewPanel {
 			boolean success = dbHandler.updateAuthor(newAuthor);
 
 			if (success) {
-				// "insert" changes
+				// Publish changes to table
 				int selectedRow = table.getSelectedRow();
 
 				Vector<Object> vecAuthor = new Vector<Object>();

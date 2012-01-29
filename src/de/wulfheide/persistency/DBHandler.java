@@ -424,7 +424,7 @@ public class DBHandler {
 	 * id (created by the DB) for this quote.
 	 * 
 	 * @param book the quote to store
-	 * @return the id of this book (-1 if someting went wrong)
+	 * @return the id of this book (-1 if something went wrong)
 	 */
 	public int makeBook(Book book) {
 		Statement stmt;
@@ -435,7 +435,7 @@ public class DBHandler {
 		String epoche = book.getEpoche();
 		String comment = book.getComment();
 		String genre = book.getGenre();
-		Author author = book.getAuthor();
+		int authorId = book.getAuthor().getId();
 		int published = book.getPublicationYear();
 		Date started = book.getStartedReading();
 		Date finished = book.getFinishedReading();
@@ -450,8 +450,8 @@ public class DBHandler {
 							.format("INSERT INTO BOOK (authorid, title, comment,"
 									+ " epoche, genre, pubyear, startread, finishread)"
 									+ "VALUES (%d, '%s', '%s', '%s', '%s', %d, '%s', '%s');",
-									author.getId(), title, comment, epoche,
-									genre, published, sqlStarted, sqlFinished));
+									authorId, title, comment, epoche, genre,
+									published, sqlStarted, sqlFinished));
 
 			if (result != 0) {
 				// When we inserted something -> get the created ID(s)
@@ -547,7 +547,44 @@ public class DBHandler {
 	}
 
 	public boolean updateBook(Book book) {
-		return false;
+		Statement stmt;
+		int result = 0;
+
+		int bookId = book.getId();
+		String title = book.getTitle();
+		String epoche = book.getEpoche();
+		String comment = book.getComment();
+		String genre = book.getGenre();
+		int authorId = book.getAuthor().getId();
+		int published = book.getPublicationYear();
+		Date started = book.getStartedReading();
+		Date finished = book.getFinishedReading();
+
+		java.sql.Date sqlStarted = new java.sql.Date(started.getTime());
+		java.sql.Date sqlFinished = new java.sql.Date(finished.getTime());
+
+		try {
+			stmt = conn.createStatement();
+//			System.out.println(String.format("UPDATE Book SET authorid = %d, title = '%s',"
+//									+ " pubyear = %d, startread = '%s', finishread = '%s'"
+//									+ " comment = '%s', epoche = '%s', genre = '%s'"
+//									+ " WHERE id = %d;", authorId, title,
+//									published, sqlStarted, sqlFinished,
+//									comment, epoche, genre, bookId));
+			result = stmt
+					.executeUpdate(String
+							.format("UPDATE Book SET authorid = %d, title = '%s',"
+									+ " pubyear = %d, startread = '%s', finishread = '%s',"
+									+ " comment = '%s', epoche = '%s', genre = '%s'"
+									+ " WHERE id = %d;", authorId, title,
+									published, sqlStarted, sqlFinished,
+									comment, epoche, genre, bookId));
+
+		} catch (SQLException se) {
+			handleSQLException(se);
+		}
+
+		return result != 0;
 	}
 
 	public boolean updateAuthor(Author author) {
