@@ -26,8 +26,6 @@ import org.apache.log4j.Logger;
 
 import de.wulfheide.persistency.DBHandler;
 import javax.swing.border.TitledBorder;
-import javax.swing.border.LineBorder;
-import java.awt.Color;
 
 public abstract class OverviewPanel extends JPanel {
 

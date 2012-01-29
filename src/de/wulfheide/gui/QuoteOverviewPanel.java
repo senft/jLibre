@@ -41,7 +41,7 @@ public class QuoteOverviewPanel extends OverviewPanel {
 
 	@Override
 	protected void addNew() {
-		AddQuoteDialog dialog = new AddQuoteDialog();
+		QuoteDialog dialog = new QuoteDialog();
 		Quote quote = dialog.showDialog();
 
 		if (quote != null) {
@@ -71,16 +71,16 @@ public class QuoteOverviewPanel extends OverviewPanel {
 
 	@Override
 	protected boolean editSelected() {
-		Quote oldQuote = getSelectedQuote();
+		Quote oldQuote = this.getSelected();
 
-		AddQuoteDialog dialog = new AddQuoteDialog(oldQuote.getId(),
+		QuoteDialog dialog = new QuoteDialog(oldQuote.getId(),
 				oldQuote.getText(), oldQuote.getComment(), oldQuote.getBook());
 		Quote newQuote = dialog.showDialog();
 
-		newQuote.setId(oldQuote.getId()); // Set new authors ID to old authors
-											// ID, so we can overwrite
-
 		if (newQuote != null) {
+			newQuote.setId(oldQuote.getId()); // Set new authors ID to old
+												// authors ID, so we can
+												// overwrite
 
 			boolean success = dbHandler.updateQuote(newQuote);
 
@@ -113,7 +113,7 @@ public class QuoteOverviewPanel extends OverviewPanel {
 	 * 
 	 * @return the quote currently selected in the table
 	 */
-	private Quote getSelectedQuote() {
+	protected Quote getSelected() {
 		int selectedRow = table.getSelectedRow();
 		int id = Integer.parseInt(table.getModel().getValueAt(selectedRow, 0)
 				.toString()); // Column 0 is id

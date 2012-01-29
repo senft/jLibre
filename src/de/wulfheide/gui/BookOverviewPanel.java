@@ -97,13 +97,14 @@ public class BookOverviewPanel extends OverviewPanel {
 
 				int firstIndex = model.getMinSelectionIndex();
 				int lastIndex = model.getMaxSelectionIndex();
+
+				// Make sure only 1 item is selected, otherwise display nothing
+				// on infopane
 				if (firstIndex > -1 && firstIndex == lastIndex) {
 
 					DateFormat df = DateFormat.getDateInstance();
 
-					// Column 0 is id
-					int id = (Integer) table.getValueAt(firstIndex, 0);
-					Book book = dbHandler.getBook(id);
+					Book book = getSelected();
 
 					String title = book.getTitle();
 					String author = book.getAuthor().toString();
@@ -130,10 +131,15 @@ public class BookOverviewPanel extends OverviewPanel {
 					sb.append("<p><B>Quotes from this book:</B><br>");
 					if (quotes.isEmpty())
 						sb.append("&nbsp;&nbsp;&nbsp;&nbsp;-");
-					for (Quote q : quotes) {
-						sb.append(
-								String.format("<li><i>\"%s\"</i></li>",
-										q.toString())).append("</p>");
+					else {
+						sb.append("<ul>");
+
+						for (Quote q : quotes) {
+							sb.append(
+									String.format("<li><i>\"%s\"</i></li>",
+											q.toString())).append("</p>");
+						}
+						sb.append("</ul>");
 					}
 					sb.append("</p>");
 
@@ -141,7 +147,7 @@ public class BookOverviewPanel extends OverviewPanel {
 
 					infoPane.setText(sb.toString());
 				} else {
-					infoPane.setText("");
+					infoPane.setText(" ");
 				}
 			}
 		};
@@ -149,7 +155,7 @@ public class BookOverviewPanel extends OverviewPanel {
 
 	@Override
 	protected void addNew() {
-		AddBookDialog dialog = new AddBookDialog();
+		BookDialog dialog = new BookDialog();
 		Book book = dialog.showDialog();
 
 		if (book != null) {
@@ -181,6 +187,32 @@ public class BookOverviewPanel extends OverviewPanel {
 
 	@Override
 	protected boolean editSelected() {
+		Book oldBook = this.getSelected();
+
+		BookDialog dialog = new BookDialog(oldBook.getId(), oldBook.getTitle(),
+				oldBook.getAuthor(), oldBook.getStartedReading(),
+				oldBook.getFinishedReading(), oldBook.getComment(),
+				oldBook.getPublicationYear(), oldBook.getEpoche(),
+				oldBook.getGenre());
+		Book newBook = dialog.showDialog();
+
+		if (newBook != null) {
+		}
+
+		// TODO return something real here
 		return false;
+	}
+
+	/**
+	 * Fetches the complete book object, of the currently selected book, from
+	 * the DB.
+	 * 
+	 * @return the book currently selected in the table
+	 */
+	protected Book getSelected() {
+		int selectedRow = table.getSelectedRow();
+		int id = Integer.parseInt(table.getModel().getValueAt(selectedRow, 0)
+				.toString()); // Column 0 is id
+		return dbHandler.getBook(id);
 	}
 }

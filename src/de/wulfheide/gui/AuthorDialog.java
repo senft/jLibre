@@ -21,7 +21,7 @@ import com.toedter.calendar.JYearChooser;
 
 import de.wulfheide.model.Author;
 
-public class AddAuthorDialog extends JDialog {
+public class AuthorDialog extends JDialog {
 
 	private final JPanel contentPanel = new JPanel();
 	private JTextField txtFirstname;
@@ -36,21 +36,7 @@ public class AddAuthorDialog extends JDialog {
 	 */
 	private Author author;
 
-	public AddAuthorDialog() {
-		setUpGUI();
-	}
-
-	public AddAuthorDialog(int id, String firstname, String lastname,
-			String country, int born, int died) {
-		setUpGUI();
-		txtFirstname.setText(firstname);
-		txtLastname.setText(lastname);
-		txtCountry.setText(country);
-		dtBorn.setYear(born);
-		dtDied.setYear(died);
-	}
-
-	private void setUpGUI() {
+	public AuthorDialog() {
 		setTitle("New author...");
 		setResizable(false);
 		setModal(true);
@@ -189,6 +175,18 @@ public class AddAuthorDialog extends JDialog {
 		}
 	}
 
+	public AuthorDialog(int id, String firstname, String lastname,
+			String country, int born, int died) {
+		this();
+		setTitle("Edit author...");
+
+		txtFirstname.setText(firstname);
+		txtLastname.setText(lastname);
+		txtCountry.setText(country);
+		dtBorn.setYear(born);
+		dtDied.setYear(died);
+	}
+
 	public Author showDialog() {
 		setVisible(true);
 		return author;
@@ -208,15 +206,14 @@ public class AddAuthorDialog extends JDialog {
 			JOptionPane.showMessageDialog(this, "Please enter a lastname.",
 					"Warning", JOptionPane.WARNING_MESSAGE);
 		} else if (born > Calendar.getInstance().get(Calendar.YEAR)) {
-			JOptionPane.showMessageDialog(
-					this, // TODO wording
+			JOptionPane.showMessageDialog(this,
 					"The date of birth is in the future.", "Warning",
 					JOptionPane.WARNING_MESSAGE);
 		} else if (died < born) {
-			JOptionPane.showMessageDialog(
-					this, // TODO wording
-					"The date of birth is bigger than the death.", "Warning",
-					JOptionPane.WARNING_MESSAGE);
+			JOptionPane.showMessageDialog(this,
+					"The date of birth is bigger than the death." // TODO
+																	// wording
+					, "Warning", JOptionPane.WARNING_MESSAGE);
 		} else {
 			author = new Author();
 			author.setFirstname(firstname);
@@ -227,7 +224,7 @@ public class AddAuthorDialog extends JDialog {
 			setVisible(false);
 		}
 	}
-	
+
 	private void clickedCancel() {
 		setVisible(false);
 	}

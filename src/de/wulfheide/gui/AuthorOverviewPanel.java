@@ -55,9 +55,8 @@ public class AuthorOverviewPanel extends OverviewPanel {
 				int lastIndex = model.getMaxSelectionIndex();
 				if (firstIndex > -1 && firstIndex == lastIndex) {
 
-					// Column 0 is id
-					int id = (Integer) table.getValueAt(firstIndex, 0);
-					Author author = dbHandler.getAuthor(id);
+					
+					Author author = getSelected();
 
 					String firstname = author.getFirstname();
 					String lastname = author.getLastname();
@@ -108,7 +107,7 @@ public class AuthorOverviewPanel extends OverviewPanel {
 
 	@Override
 	protected void addNew() {
-		AddAuthorDialog dialog = new AddAuthorDialog();
+		AuthorDialog dialog = new AuthorDialog();
 		Author author = dialog.showDialog();
 
 		if (author != null) {
@@ -135,17 +134,19 @@ public class AuthorOverviewPanel extends OverviewPanel {
 	}
 
 	public boolean editSelected() {
-		Author oldAuthor = getSelectedAuthor();
+		Author oldAuthor = this.getSelected();
 
-		AddAuthorDialog dialog = new AddAuthorDialog(oldAuthor.getId(),
+		AuthorDialog dialog = new AuthorDialog(oldAuthor.getId(),
 				oldAuthor.getFirstname(), oldAuthor.getLastname(),
 				oldAuthor.getCountry(), oldAuthor.getBorn(),
 				oldAuthor.getDied());
 		Author newAuthor = dialog.showDialog();
-		newAuthor.setId(oldAuthor.getId()); // Set new authors ID to old authors
-											// ID, so we can overwrite
 
 		if (newAuthor != null) {
+
+			newAuthor.setId(oldAuthor.getId()); // Set new authors ID to old
+												// authors ID, so we can
+												// overwrite
 
 			boolean success = dbHandler.updateAuthor(newAuthor);
 
@@ -169,7 +170,7 @@ public class AuthorOverviewPanel extends OverviewPanel {
 						"Database error", JOptionPane.ERROR_MESSAGE);
 			}
 		}
-		// TODO return somethign real here
+		// TODO return something real here
 		return false;
 	}
 
@@ -183,7 +184,7 @@ public class AuthorOverviewPanel extends OverviewPanel {
 	 * 
 	 * @return the author currently selected in the table
 	 */
-	private Author getSelectedAuthor() {
+	protected Author getSelected() {
 		int selectedRow = table.getSelectedRow();
 		int id = Integer.parseInt(table.getModel().getValueAt(selectedRow, 0)
 				.toString()); // Column 0 is id

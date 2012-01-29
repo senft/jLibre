@@ -120,33 +120,24 @@ public class MainWindow extends JFrame {
 		});
 		toolBar.add(btnAddQuote);
 
-		JButton btnNewButton = new JButton("editAuthor");
-		btnNewButton.addActionListener(new ActionListener() {
+		JButton btnEditSelected = new JButton("editSelected");
+		btnEditSelected.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				boolean dataChanged = authorPanel.editSelected();
+				OverviewPanel currentPanel = (OverviewPanel) tabbedPane
+						.getSelectedComponent();
+
+				boolean dataChanged = currentPanel.editSelected();
+
 				if (dataChanged) {
 					// TODO bookOverview and quoteOverview has to be updated
 					// (possible new author names..)
 				}
 			}
 		});
-		toolBar.add(btnNewButton);
+		toolBar.add(btnEditSelected);
 
-		JButton btnNewButton_1 = new JButton("editBook");
-		btnNewButton_1.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				bookPanel.editSelected();
-			}
-		});
-		toolBar.add(btnNewButton_1);
-
-		JButton btnNewButton_2 = new JButton("editQuote");
-		btnNewButton_2.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				quotePanel.editSelected();
-			}
-		});
-		toolBar.add(btnNewButton_2);
+		JButton btnDeleteSelected = new JButton("deleteSelected");
+		toolBar.add(btnDeleteSelected);
 
 		tabbedPane = new JTabbedPane(JTabbedPane.TOP);
 		contentPane.add(tabbedPane, BorderLayout.CENTER);

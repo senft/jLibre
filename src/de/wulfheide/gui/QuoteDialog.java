@@ -25,7 +25,7 @@ import de.wulfheide.model.Book;
 import de.wulfheide.model.Quote;
 import de.wulfheide.persistency.DBHandler;
 
-public class AddQuoteDialog extends JDialog {
+public class QuoteDialog extends JDialog {
 
 	private final JPanel contentPanel = new JPanel();
 
@@ -41,23 +41,7 @@ public class AddQuoteDialog extends JDialog {
 	/**
 	 * Create the dialog.
 	 */
-	public AddQuoteDialog() {
-		setUpGUI();
-	}
-
-	public AddQuoteDialog(int id, String text, String comment, Book book) {
-		setUpGUI();
-		txtText.setText(text);
-		txtComment.setText(comment);
-		for (int i = 0; i < books.length; i++) {
-			if (Integer.valueOf(books[i][0].toString()) == book.getId()) {
-				cmbBook.setSelectedIndex(i);
-				break;
-			}
-		}
-	}
-
-	private void setUpGUI() {
+	public QuoteDialog() {
 		setTitle("New quote...");
 		setModal(true);
 		setBounds(100, 100, 534, 373);
@@ -209,6 +193,20 @@ public class AddQuoteDialog extends JDialog {
 				});
 				cancelButton.setActionCommand("Cancel");
 				buttonPane.add(cancelButton);
+			}
+		}
+	}
+
+	public QuoteDialog(int id, String text, String comment, Book book) {
+		this();
+		setTitle("Edit quote...");
+		
+		txtText.setText(text);
+		txtComment.setText(comment);
+		for (int i = 0; i < books.length; i++) {
+			if (Integer.valueOf(books[i][0].toString()) == book.getId()) {
+				cmbBook.setSelectedIndex(i);
+				break;
 			}
 		}
 	}

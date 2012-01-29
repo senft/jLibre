@@ -25,31 +25,47 @@ import javax.swing.border.TitledBorder;
 
 import com.toedter.calendar.JDateChooser;
 
+import de.wulfheide.model.Author;
 import de.wulfheide.model.Book;
 import de.wulfheide.persistency.DBHandler;
 
-public class AddBookDialog extends JDialog {
+public class BookDialog extends JDialog {
 
 	private final JPanel contentPanel = new JPanel();
 	private JTextField txtTitle;
-
-	private Book book;
 	private JComboBox cmbAuthor;
 	private JDateChooser dtStarted;
 	private JTextArea txtComment;
 	private JDateChooser dtFinished;
 	private JTextField txtPublished;
+	private JTextField txtEpoche;
+	private JTextField txtGenre;
 
 	private DBHandler dbHandler = DBHandler.getInstance();
 
 	private Object[][] authors = dbHandler.getAuthorsForComboBox();
-	private JTextField txtEpoche;
-	private JTextField txtGenre;
+
+	private Book book;
+
+	public BookDialog(int id, String title, Author author, Date started,
+			Date finished, String comment, int published, String epoche,
+			String genre) {
+		this();
+		setTitle("Edit book...");
+		txtTitle.setText(title);
+
+		dtStarted.setDate(started);
+		dtFinished.setDate(finished);
+		txtComment.setText(comment);
+		txtPublished.setText(Integer.valueOf(published).toString());
+		txtEpoche.setText(epoche);
+		txtGenre.setText(genre);
+	}
 
 	/**
 	 * Create the dialog.
 	 */
-	public AddBookDialog() {
+	public BookDialog() {
 		setTitle("New book...");
 		setModal(true);
 		setBounds(100, 100, 622, 402);
