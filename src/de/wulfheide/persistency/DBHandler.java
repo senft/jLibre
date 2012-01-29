@@ -391,7 +391,6 @@ public class DBHandler {
 				throw new SQLException();
 
 			// // Get book of this quote
-			// TODO this fetches nothing
 			rs = stmt.executeQuery(String.format(
 					"SELECT book.id, book.title, book.pubyear, author.firstname,"
 							+ "author.lastname FROM BOOK, AUTHOR"
@@ -565,12 +564,7 @@ public class DBHandler {
 
 		try {
 			stmt = conn.createStatement();
-//			System.out.println(String.format("UPDATE Book SET authorid = %d, title = '%s',"
-//									+ " pubyear = %d, startread = '%s', finishread = '%s'"
-//									+ " comment = '%s', epoche = '%s', genre = '%s'"
-//									+ " WHERE id = %d;", authorId, title,
-//									published, sqlStarted, sqlFinished,
-//									comment, epoche, genre, bookId));
+
 			result = stmt
 					.executeUpdate(String
 							.format("UPDATE Book SET authorid = %d, title = '%s',"
@@ -625,6 +619,45 @@ public class DBHandler {
 		}
 
 		return result != 0;
+	}
+
+	public boolean deleteAuthor(Author author) {
+		return false;
+	}
+
+	public boolean deleteBook(Book book) {
+		return false;
+	}
+
+	public boolean deleteQuote(Quote quote) {
+		return false;
+	}
+
+	public boolean deleteAuthors(Author[] authors) {
+		boolean result = true;
+		for (int i = 0; i < authors.length; i++) {
+			if (!deleteAuthor(authors[i]))
+				result = false;
+		}
+		return result;
+	}
+
+	public boolean deleteBooks(Book[] books) {
+		boolean result = true;
+		for (int i = 0; i < books.length; i++) {
+			if (!deleteBook(books[i]))
+				result = false;
+		}
+		return result;
+	}
+
+	public boolean deleteQuotes(Quote[] quotes) {
+		boolean result = true;
+		for (int i = 0; i < quotes.length; i++) {
+			if (!deleteQuote(quotes[i]))
+				result = false;
+		}
+		return result;
 	}
 
 	private void handleSQLException(SQLException se) {
