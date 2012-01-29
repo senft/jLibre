@@ -176,4 +176,8 @@ public abstract class OverviewPanel extends JPanel {
 		infoPane.setContentType("text/html");
 		infoPane.setEditable(false);
 	}
+
+	public void addListSelectionListener(ListSelectionListener listener) {
+		table.getSelectionModel().addListSelectionListener(listener);
+	}
 }

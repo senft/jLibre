@@ -439,8 +439,14 @@ public class DBHandler {
 		Date started = book.getStartedReading();
 		Date finished = book.getFinishedReading();
 
-		java.sql.Date sqlStarted = new java.sql.Date(started.getTime());
-		java.sql.Date sqlFinished = new java.sql.Date(finished.getTime());
+		java.sql.Date sqlStarted = null;
+		java.sql.Date sqlFinished= null;
+
+		if (started != null)
+			sqlStarted = new java.sql.Date(started.getTime());
+
+		if (finished != null)
+			sqlFinished = new java.sql.Date(finished.getTime());
 
 		try {
 			stmt = conn.createStatement();

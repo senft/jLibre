@@ -9,6 +9,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
+import javax.swing.DefaultListSelectionModel;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JDialog;
@@ -22,6 +23,8 @@ import javax.swing.JSeparator;
 import javax.swing.JTabbedPane;
 import javax.swing.JToolBar;
 import javax.swing.SwingConstants;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 
 import org.apache.log4j.Logger;
 
@@ -37,6 +40,8 @@ public class MainWindow extends JFrame {
 	private QuoteOverviewPanel quotePanel;
 	private JTabbedPane tabbedPane;
 	private JLabel lblStatusbar;
+	private JButton btnEditSelected;
+	private JButton btnDeleteSelected;
 
 	/**
 	 * Create the frame.
@@ -120,7 +125,8 @@ public class MainWindow extends JFrame {
 		});
 		toolBar.add(btnAddQuote);
 
-		JButton btnEditSelected = new JButton("editSelected");
+		btnEditSelected = new JButton("editSelected");
+		btnEditSelected.setEnabled(false);
 		btnEditSelected.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				OverviewPanel currentPanel = (OverviewPanel) tabbedPane
@@ -136,13 +142,45 @@ public class MainWindow extends JFrame {
 		});
 		toolBar.add(btnEditSelected);
 
-		JButton btnDeleteSelected = new JButton("deleteSelected");
+		btnDeleteSelected = new JButton("deleteSelected");
+		btnDeleteSelected.setEnabled(false);
 		toolBar.add(btnDeleteSelected);
 
 		tabbedPane = new JTabbedPane(JTabbedPane.TOP);
 		contentPane.add(tabbedPane, BorderLayout.CENTER);
 
 		bookPanel = new BookOverviewPanel();
+		bookPanel.addListSelectionListener(new ListSelectionListener() {
+
+			@Override
+			public void valueChanged(ListSelectionEvent e) {
+				if (tabbedPane.getSelectedComponent().equals(bookPanel)) {
+					// bookPanel is currently visible, so we have to decide
+					// here, which buttons to enable/disable
+					DefaultListSelectionModel model = (DefaultListSelectionModel) e
+							.getSource();
+
+					int firstIndex = model.getMinSelectionIndex();
+					int lastIndex = model.getMaxSelectionIndex();
+
+					if (firstIndex == -1 || lastIndex == -1) {
+						// No items selected
+						btnEditSelected.setEnabled(false);
+						btnDeleteSelected.setEnabled(false);
+					} else if (firstIndex == lastIndex) {
+						// Only one item selected
+						btnEditSelected.setEnabled(true);
+						btnDeleteSelected.setEnabled(true);
+					} else {
+						// Probably multiple items selected
+						btnEditSelected.setEnabled(false);
+						btnDeleteSelected.setEnabled(false);
+					}
+
+				}
+			}
+
+		});
 		tabbedPane.addTab("Books", null, bookPanel, null);
 		tabbedPane.setMnemonicAt(0, KeyEvent.VK_1);
 
@@ -168,17 +206,4 @@ public class MainWindow extends JFrame {
 		lblStatusbar.setText("hellerr");
 		panel.add(lblStatusbar);
 	}
-
-	public BookOverviewPanel getBookPanel() {
-		return bookPanel;
-	}
-
-	public AuthorOverviewPanel getAuthorPanel() {
-		return authorPanel;
-	}
-
-	public QuoteOverviewPanel getQuotePanel() {
-		return quotePanel;
-	}
-
 }
