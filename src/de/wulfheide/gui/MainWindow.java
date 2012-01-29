@@ -118,6 +118,7 @@ public class MainWindow extends JFrame {
 		toolBar.add(btnAddBook);
 
 		JButton btnAddQuote = new JButton("");
+		btnAddQuote.setToolTipText("Add new quote");
 		btnAddQuote.setIcon(new ImageIcon(MainWindow.class
 				.getResource("/images/new-quote.png")));
 		btnAddQuote.addActionListener(new ActionListener() {
@@ -127,7 +128,11 @@ public class MainWindow extends JFrame {
 		});
 		toolBar.add(btnAddQuote);
 
-		btnEditSelected = new JButton("editSelected");
+		btnEditSelected = new JButton("");
+		btnEditSelected.setIcon(new ImageIcon(MainWindow.class
+				.getResource("/images/edit.png")));
+		btnEditSelected
+				.setToolTipText("Edit currently selected author/book/quote");
 		btnEditSelected.setEnabled(false);
 		btnEditSelected.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -142,11 +147,25 @@ public class MainWindow extends JFrame {
 				}
 			}
 		});
+
+		toolBar.addSeparator();
+
 		toolBar.add(btnEditSelected);
 
-		btnDeleteSelected = new JButton("deleteSelected");
+		btnDeleteSelected = new JButton("");
+		btnDeleteSelected.setIcon(new ImageIcon(MainWindow.class
+				.getResource("/images/delete.png")));
+		btnDeleteSelected
+				.setToolTipText("Delete currently selected author/book/quote");
 		btnDeleteSelected.setEnabled(false);
 		toolBar.add(btnDeleteSelected);
+		
+		toolBar.addSeparator();
+		
+		JButton btnFind = new JButton("");
+		btnFind.setToolTipText("Find author/book/quote");
+		btnFind.setIcon(new ImageIcon(MainWindow.class.getResource("/images/find.png")));
+		toolBar.add(btnFind);
 
 		tabbedPane = new JTabbedPane(JTabbedPane.TOP);
 

@@ -9,6 +9,12 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
+import java.awt.Font;
+import javax.swing.JTextArea;
+import javax.swing.UIManager;
+import javax.swing.JTextPane;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class AboutDialog extends JDialog {
 
@@ -40,11 +46,16 @@ public class AboutDialog extends JDialog {
 		contentPanel.setLayout(new BorderLayout(0, 0));
 
 		JLabel lblJkibre = new JLabel("jLibre");
+		lblJkibre.setFont(new Font("Dialog", Font.BOLD, 14));
 		contentPanel.add(lblJkibre, BorderLayout.NORTH);
 
-		JLabel lblVersionBuild = new JLabel(
-				"<html><p>\nVersion: 3.7.1<br>\nBuild id: M20110909-1335</p>\n<p>\n(c) Copyright Eclipse contributors and others 2000, 2011.  All rights reserved.\nVisit http://www.eclipse.org/platform\n</p>\n</html>");
-		lblVersionBuild.setVerticalAlignment(SwingConstants.TOP);
+		JTextPane lblVersionBuild = new JTextPane();
+		lblVersionBuild.setContentType("text/html");
+		lblVersionBuild
+				.setText("Version: dev\n<p>\n(c) Julian Wulfheide 20011.  All rights reserved.\n</p>\n<ul>\n<li>HSQLDB - <a href=\"http://hsqldb.org/\">http://hsqldb.org/</a></li>\n<li>log4j - <a href=\"http://logging.apache.org/log4j/\">http://logging.apache.org/log4j/</a></li>\n<li>jCalendar - <a href=\"http://www.toedter.com/en/jcalendar/\">http://www.toedter.com/en/jcalendar/</a></li></ul>\n<p>Some icons taken from the <a href=\"http://tango.freedesktop.org/Tango_Desktop_Project\">Tango Desktop Projekt</a>.</p>");
+		lblVersionBuild.setBackground(UIManager.getColor("window"));
+		lblVersionBuild.setEditable(false);
+		lblVersionBuild.setFont(new Font("Dialog", Font.PLAIN, 12));
 		contentPanel.add(lblVersionBuild, BorderLayout.CENTER);
 		{
 			JPanel buttonPane = new JPanel();
@@ -52,6 +63,11 @@ public class AboutDialog extends JDialog {
 			getContentPane().add(buttonPane, BorderLayout.SOUTH);
 			{
 				JButton okButton = new JButton("OK");
+				okButton.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent e) {
+						dispose();
+					}
+				});
 				okButton.setActionCommand("OK");
 				buttonPane.add(okButton);
 				getRootPane().setDefaultButton(okButton);

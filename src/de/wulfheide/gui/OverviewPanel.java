@@ -146,7 +146,6 @@ public abstract class OverviewPanel extends JPanel {
 
 		GridBagConstraints gbc_scrollPane = new GridBagConstraints();
 		gbc_scrollPane.fill = GridBagConstraints.BOTH;
-		gbc_scrollPane.insets = new Insets(0, 0, 0, 5);
 		gbc_scrollPane.gridx = 0;
 		gbc_scrollPane.gridy = 0;
 		tablePanel.add(scrollPane, gbc_scrollPane);
