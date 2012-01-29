@@ -266,7 +266,8 @@ public class DBHandler {
 			ResultSet rs = stmt
 					.executeQuery(String
 							.format("SELECT book.id, book.authorid, book.title, book.startread, "
-									+ "book.finishread, author.firstname, author.lastname, book.pubyear "
+									+ "book.finishread, book.comment, book.epoche, book.genre, "
+									+ "author.firstname, author.lastname, book.pubyear "
 									+ "FROM BOOK, AUTHOR "
 									+ "WHERE author.id = book.authorid "
 									+ "AND book.id=%d;", id));
@@ -275,7 +276,9 @@ public class DBHandler {
 				book = new Book(id, rs.getString("title"), new Author(
 						rs.getInt("authorid"), rs.getString("firstname"),
 						rs.getString("lastname")), rs.getInt("pubyear"),
-						rs.getDate("startread"), rs.getDate("finishread"));
+						rs.getDate("startread"), rs.getDate("finishread"),
+						rs.getString("comment"), rs.getString("epoche"),
+						rs.getString("genre"));
 			}
 
 			// Get quotes from this book

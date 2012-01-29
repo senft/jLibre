@@ -23,8 +23,9 @@ public class Book {
 
 	public Book(int theId, String theTitle, Author theAuthor,
 			int thePublicationYear, Date theStartedReading,
-			Date theFinishedReading) {
-
+			Date theFinishedReading, String theComment, String theEpoche,
+			String theGenre) {
+		this();
 		id = theId;
 		title = theTitle;
 		author = theAuthor;
@@ -32,7 +33,9 @@ public class Book {
 		startedReading = theStartedReading;
 		finishedReading = theFinishedReading;
 
-		quotes = new HashSet<Quote>();
+		comment = theComment;
+		epoche = theEpoche;
+		genre = theGenre;
 	}
 
 	public boolean addQuote(Quote q) {
