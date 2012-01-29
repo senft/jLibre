@@ -177,7 +177,27 @@ public abstract class OverviewPanel extends JPanel {
 		infoPane.setEditable(false);
 	}
 
-	public void addListSelectionListener(ListSelectionListener listener) {
+	protected int getMinSelectionIndex() {
+		return table.getSelectionModel().getMinSelectionIndex();
+	}
+
+	protected int getMaxSelectionIndex() {
+		return table.getSelectionModel().getMaxSelectionIndex();
+	}
+
+	/**
+	 * Returns true if there is <b>exactly</b> one item selected in the table.
+	 * 
+	 * @return true if there is <b>exactly</b> one item selected in the table
+	 */
+	protected boolean hasSelectedOne() {
+		int firstIndex = table.getSelectionModel().getMinSelectionIndex();
+		int lastIndex = table.getSelectionModel().getMaxSelectionIndex();
+
+		return firstIndex != -1 && firstIndex == lastIndex;
+	}
+
+	protected void addListSelectionListener(ListSelectionListener listener) {
 		table.getSelectionModel().addListSelectionListener(listener);
 	}
 }

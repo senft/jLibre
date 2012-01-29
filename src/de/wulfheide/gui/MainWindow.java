@@ -23,6 +23,8 @@ import javax.swing.JSeparator;
 import javax.swing.JTabbedPane;
 import javax.swing.JToolBar;
 import javax.swing.SwingConstants;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
@@ -147,48 +149,52 @@ public class MainWindow extends JFrame {
 		toolBar.add(btnDeleteSelected);
 
 		tabbedPane = new JTabbedPane(JTabbedPane.TOP);
+
+		tabbedPane.addChangeListener(new ChangeListener() {
+			@Override
+			public void stateChanged(ChangeEvent e) {
+				onTableSelectionChange();
+			}
+		});
+
 		contentPane.add(tabbedPane, BorderLayout.CENTER);
 
 		bookPanel = new BookOverviewPanel();
 		bookPanel.addListSelectionListener(new ListSelectionListener() {
-
 			@Override
 			public void valueChanged(ListSelectionEvent e) {
 				if (tabbedPane.getSelectedComponent().equals(bookPanel)) {
-					// bookPanel is currently visible, so we have to decide
-					// here, which buttons to enable/disable
-					DefaultListSelectionModel model = (DefaultListSelectionModel) e
-							.getSource();
-
-					int firstIndex = model.getMinSelectionIndex();
-					int lastIndex = model.getMaxSelectionIndex();
-
-					if (firstIndex == -1 || lastIndex == -1) {
-						// No items selected
-						btnEditSelected.setEnabled(false);
-						btnDeleteSelected.setEnabled(false);
-					} else if (firstIndex == lastIndex) {
-						// Only one item selected
-						btnEditSelected.setEnabled(true);
-						btnDeleteSelected.setEnabled(true);
-					} else {
-						// Probably multiple items selected
-						btnEditSelected.setEnabled(false);
-						btnDeleteSelected.setEnabled(false);
-					}
-
+					// bookPanel is currently visible
+					onTableSelectionChange();
 				}
 			}
-
 		});
 		tabbedPane.addTab("Books", null, bookPanel, null);
 		tabbedPane.setMnemonicAt(0, KeyEvent.VK_1);
 
 		authorPanel = new AuthorOverviewPanel();
+		authorPanel.addListSelectionListener(new ListSelectionListener() {
+			@Override
+			public void valueChanged(ListSelectionEvent e) {
+				if (tabbedPane.getSelectedComponent().equals(authorPanel)) {
+					// authorPanel is currently visible
+					onTableSelectionChange();
+				}
+			}
+		});
 		tabbedPane.addTab("Authors", null, authorPanel, null);
 		tabbedPane.setMnemonicAt(1, KeyEvent.VK_2);
 
 		quotePanel = new QuoteOverviewPanel();
+		quotePanel.addListSelectionListener(new ListSelectionListener() {
+			@Override
+			public void valueChanged(ListSelectionEvent e) {
+				if (tabbedPane.getSelectedComponent().equals(quotePanel)) {
+					// quotePanel is currently visible
+					onTableSelectionChange();
+				}
+			}
+		});
 		tabbedPane.addTab("Quotes", null, quotePanel, null);
 		tabbedPane.setMnemonicAt(2, KeyEvent.VK_3);
 
@@ -205,5 +211,20 @@ public class MainWindow extends JFrame {
 		lblStatusbar.setHorizontalAlignment(SwingConstants.LEFT);
 		lblStatusbar.setText("hellerr");
 		panel.add(lblStatusbar);
+	}
+
+	private void onTableSelectionChange() {
+		OverviewPanel currentPanel = (OverviewPanel) tabbedPane
+				.getSelectedComponent();
+
+		if (currentPanel.hasSelectedOne()) {
+			btnEditSelected.setEnabled(true);
+			btnDeleteSelected.setEnabled(true);
+		} else {
+			btnEditSelected.setEnabled(false);
+			btnDeleteSelected.setEnabled(false);
+		}
+
+		// TODO maybe add something to statusbar "3 items selected"...
 	}
 }
