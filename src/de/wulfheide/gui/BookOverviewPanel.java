@@ -147,7 +147,7 @@ public class BookOverviewPanel extends OverviewPanel {
 	}
 
 	@Override
-	protected void addNew() {
+	protected boolean addNew() {
 		BookDialog dialog = new BookDialog();
 		Book book = dialog.showDialog();
 
@@ -174,10 +174,14 @@ public class BookOverviewPanel extends OverviewPanel {
 						JOptionPane.ERROR_MESSAGE);
 			}
 		}
+		// TODO Add real return value und and pull the JOptionPane into
+		// MainWindow
+		return false;
 	}
 
 	@Override
-	protected void deleteSelected() {
+	protected boolean deleteSelected() {
+		return false;
 	}
 
 	@Override
@@ -220,7 +224,7 @@ public class BookOverviewPanel extends OverviewPanel {
 			}
 		}
 		// TODO return something real here, or even return the index that has
-		// been updated
+		// been updated and pull JOptionPane in MainWindow
 		return false;
 	}
 

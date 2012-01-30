@@ -57,11 +57,11 @@ public abstract class OverviewPanel extends JPanel {
 	 */
 	protected abstract ListSelectionListener makeListSelectionListener();
 
-	protected abstract void addNew();
+	protected abstract boolean addNew();
 
 	protected abstract boolean editSelected();
 
-	protected abstract void deleteSelected();
+	protected abstract boolean deleteSelected();
 
 	/**
 	 * Create the panel.

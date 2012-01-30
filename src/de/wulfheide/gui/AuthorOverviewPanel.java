@@ -48,7 +48,7 @@ public class AuthorOverviewPanel extends OverviewPanel {
 			@Override
 			public void valueChanged(ListSelectionEvent e) {
 				StringBuilder sb = new StringBuilder(512);
-				
+
 				if (hasSelectedOne()) {
 
 					Author author = getSelected();
@@ -101,7 +101,7 @@ public class AuthorOverviewPanel extends OverviewPanel {
 	}
 
 	@Override
-	protected void addNew() {
+	protected boolean addNew() {
 		AuthorDialog dialog = new AuthorDialog();
 		Author author = dialog.showDialog();
 
@@ -128,6 +128,10 @@ public class AuthorOverviewPanel extends OverviewPanel {
 						JOptionPane.ERROR_MESSAGE);
 			}
 		}
+
+		// TODO Add real return value und and pull the JOptionPane into
+		// MainWindow
+		return false;
 	}
 
 	public boolean editSelected() {
@@ -162,7 +166,8 @@ public class AuthorOverviewPanel extends OverviewPanel {
 				rowData.set(selectedRow, vecAuthor);
 
 				tableModel.fireTableDataChanged();
-				table.getSelectionModel().setSelectionInterval(selectedRow, selectedRow);
+				table.getSelectionModel().setSelectionInterval(selectedRow,
+						selectedRow);
 			} else {
 				JOptionPane.showMessageDialog(this, "Could not edit author.",
 						"Database error", JOptionPane.ERROR_MESSAGE);
@@ -174,7 +179,18 @@ public class AuthorOverviewPanel extends OverviewPanel {
 	}
 
 	@Override
-	protected void deleteSelected() {
+	protected boolean deleteSelected() {
+		// TODO How do we handle a sitation where an author that has book gets
+		// deleted?
+		boolean success = dbHandler.deleteAuthor(getSelected());
+		if (success) {
+			int selectedRow = table.getSelectedRow();
+			rowData.remove(selectedRow);
+		} else {
+			// TODO Do something
+		}
+
+		return false;
 	}
 
 	/**

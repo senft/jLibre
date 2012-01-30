@@ -153,6 +153,19 @@ public class MainWindow extends JFrame {
 		toolBar.add(btnEditSelected);
 
 		btnDeleteSelected = new JButton("");
+		btnDeleteSelected.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				OverviewPanel currentPanel = (OverviewPanel) tabbedPane
+						.getSelectedComponent();
+
+				boolean dataChanged = currentPanel.deleteSelected();
+
+				if (dataChanged) {
+					// TODO bookOverview and quoteOverview has to be updated
+					// (possible new author names..)
+				}
+			}
+		});
 		btnDeleteSelected.setIcon(new ImageIcon(MainWindow.class
 				.getResource("/images/delete.png")));
 		btnDeleteSelected

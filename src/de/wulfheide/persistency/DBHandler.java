@@ -440,7 +440,7 @@ public class DBHandler {
 		Date finished = book.getFinishedReading();
 
 		java.sql.Date sqlStarted = null;
-		java.sql.Date sqlFinished= null;
+		java.sql.Date sqlFinished = null;
 
 		if (started != null)
 			sqlStarted = new java.sql.Date(started.getTime());
@@ -628,15 +628,51 @@ public class DBHandler {
 	}
 
 	public boolean deleteAuthor(Author author) {
-		return false;
+		Statement stmt;
+		int result = 0;
+
+		try {
+			stmt = conn.createStatement();
+			result = stmt.executeUpdate(String.format(
+					"DELETE FROM AUTHOR WHERE id = %d", author.getId()));
+
+		} catch (SQLException se) {
+			handleSQLException(se);
+		}
+
+		return result != 0;
 	}
 
 	public boolean deleteBook(Book book) {
-		return false;
+		Statement stmt;
+		int result = 0;
+
+		try {
+			stmt = conn.createStatement();
+			result = stmt.executeUpdate(String.format(
+					"DELETE FROM BOOK WHERE id = %d", book.getId()));
+
+		} catch (SQLException se) {
+			handleSQLException(se);
+		}
+
+		return result != 0;
 	}
 
 	public boolean deleteQuote(Quote quote) {
-		return false;
+		Statement stmt;
+		int result = 0;
+
+		try {
+			stmt = conn.createStatement();
+			result = stmt.executeUpdate(String.format(
+					"DELETE FROM QUOTE WHERE id = %d", quote.getId()));
+
+		} catch (SQLException se) {
+			handleSQLException(se);
+		}
+
+		return result != 0;
 	}
 
 	public boolean deleteAuthors(Author[] authors) {
