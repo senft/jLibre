@@ -92,15 +92,8 @@ public class BookOverviewPanel extends OverviewPanel {
 			@Override
 			public void valueChanged(ListSelectionEvent e) {
 				StringBuilder sb = new StringBuilder(512);
-				DefaultListSelectionModel model = (DefaultListSelectionModel) e
-						.getSource();
 
-				int firstIndex = model.getMinSelectionIndex();
-				int lastIndex = model.getMaxSelectionIndex();
-
-				// Make sure only 1 item is selected, otherwise display nothing
-				// on infopane
-				if (firstIndex > -1 && firstIndex == lastIndex) {
+				if (hasSelectedOne()) {
 
 					DateFormat df = DateFormat.getDateInstance();
 
@@ -217,9 +210,10 @@ public class BookOverviewPanel extends OverviewPanel {
 				vecBook.add(newBook.getGenre());
 
 				rowData.set(selectedRow, vecBook);
-				
+
 				tableModel.fireTableDataChanged();
-				table.getSelectionModel().setSelectionInterval(selectedRow, selectedRow);
+				table.getSelectionModel().setSelectionInterval(selectedRow,
+						selectedRow);
 			} else {
 				JOptionPane.showMessageDialog(this, "Could not edit quote.",
 						"Database error", JOptionPane.ERROR_MESSAGE);

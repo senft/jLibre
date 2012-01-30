@@ -4,9 +4,12 @@ import java.util.Vector;
 
 import javax.swing.JOptionPane;
 import javax.swing.SwingConstants;
+import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableCellRenderer;
 
+import de.wulfheide.model.Author;
+import de.wulfheide.model.Book;
 import de.wulfheide.model.Quote;
 
 public class QuoteOverviewPanel extends OverviewPanel {
@@ -36,7 +39,36 @@ public class QuoteOverviewPanel extends OverviewPanel {
 
 	@Override
 	protected ListSelectionListener makeListSelectionListener() {
-		return null;
+		return new ListSelectionListener() {
+
+			@Override
+			public void valueChanged(ListSelectionEvent e) {
+				StringBuilder sb = new StringBuilder(512);
+
+				if (hasSelectedOne()) {
+
+					Quote quote = getSelected();
+
+					String text = quote.getText();
+					String comment = quote.getComment();
+					Book book = quote.getBook();
+					Author author = book.getAuthor();
+
+					sb.append("\"").append(text).append("\"");
+
+					sb.append("<br>").append(author.toString()).append(": <i>")
+							.append(book.getTitle()).append("</i>, ")
+							.append(book.getPublicationYear());
+
+					if (comment != null)
+						sb.append("<br><br>").append(quote.getComment());
+
+					infoPane.setText(sb.toString());
+				} else {
+					infoPane.setText("");
+				}
+			}
+		};
 	}
 
 	@Override
@@ -99,7 +131,8 @@ public class QuoteOverviewPanel extends OverviewPanel {
 				rowData.set(selectedRow, vecQuote);
 
 				tableModel.fireTableDataChanged();
-				table.getSelectionModel().setSelectionInterval(selectedRow, selectedRow);
+				table.getSelectionModel().setSelectionInterval(selectedRow,
+						selectedRow);
 			} else {
 				JOptionPane.showMessageDialog(this, "Could not edit quote.",
 						"Database error", JOptionPane.ERROR_MESSAGE);

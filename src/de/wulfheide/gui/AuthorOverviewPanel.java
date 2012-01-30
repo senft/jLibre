@@ -48,12 +48,8 @@ public class AuthorOverviewPanel extends OverviewPanel {
 			@Override
 			public void valueChanged(ListSelectionEvent e) {
 				StringBuilder sb = new StringBuilder(512);
-				DefaultListSelectionModel model = (DefaultListSelectionModel) e
-						.getSource();
-
-				int firstIndex = model.getMinSelectionIndex();
-				int lastIndex = model.getMaxSelectionIndex();
-				if (firstIndex > -1 && firstIndex == lastIndex) {
+				
+				if (hasSelectedOne()) {
 
 					Author author = getSelected();
 
