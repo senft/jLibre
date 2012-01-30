@@ -173,6 +173,8 @@ public class BookOverviewPanel extends OverviewPanel {
 				rowData.add(vecBook);
 
 				tableModel.fireTableDataChanged();
+				int newRow = rowData.size() - 1;
+				table.getSelectionModel().setSelectionInterval(newRow, newRow);
 			} else {
 				JOptionPane.showMessageDialog(this,
 						"Could not add book to database", "Database error",
@@ -215,8 +217,9 @@ public class BookOverviewPanel extends OverviewPanel {
 				vecBook.add(newBook.getGenre());
 
 				rowData.set(selectedRow, vecBook);
-
+				
 				tableModel.fireTableDataChanged();
+				table.getSelectionModel().setSelectionInterval(selectedRow, selectedRow);
 			} else {
 				JOptionPane.showMessageDialog(this, "Could not edit quote.",
 						"Database error", JOptionPane.ERROR_MESSAGE);

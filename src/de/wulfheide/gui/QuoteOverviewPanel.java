@@ -56,6 +56,8 @@ public class QuoteOverviewPanel extends OverviewPanel {
 				rowData.add(vecQuote);
 
 				tableModel.fireTableDataChanged();
+				int newRow = rowData.size() - 1;
+				table.getSelectionModel().setSelectionInterval(newRow, newRow);
 			} else {
 				JOptionPane.showMessageDialog(this,
 						"Could not add author to database", "Database error",
@@ -97,6 +99,7 @@ public class QuoteOverviewPanel extends OverviewPanel {
 				rowData.set(selectedRow, vecQuote);
 
 				tableModel.fireTableDataChanged();
+				table.getSelectionModel().setSelectionInterval(selectedRow, selectedRow);
 			} else {
 				JOptionPane.showMessageDialog(this, "Could not edit quote.",
 						"Database error", JOptionPane.ERROR_MESSAGE);

@@ -124,6 +124,8 @@ public class AuthorOverviewPanel extends OverviewPanel {
 				rowData.add(vecAuthor);
 
 				tableModel.fireTableDataChanged();
+				int newRow = rowData.size() - 1;
+				table.getSelectionModel().setSelectionInterval(newRow, newRow);
 			} else {
 				JOptionPane.showMessageDialog(this,
 						"Could not add author to database.", "Database error",
@@ -164,6 +166,7 @@ public class AuthorOverviewPanel extends OverviewPanel {
 				rowData.set(selectedRow, vecAuthor);
 
 				tableModel.fireTableDataChanged();
+				table.getSelectionModel().setSelectionInterval(selectedRow, selectedRow);
 			} else {
 				JOptionPane.showMessageDialog(this, "Could not edit author.",
 						"Database error", JOptionPane.ERROR_MESSAGE);
