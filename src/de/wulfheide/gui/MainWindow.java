@@ -159,12 +159,13 @@ public class MainWindow extends JFrame {
 				.setToolTipText("Delete currently selected author/book/quote");
 		btnDeleteSelected.setEnabled(false);
 		toolBar.add(btnDeleteSelected);
-		
+
 		toolBar.addSeparator();
-		
+
 		JButton btnFind = new JButton("");
 		btnFind.setToolTipText("Find author/book/quote");
-		btnFind.setIcon(new ImageIcon(MainWindow.class.getResource("/images/find.png")));
+		btnFind.setIcon(new ImageIcon(MainWindow.class
+				.getResource("/images/find.png")));
 		toolBar.add(btnFind);
 
 		tabbedPane = new JTabbedPane(JTabbedPane.TOP);
