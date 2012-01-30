@@ -180,17 +180,24 @@ public class AuthorOverviewPanel extends OverviewPanel {
 
 	@Override
 	protected boolean deleteSelected() {
-		// TODO How do we handle a sitation where an author that has book gets
-		// deleted?
-		boolean success = dbHandler.deleteAuthor(getSelected());
-		if (success) {
-			int selectedRow = table.getSelectedRow();
-			rowData.remove(selectedRow);
-		} else {
-			// TODO Do something
-		}
+		boolean result = false;
+		int choice = JOptionPane.showOptionDialog(this,
+				"This will also delete all books and quotes by this authors. "
+						+ "Do you want to continue?", "Continue?",
+				JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null,
+				new String[] { "Yes", "No" }, null);
 
-		return false;
+		if (choice == 0) { // User clicked "Yes"
+			boolean success = dbHandler.deleteAuthor(getSelected());
+
+			if (success) {
+				int selectedRow = table.getSelectedRow();
+				rowData.remove(selectedRow);
+				tableModel.fireTableDataChanged();
+				result = true;
+			}
+		}
+		return result;
 	}
 
 	/**

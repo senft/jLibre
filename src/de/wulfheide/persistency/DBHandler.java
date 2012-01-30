@@ -339,13 +339,13 @@ public class DBHandler {
 				author.addBook(book);
 
 				// Get quotes of this author
-				rs = stmt.executeQuery(String.format(
+				ResultSet rsQuotes = stmt.executeQuery(String.format(
 						"SELECT quotetext FROM QUOTE" + " WHERE bookid = %d;",
 						book.getId()));
 
-				while (rs.next()) {
+				while (rsQuotes.next()) {
 					Quote quote = new Quote();
-					quote.setText(rs.getString("quotetext"));
+					quote.setText(rsQuotes.getString("quotetext"));
 					quote.setBook(book);
 					book.addQuote(quote);
 				}
@@ -631,10 +631,25 @@ public class DBHandler {
 		Statement stmt;
 		int result = 0;
 
+		int authorId = author.getId();
+
 		try {
 			stmt = conn.createStatement();
+			// Delete quotes of author (the inner query gets all IDs of quotes
+			// by this author)
+			stmt.executeUpdate(String
+					.format("DELETE FROM QUOTE "
+							+ "WHERE id IN "
+							+ "(SELECT id FROM QUOTE, BOOK WHERE quote.bookid = book.id AND book.authorid = %d);",
+							authorId));
+
+			// Delete books of author
+			stmt.executeUpdate(String.format(
+					"DELETE FROM BOOK WHERE authorid = %d", authorId));
+
+			// Delete author
 			result = stmt.executeUpdate(String.format(
-					"DELETE FROM AUTHOR WHERE id = %d", author.getId()));
+					"DELETE FROM AUTHOR WHERE id = %d", authorId));
 
 		} catch (SQLException se) {
 			handleSQLException(se);
@@ -647,10 +662,17 @@ public class DBHandler {
 		Statement stmt;
 		int result = 0;
 
+		int bookId = book.getId();
+
 		try {
 			stmt = conn.createStatement();
+			// Delete quotes of this book
 			result = stmt.executeUpdate(String.format(
-					"DELETE FROM BOOK WHERE id = %d", book.getId()));
+					"DELETE FROM QUOTE WHERE bookid = %d", bookId));
+
+			// Delete book
+			result = stmt.executeUpdate(String.format(
+					"DELETE FROM BOOK WHERE id = %d", bookId));
 
 		} catch (SQLException se) {
 			handleSQLException(se);
