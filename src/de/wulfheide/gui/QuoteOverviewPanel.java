@@ -73,6 +73,7 @@ public class QuoteOverviewPanel extends OverviewPanel {
 
 	@Override
 	protected boolean addNew() {
+		boolean success = false;
 		QuoteDialog dialog = new QuoteDialog();
 		Quote quote = dialog.showDialog();
 
@@ -90,15 +91,11 @@ public class QuoteOverviewPanel extends OverviewPanel {
 				tableModel.fireTableDataChanged();
 				int newRow = rowData.size() - 1;
 				table.getSelectionModel().setSelectionInterval(newRow, newRow);
-			} else {
-				JOptionPane.showMessageDialog(this,
-						"Could not add author to database", "Database error",
-						JOptionPane.ERROR_MESSAGE);
+
+				success = true;
 			}
 		}
-		// TODO Add real return value und and pull the JOptionPane into
-		// MainWindow
-		return false;
+		return success;
 	}
 
 	@Override
@@ -108,6 +105,7 @@ public class QuoteOverviewPanel extends OverviewPanel {
 
 	@Override
 	protected boolean editSelected() {
+		boolean success = false;
 		Quote oldQuote = this.getSelected();
 
 		QuoteDialog dialog = new QuoteDialog(oldQuote.getId(),
@@ -119,9 +117,9 @@ public class QuoteOverviewPanel extends OverviewPanel {
 												// authors ID, so we can
 												// overwrite
 
-			boolean success = dbHandler.updateQuote(newQuote);
+			boolean dataChanged = dbHandler.updateQuote(newQuote);
 
-			if (success) {
+			if (dataChanged) {
 				// Publish changes to table
 				int selectedRow = table.getSelectedRow();
 
@@ -136,14 +134,9 @@ public class QuoteOverviewPanel extends OverviewPanel {
 				tableModel.fireTableDataChanged();
 				table.getSelectionModel().setSelectionInterval(selectedRow,
 						selectedRow);
-			} else {
-				JOptionPane.showMessageDialog(this, "Could not edit quote.",
-						"Database error", JOptionPane.ERROR_MESSAGE);
 			}
 		}
-		// TODO return something real here, or even return the index that has
-		// been updated and pull JOptionPane in MainWindow
-		return false;
+		return success;
 	}
 
 	/**
@@ -157,5 +150,10 @@ public class QuoteOverviewPanel extends OverviewPanel {
 		int id = Integer.parseInt(table.getModel().getValueAt(selectedRow, 0)
 				.toString()); // Column 0 is id
 		return dbHandler.getQuote(id);
+	}
+
+	@Override
+	public void updateData() {
+		rowData = dbHandler.getQuotesForTable();
 	}
 }

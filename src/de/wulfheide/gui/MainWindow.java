@@ -9,7 +9,6 @@ import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
-import javax.swing.DefaultListSelectionModel;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JDialog;
@@ -18,6 +17,7 @@ import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JSeparator;
 import javax.swing.JTabbedPane;
@@ -59,9 +59,9 @@ public class MainWindow extends JFrame {
 		});
 		setTitle("jLibre");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 450, 300);
+		setBounds(100, 100, 850, 539);
 
-		// Setting colors here, probably isnt needed
+		// TODO Setting colors here, probably isnt needed
 		JMenuBar menuBar = new JMenuBar();
 		menuBar.setForeground(SystemColor.text);
 		setJMenuBar(menuBar);
@@ -101,7 +101,12 @@ public class MainWindow extends JFrame {
 				.getResource("/images/new-author.png")));
 		btnAddAuthor.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				authorPanel.addNew();
+				boolean success = authorPanel.addNew();
+				if (!success) {
+					JOptionPane.showMessageDialog(MainWindow.this,
+							"Could not add the author to the database.",
+							"Database error", JOptionPane.ERROR_MESSAGE);
+				}
 			}
 		});
 		toolBar.add(btnAddAuthor);
@@ -112,7 +117,12 @@ public class MainWindow extends JFrame {
 				.getResource("/images/new-book.png")));
 		btnAddBook.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				bookPanel.addNew();
+				boolean success = bookPanel.addNew();
+				if (!success) {
+					JOptionPane.showMessageDialog(MainWindow.this,
+							"Could not add the book to the database.",
+							"Database error", JOptionPane.ERROR_MESSAGE);
+				}
 			}
 		});
 		toolBar.add(btnAddBook);
@@ -123,7 +133,12 @@ public class MainWindow extends JFrame {
 				.getResource("/images/new-quote.png")));
 		btnAddQuote.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				quotePanel.addNew();
+				boolean success = quotePanel.addNew();
+				if (!success) {
+					JOptionPane.showMessageDialog(MainWindow.this,
+							"Could not add the quote to the database.",
+							"Database error", JOptionPane.ERROR_MESSAGE);
+				}
 			}
 		});
 		toolBar.add(btnAddQuote);
@@ -141,9 +156,14 @@ public class MainWindow extends JFrame {
 
 				boolean dataChanged = currentPanel.editSelected();
 
-				if (dataChanged) {
-					// TODO bookOverview and quoteOverview has to be updated
-					// (possible new author names..)
+				if (!dataChanged) {
+					JOptionPane.showMessageDialog(MainWindow.this,
+							"Something went wrong with the database. "
+									+ "No data has been changed.",
+							"Database error", JOptionPane.ERROR_MESSAGE);
+				} else {
+					bookPanel.updateData();
+					quotePanel.updateData();
 				}
 			}
 		});
@@ -161,8 +181,8 @@ public class MainWindow extends JFrame {
 				boolean dataChanged = currentPanel.deleteSelected();
 
 				if (dataChanged) {
-					// TODO bookOverview and quoteOverview has to be updated
-					// (possible new author names..)
+					bookPanel.updateData();
+					quotePanel.updateData();
 				}
 			}
 		});

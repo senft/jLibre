@@ -57,11 +57,42 @@ public abstract class OverviewPanel extends JPanel {
 	 */
 	protected abstract ListSelectionListener makeListSelectionListener();
 
+	/**
+	 * Updates all data from the DB.
+	 */
+	public abstract void updateData();
+
+	/**
+	 * Adds a new entity to this table.
+	 * 
+	 * @return true if successful
+	 */
 	protected abstract boolean addNew();
 
+	/**
+	 * Pops up an editing dialog to edit the currently selected entity.
+	 * 
+	 * @return true if successful
+	 */
 	protected abstract boolean editSelected();
 
+	/**
+	 * Deletes the currently selected entity.
+	 * 
+	 * @return true if successful
+	 */
 	protected abstract boolean deleteSelected();
+
+	// /**
+	// * Deletes the entity with the given ID.<br />
+	// * <b>IMPORTANT:</b> This does not delete the entity in the row with the
+	// ID
+	// * "ID", but the row where the entity's ID (column 0) is ID.
+	// *
+	// * @param id the ID of the entity to delete
+	// * @return true if successful
+	// */
+	// protected abstract boolean delete(int id);
 
 	/**
 	 * Create the panel.

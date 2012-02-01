@@ -3,7 +3,6 @@ package de.wulfheide.gui;
 import java.util.Set;
 import java.util.Vector;
 
-import javax.swing.DefaultListSelectionModel;
 import javax.swing.JOptionPane;
 import javax.swing.SwingConstants;
 import javax.swing.event.ListSelectionEvent;
@@ -38,7 +37,7 @@ public class AuthorOverviewPanel extends OverviewPanel {
 		((DefaultTableCellRenderer) table.getColumnModel().getColumn(0)
 				.getCellRenderer()).setHorizontalAlignment(SwingConstants.LEFT);
 
-		rowData = dbHandler.getAuthorsForTable();
+		updateData();
 	}
 
 	@Override
@@ -102,11 +101,11 @@ public class AuthorOverviewPanel extends OverviewPanel {
 
 	@Override
 	protected boolean addNew() {
+		boolean success = false;
 		AuthorDialog dialog = new AuthorDialog();
 		Author author = dialog.showDialog();
 
 		if (author != null) {
-
 			int id = dbHandler.makeAuthor(author);
 
 			if (id != -1) {
@@ -122,19 +121,15 @@ public class AuthorOverviewPanel extends OverviewPanel {
 				tableModel.fireTableDataChanged();
 				int newRow = rowData.size() - 1;
 				table.getSelectionModel().setSelectionInterval(newRow, newRow);
-			} else {
-				JOptionPane.showMessageDialog(this,
-						"Could not add author to database.", "Database error",
-						JOptionPane.ERROR_MESSAGE);
+
+				success = true;
 			}
 		}
-
-		// TODO Add real return value und and pull the JOptionPane into
-		// MainWindow
-		return false;
+		return success;
 	}
 
 	public boolean editSelected() {
+		boolean success = false;
 		Author oldAuthor = this.getSelected();
 
 		AuthorDialog dialog = new AuthorDialog(oldAuthor.getId(),
@@ -149,9 +144,9 @@ public class AuthorOverviewPanel extends OverviewPanel {
 												// authors ID, so we can
 												// overwrite
 
-			boolean success = dbHandler.updateAuthor(newAuthor);
+			boolean dataChanged = dbHandler.updateAuthor(newAuthor);
 
-			if (success) {
+			if (dataChanged) {
 				// Publish changes to table
 				int selectedRow = table.getSelectedRow();
 
@@ -168,19 +163,19 @@ public class AuthorOverviewPanel extends OverviewPanel {
 				tableModel.fireTableDataChanged();
 				table.getSelectionModel().setSelectionInterval(selectedRow,
 						selectedRow);
+
+				success = true;
 			} else {
 				JOptionPane.showMessageDialog(this, "Could not edit author.",
 						"Database error", JOptionPane.ERROR_MESSAGE);
 			}
 		}
-		// TODO return something real here, or even return the index that has
-		// been updated
-		return false;
+		return success;
 	}
 
 	@Override
 	protected boolean deleteSelected() {
-		boolean result = false;
+		boolean success = false;
 		int choice = JOptionPane.showOptionDialog(this,
 				"This will also delete all books and quotes by this authors. "
 						+ "Do you want to continue?", "Continue?",
@@ -188,16 +183,16 @@ public class AuthorOverviewPanel extends OverviewPanel {
 				new String[] { "Yes", "No" }, null);
 
 		if (choice == 0) { // User clicked "Yes"
-			boolean success = dbHandler.deleteAuthor(getSelected());
+			boolean dataChanged = dbHandler.deleteAuthor(getSelected());
 
-			if (success) {
+			if (dataChanged) {
 				int selectedRow = table.getSelectedRow();
 				rowData.remove(selectedRow);
 				tableModel.fireTableDataChanged();
-				result = true;
+				success = true;
 			}
 		}
-		return result;
+		return success;
 	}
 
 	/**
@@ -213,4 +208,8 @@ public class AuthorOverviewPanel extends OverviewPanel {
 		return dbHandler.getAuthor(id);
 	}
 
+	@Override
+	public void updateData() {
+		rowData = dbHandler.getAuthorsForTable();
+	}
 }

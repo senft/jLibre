@@ -148,6 +148,7 @@ public class BookOverviewPanel extends OverviewPanel {
 
 	@Override
 	protected boolean addNew() {
+		boolean success = false;
 		BookDialog dialog = new BookDialog();
 		Book book = dialog.showDialog();
 
@@ -168,24 +169,23 @@ public class BookOverviewPanel extends OverviewPanel {
 				tableModel.fireTableDataChanged();
 				int newRow = rowData.size() - 1;
 				table.getSelectionModel().setSelectionInterval(newRow, newRow);
-			} else {
-				JOptionPane.showMessageDialog(this,
-						"Could not add book to database", "Database error",
-						JOptionPane.ERROR_MESSAGE);
+
+				success = true;
 			}
 		}
-		// TODO Add real return value und and pull the JOptionPane into
-		// MainWindow
-		return false;
+		return success;
 	}
 
 	@Override
 	protected boolean deleteSelected() {
-		return false;
+		// TODO implement
+		boolean success = false;
+		return success;
 	}
 
 	@Override
 	protected boolean editSelected() {
+		boolean success = false;
 		Book oldBook = this.getSelected();
 
 		BookDialog dialog = new BookDialog(oldBook.getId(), oldBook.getTitle(),
@@ -199,9 +199,9 @@ public class BookOverviewPanel extends OverviewPanel {
 			newBook.setId(oldBook.getId()); // Set new books ID to old books ID,
 											// so we can overwrite
 
-			boolean success = dbHandler.updateBook(newBook);
+			boolean dataChanged = dbHandler.updateBook(newBook);
 
-			if (success) {
+			if (dataChanged) {
 				// Publish changes to table
 				int selectedRow = table.getSelectedRow();
 
@@ -218,14 +218,11 @@ public class BookOverviewPanel extends OverviewPanel {
 				tableModel.fireTableDataChanged();
 				table.getSelectionModel().setSelectionInterval(selectedRow,
 						selectedRow);
-			} else {
-				JOptionPane.showMessageDialog(this, "Could not edit quote.",
-						"Database error", JOptionPane.ERROR_MESSAGE);
+
+				success = true;
 			}
 		}
-		// TODO return something real here, or even return the index that has
-		// been updated and pull JOptionPane in MainWindow
-		return false;
+		return success;
 	}
 
 	/**
@@ -239,5 +236,10 @@ public class BookOverviewPanel extends OverviewPanel {
 		int id = Integer.parseInt(table.getModel().getValueAt(selectedRow, 0)
 				.toString()); // Column 0 is id
 		return dbHandler.getBook(id);
+	}
+
+	@Override
+	public void updateData() {
+		rowData = dbHandler.getBooksForTable();
 	}
 }
