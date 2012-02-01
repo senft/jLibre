@@ -183,7 +183,7 @@ public class AuthorOverviewPanel extends OverviewPanel {
 				new String[] { "No", "Yes" }, null);
 
 		if (choice == 1) { // User clicked "Yes"
-			boolean dataChanged = dbHandler.deleteAuthor(getSelected());
+			boolean dataChanged = dbHandler.delete(getSelected());
 
 			if (dataChanged) {
 				int selectedRow = table.getSelectedRow();
