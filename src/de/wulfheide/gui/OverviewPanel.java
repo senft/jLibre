@@ -3,7 +3,6 @@ package de.wulfheide.gui;
 import java.awt.BorderLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.awt.Insets;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.util.Vector;
@@ -15,6 +14,7 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.JTextPane;
 import javax.swing.RowFilter;
+import javax.swing.border.TitledBorder;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
@@ -25,7 +25,6 @@ import javax.swing.table.TableRowSorter;
 import org.apache.log4j.Logger;
 
 import de.wulfheide.persistency.DBHandler;
-import javax.swing.border.TitledBorder;
 
 public abstract class OverviewPanel extends JPanel {
 

@@ -2,7 +2,6 @@ package de.wulfheide.gui;
 
 import java.util.Vector;
 
-import javax.swing.JOptionPane;
 import javax.swing.SwingConstants;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
