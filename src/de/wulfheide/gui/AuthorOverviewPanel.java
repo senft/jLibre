@@ -177,12 +177,12 @@ public class AuthorOverviewPanel extends OverviewPanel {
 	protected boolean deleteSelected() {
 		boolean success = false;
 		int choice = JOptionPane.showOptionDialog(this,
-				"This will also delete all books and quotes by this authors. "
+				"This will also delete all books and quotes by this authors.\n"
 						+ "Do you want to continue?", "Continue?",
 				JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null,
-				new String[] { "Yes", "No" }, null);
+				new String[] { "No", "Yes" }, null);
 
-		if (choice == 0) { // User clicked "Yes"
+		if (choice == 1) { // User clicked "Yes"
 			boolean dataChanged = dbHandler.deleteAuthor(getSelected());
 
 			if (dataChanged) {

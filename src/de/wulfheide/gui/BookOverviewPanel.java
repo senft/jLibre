@@ -178,8 +178,23 @@ public class BookOverviewPanel extends OverviewPanel {
 
 	@Override
 	protected boolean deleteSelected() {
-		// TODO implement
 		boolean success = false;
+		int choice = JOptionPane.showOptionDialog(this,
+				"This will also delete all quotes from this book.\n"
+						+ "Do you want to continue?", "Continue?",
+				JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null,
+				new String[] { "No", "Yes" }, null);
+
+		if (choice == 1) { // User clicked "Yes"
+			boolean dataChanged = dbHandler.deleteBook(getSelected());
+
+			if (dataChanged) {
+				int selectedRow = table.getSelectedRow();
+				rowData.remove(selectedRow);
+				tableModel.fireTableDataChanged();
+				success = true;
+			}
+		}
 		return success;
 	}
 
