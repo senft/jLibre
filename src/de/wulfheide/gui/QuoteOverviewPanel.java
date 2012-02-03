@@ -53,9 +53,9 @@ public class QuoteOverviewPanel extends OverviewPanel {
 					Book book = quote.getBook();
 					Author author = book.getAuthor();
 
-					sb.append("\"").append(text).append("\"");
+					sb.append("<p>\"").append(text).append("\"");
 
-					sb.append("<br>").append(author.toString()).append(": <i>")
+					sb.append("</p>").append(author.toString()).append(": <i>")
 							.append(book.getTitle()).append("</i>, ")
 							.append(book.getPublicationYear());
 

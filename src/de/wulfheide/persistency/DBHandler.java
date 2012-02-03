@@ -627,7 +627,7 @@ public class DBHandler {
 		return result != 0;
 	}
 
-	public boolean deleteAuthor(Author author) {
+	public boolean delete(Author author) {
 		Statement stmt;
 		int result = 0;
 
@@ -658,7 +658,7 @@ public class DBHandler {
 		return result != 0;
 	}
 
-	public boolean deleteBook(Book book) {
+	public boolean delete(Book book) {
 		Statement stmt;
 		int result = 0;
 
@@ -681,7 +681,7 @@ public class DBHandler {
 		return result != 0;
 	}
 
-	public boolean deleteQuote(Quote quote) {
+	public boolean delete(Quote quote) {
 		Statement stmt;
 		int result = 0;
 
@@ -697,28 +697,28 @@ public class DBHandler {
 		return result != 0;
 	}
 
-	public boolean deleteAuthors(Author[] authors) {
+	public boolean delete(Author[] authors) {
 		boolean result = true;
 		for (int i = 0; i < authors.length; i++) {
-			if (!deleteAuthor(authors[i]))
+			if (!delete(authors[i]))
 				result = false;
 		}
 		return result;
 	}
 
-	public boolean deleteBooks(Book[] books) {
+	public boolean delete(Book[] books) {
 		boolean result = true;
 		for (int i = 0; i < books.length; i++) {
-			if (!deleteBook(books[i]))
+			if (!delete(books[i]))
 				result = false;
 		}
 		return result;
 	}
 
-	public boolean deleteQuotes(Quote[] quotes) {
+	public boolean delete(Quote[] quotes) {
 		boolean result = true;
 		for (int i = 0; i < quotes.length; i++) {
-			if (!deleteQuote(quotes[i]))
+			if (!delete(quotes[i]))
 				result = false;
 		}
 		return result;
