@@ -166,7 +166,9 @@ public class AuthorOverviewPanel extends OverviewPanel {
 
 				success = true;
 			} else {
-				JOptionPane.showMessageDialog(this, "Could not edit author.",
+				JOptionPane.showMessageDialog(this,
+						"Couldn't update the author. "
+								+ "No data has been changed.",
 						"Database error", JOptionPane.ERROR_MESSAGE);
 			}
 		}

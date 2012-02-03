@@ -2,6 +2,7 @@ package de.wulfheide.gui;
 
 import java.util.Vector;
 
+import javax.swing.JOptionPane;
 import javax.swing.SwingConstants;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
@@ -92,6 +93,10 @@ public class QuoteOverviewPanel extends OverviewPanel {
 				table.getSelectionModel().setSelectionInterval(newRow, newRow);
 
 				success = true;
+			} else {
+				JOptionPane.showMessageDialog(this,
+						"Could not add the quote to the database.",
+						"Database error", JOptionPane.ERROR_MESSAGE);
 			}
 		}
 		return success;
@@ -133,6 +138,11 @@ public class QuoteOverviewPanel extends OverviewPanel {
 				tableModel.fireTableDataChanged();
 				table.getSelectionModel().setSelectionInterval(selectedRow,
 						selectedRow);
+			} else {
+				JOptionPane.showMessageDialog(this,
+						"Couldn't update the quote. "
+								+ "No data has been changed.",
+						"Database error", JOptionPane.ERROR_MESSAGE);
 			}
 		}
 		return success;

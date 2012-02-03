@@ -1,8 +1,10 @@
 package de.wulfheide.gui;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.Insets;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.util.Vector;
@@ -14,6 +16,9 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.JTextPane;
 import javax.swing.RowFilter;
+import javax.swing.ScrollPaneConstants;
+import javax.swing.UIManager;
+import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.event.TableModelEvent;
@@ -25,13 +30,6 @@ import javax.swing.table.TableRowSorter;
 import org.apache.log4j.Logger;
 
 import de.wulfheide.persistency.DBHandler;
-import javax.swing.border.LineBorder;
-import java.awt.Color;
-import java.awt.Insets;
-import javax.swing.border.CompoundBorder;
-import javax.swing.ScrollPaneConstants;
-import java.awt.SystemColor;
-import javax.swing.UIManager;
 
 public abstract class OverviewPanel extends JPanel {
 
@@ -223,7 +221,7 @@ public abstract class OverviewPanel extends JPanel {
 		infoPane = new JTextPane();
 		infoPane.setContentType("text/html");
 		infoPane.setFont(UIManager.getFont("Label.font"));
-		infoPane.setBackground(SystemColor.window);
+		infoPane.setBackground(new Color(0, 0, 0, 0));
 		scrollPane_1.setViewportView(infoPane);
 		infoPane.setEditable(false);
 

@@ -45,9 +45,7 @@ public class Quote {
 	}
 
 	public String toString() {
-
 		return text;
-
 	}
 
 	/**

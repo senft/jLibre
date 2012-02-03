@@ -83,9 +83,9 @@ public class Book {
 
 	public String toString() {
 		StringBuilder sb = new StringBuilder(200);
+		sb.append(author.toString()).append(": ");
 		sb.append(title);
-		sb.append(", ").append(author.toString());
-		sb.append(" (").append(publicationYear).append(")");
+		sb.append(", ").append(publicationYear);
 		return sb.toString();
 	}
 

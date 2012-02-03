@@ -200,13 +200,25 @@ public class DBHandler {
 			stmt = conn.createStatement();
 
 			// Execute the query
-			ResultSet rs = stmt.executeQuery("SELECT id, title FROM BOOK;");
+			ResultSet rs = stmt
+					.executeQuery("SELECT book.id, book.title, book.pubyear, author.firstname, author.lastname FROM BOOK, AUTHOR WHERE book.authorid = author.id;;");
 
 			while (rs.next()) {
-				result.add(new Object[] { rs.getInt("id"),
-						rs.getString("title") }); // TODO Build something like
-													// <title>, <author (<year>)
-													// here
+				int id = rs.getInt("id");
+				String title = rs.getString("title");
+				String author = rs.getString("firstname") + " "
+						+ rs.getString("lastname");
+				int pubYear = rs.getInt("pubyear");
+
+				result.add(new Object[] { id,
+						author + ": " + title + ", " + pubYear }); // TODO
+				// Build
+				// something
+				// like
+				// <title>,
+				// <author
+				// (<year>)
+				// here
 			}
 
 		} catch (SQLException se) {

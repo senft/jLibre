@@ -170,6 +170,10 @@ public class BookOverviewPanel extends OverviewPanel {
 				table.getSelectionModel().setSelectionInterval(newRow, newRow);
 
 				success = true;
+			} else {
+				JOptionPane.showMessageDialog(this,
+						"Could not add the book to the database.",
+						"Database error", JOptionPane.ERROR_MESSAGE);
 			}
 		}
 		return success;
@@ -234,6 +238,11 @@ public class BookOverviewPanel extends OverviewPanel {
 						selectedRow);
 
 				success = true;
+			}else {
+				JOptionPane.showMessageDialog(this,
+						"Couldn't update the book. "
+								+ "No data has been changed.",
+						"Database error", JOptionPane.ERROR_MESSAGE);
 			}
 		}
 		return success;

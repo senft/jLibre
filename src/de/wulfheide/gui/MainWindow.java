@@ -102,6 +102,7 @@ public class MainWindow extends JFrame {
 		btnAddAuthor.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				boolean success = authorPanel.addNew();
+
 				if (!success) {
 					JOptionPane.showMessageDialog(MainWindow.this,
 							"Could not add the author to the database.",
@@ -117,12 +118,7 @@ public class MainWindow extends JFrame {
 				.getResource("/images/new-book.png")));
 		btnAddBook.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				boolean success = bookPanel.addNew();
-				if (!success) {
-					JOptionPane.showMessageDialog(MainWindow.this,
-							"Could not add the book to the database.",
-							"Database error", JOptionPane.ERROR_MESSAGE);
-				}
+				bookPanel.addNew();
 			}
 		});
 		toolBar.add(btnAddBook);
@@ -133,12 +129,7 @@ public class MainWindow extends JFrame {
 				.getResource("/images/new-quote.png")));
 		btnAddQuote.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				boolean success = quotePanel.addNew();
-				if (!success) {
-					JOptionPane.showMessageDialog(MainWindow.this,
-							"Could not add the quote to the database.",
-							"Database error", JOptionPane.ERROR_MESSAGE);
-				}
+				quotePanel.addNew();
 			}
 		});
 		toolBar.add(btnAddQuote);
@@ -156,12 +147,7 @@ public class MainWindow extends JFrame {
 
 				boolean dataChanged = currentPanel.editSelected();
 
-				if (!dataChanged) {
-					JOptionPane.showMessageDialog(MainWindow.this,
-							"Something went wrong with the database. "
-									+ "No data has been changed.",
-							"Database error", JOptionPane.ERROR_MESSAGE);
-				} else {
+				if (dataChanged) {
 					bookPanel.updateData();
 					quotePanel.updateData();
 				}
