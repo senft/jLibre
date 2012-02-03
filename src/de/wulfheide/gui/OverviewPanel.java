@@ -2,6 +2,8 @@ package de.wulfheide.gui;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
@@ -9,6 +11,7 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.util.Vector;
 
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
@@ -24,6 +27,7 @@ import javax.swing.event.ListSelectionListener;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.AbstractTableModel;
+import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 
@@ -221,7 +225,7 @@ public abstract class OverviewPanel extends JPanel {
 		infoPane = new JTextPane();
 		infoPane.setContentType("text/html");
 		infoPane.setFont(UIManager.getFont("Label.font"));
-		infoPane.setBackground(new Color(0, 0, 0, 0));
+		// infoPane.setBackground(new Color(0, 0, 0, 0));
 		scrollPane_1.setViewportView(infoPane);
 		infoPane.setEditable(false);
 

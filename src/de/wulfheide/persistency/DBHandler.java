@@ -211,14 +211,7 @@ public class DBHandler {
 				int pubYear = rs.getInt("pubyear");
 
 				result.add(new Object[] { id,
-						author + ": " + title + ", " + pubYear }); // TODO
-				// Build
-				// something
-				// like
-				// <title>,
-				// <author
-				// (<year>)
-				// here
+						author + ": " + title + ", " + pubYear });
 			}
 
 		} catch (SQLException se) {
