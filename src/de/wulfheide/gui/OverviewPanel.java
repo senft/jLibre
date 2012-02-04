@@ -1,20 +1,14 @@
 package de.wulfheide.gui;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.Dimension;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.Insets;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.util.Vector;
 
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
+import javax.swing.JSplitPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.JTextPane;
@@ -22,12 +16,10 @@ import javax.swing.RowFilter;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.UIManager;
 import javax.swing.border.LineBorder;
-import javax.swing.border.TitledBorder;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.AbstractTableModel;
-import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 
@@ -128,15 +120,17 @@ public abstract class OverviewPanel extends JPanel {
 		add(filterTextField, BorderLayout.NORTH);
 		filterTextField.setColumns(10);
 
-		JPanel tablePanel = new JPanel();
+		JSplitPane tablePanel = new JSplitPane();
+		//		tablePanel.setContinuousLayout(true);
+		tablePanel.setResizeWeight(0.7);
 		add(tablePanel, BorderLayout.CENTER);
-		GridBagLayout gbl_tablePanel = new GridBagLayout();
-		gbl_tablePanel.columnWidths = new int[] { 157, 210, 0 };
-		gbl_tablePanel.rowHeights = new int[] { 418, 0 };
-		gbl_tablePanel.columnWeights = new double[] { 1.0, 0.0,
-				Double.MIN_VALUE };
-		gbl_tablePanel.rowWeights = new double[] { 1.0, Double.MIN_VALUE };
-		tablePanel.setLayout(gbl_tablePanel);
+		// GridBagLayout gbl_tablePanel = new GridBagLayout();
+		// gbl_tablePanel.columnWidths = new int[] { 157, 210, 0 };
+		// gbl_tablePanel.rowHeights = new int[] { 418, 0 };
+		// gbl_tablePanel.columnWeights = new double[] { 1.0, 0.0,
+		// Double.MIN_VALUE };
+		// gbl_tablePanel.rowWeights = new double[] { 1.0, Double.MIN_VALUE };
+		// tablePanel.setLayout(gbl_tablePanel);
 
 		tableModel = new AbstractTableModel() {
 
@@ -184,42 +178,40 @@ public abstract class OverviewPanel extends JPanel {
 
 		JScrollPane scrollPane = new JScrollPane(table);
 
-		GridBagConstraints gbc_scrollPane = new GridBagConstraints();
-		gbc_scrollPane.anchor = GridBagConstraints.NORTHWEST;
-		gbc_scrollPane.weighty = 1.0;
-		gbc_scrollPane.weightx = 1.0;
-		gbc_scrollPane.fill = GridBagConstraints.BOTH;
-		gbc_scrollPane.gridx = 0;
-		gbc_scrollPane.gridy = 0;
-		tablePanel.add(scrollPane, gbc_scrollPane);
+		// GridBagConstraints gbc_scrollPane = new GridBagConstraints();
+		// gbc_scrollPane.anchor = GridBagConstraints.NORTHWEST;
+		// gbc_scrollPane.weighty = 1.0;
+		// gbc_scrollPane.weightx = 1.0;
+		// gbc_scrollPane.fill = GridBagConstraints.BOTH;
+		// gbc_scrollPane.gridx = 0;
+		// gbc_scrollPane.gridy = 0;
+		// tablePanel.add(scrollPane, gbc_scrollPane);
 
-		panel = new JPanel();
-		GridBagConstraints gbc_panel = new GridBagConstraints();
-		gbc_panel.anchor = GridBagConstraints.EAST;
-		gbc_panel.insets = new Insets(5, 5, 5, 5);
-		gbc_panel.fill = GridBagConstraints.VERTICAL;
-		gbc_panel.gridx = 1;
-		gbc_panel.gridy = 0;
-		tablePanel.add(panel, gbc_panel);
-		GridBagLayout gbl_panel = new GridBagLayout();
-		gbl_panel.columnWidths = new int[] { 210, 0 };
-		gbl_panel.rowHeights = new int[] { 418, 0 };
-		gbl_panel.columnWeights = new double[] { 0.0, Double.MIN_VALUE };
-		gbl_panel.rowWeights = new double[] { 0.0, Double.MIN_VALUE };
-		panel.setLayout(gbl_panel);
+		// panel = new JPanel();
+		// GridBagConstraints gbc_panel = new GridBagConstraints();
+		// gbc_panel.anchor = GridBagConstraints.EAST;
+		// gbc_panel.insets = new Insets(5, 5, 5, 5);
+		// gbc_panel.fill = GridBagConstraints.VERTICAL;
+		// gbc_panel.gridx = 1;
+		// gbc_panel.gridy = 0;
+		// tablePanel.add(panel, gbc_panel);
+		// GridBagLayout gbl_panel = new GridBagLayout();
+		// gbl_panel.columnWidths = new int[] { 210, 0 };
+		// gbl_panel.rowHeights = new int[] { 418, 0 };
+		// gbl_panel.columnWeights = new double[] { 0.0, Double.MIN_VALUE };
+		// gbl_panel.rowWeights = new double[] { 0.0, Double.MIN_VALUE };
+		// panel.setLayout(gbl_panel);
 
 		scrollPane_1 = new JScrollPane();
-		scrollPane_1.setViewportBorder(new TitledBorder(new LineBorder(null),
-				"Info", TitledBorder.LEADING, TitledBorder.TOP, null,
-				new Color(51, 51, 51)));
+		scrollPane_1.setViewportBorder(new LineBorder(null));
 		scrollPane_1
 				.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
-		GridBagConstraints gbc_scrollPane_1 = new GridBagConstraints();
-		gbc_scrollPane_1.weighty = 1.0;
-		gbc_scrollPane_1.fill = GridBagConstraints.BOTH;
-		gbc_scrollPane_1.gridx = 0;
-		gbc_scrollPane_1.gridy = 0;
-		panel.add(scrollPane_1, gbc_scrollPane_1);
+		// GridBagConstraints gbc_scrollPane_1 = new GridBagConstraints();
+		// gbc_scrollPane_1.weighty = 1.0;
+		// gbc_scrollPane_1.fill = GridBagConstraints.BOTH;
+		// gbc_scrollPane_1.gridx = 0;
+		// gbc_scrollPane_1.gridy = 0;
+		// panel.add(scrollPane_1, gbc_scrollPane_1);
 
 		// TODO Maybe add forced word wrap: http://java-sl.com/wrap.html
 		infoPane = new JTextPane();
@@ -229,6 +221,8 @@ public abstract class OverviewPanel extends JPanel {
 		scrollPane_1.setViewportView(infoPane);
 		infoPane.setEditable(false);
 
+		tablePanel.setLeftComponent(scrollPane);
+		tablePanel.setRightComponent(scrollPane_1);
 	}
 
 	protected int getMinSelectionIndex() {
