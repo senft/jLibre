@@ -459,13 +459,11 @@ public class DBHandler {
 			sqlFinished = new java.sql.Date(finished.getTime());
 
 		try {
-			stmt = conn
-					.prepareStatement(String
-							.format("INSERT INTO BOOK (authorid, title, comment,"
-									+ " epoche, genre, pubyear, startread, finishread)"
-									+ "VALUES (%d, '%s', '%s', '%s', '%s', %d, ?, ?);",
-									authorId, title, comment, epoche, genre,
-									published));
+			stmt = conn.prepareStatement(String.format(
+					"INSERT INTO BOOK (authorid, title, comment,"
+							+ " epoche, genre, pubyear, startread, finishread)"
+							+ "VALUES (%d, '%s', '%s', '%s', '%s', %d, ?, ?);",
+					authorId, title, comment, epoche, genre, published));
 
 			if (sqlStarted == null)
 				stmt.setNull(1, java.sql.Types.DATE);
@@ -481,9 +479,9 @@ public class DBHandler {
 			if (rowsChanged != 0) {
 				// When we inserted something -> get the created ID(s)
 				// (hopefully this is == 1)
-//				ResultSet rs = stmt.executeQuery("CALL IDENTITY();");
-//				while (rs.next())
-//					id = rs.getInt(1);
+				// ResultSet rs = stmt.executeQuery("CALL IDENTITY();");
+				// while (rs.next())
+				// id = rs.getInt(1);
 			}
 
 		} catch (SQLException se) {

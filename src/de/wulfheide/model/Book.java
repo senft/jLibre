@@ -97,42 +97,48 @@ public class Book {
 	}
 
 	/**
-	 * @param id the id to set
+	 * @param id
+	 *            the id to set
 	 */
 	public void setId(int id) {
 		this.id = id;
 	}
 
 	/**
-	 * @param title the title to set
+	 * @param title
+	 *            the title to set
 	 */
 	public void setTitle(String title) {
 		this.title = title;
 	}
 
 	/**
-	 * @param publicationYear the publicationYear to set
+	 * @param publicationYear
+	 *            the publicationYear to set
 	 */
 	public void setPublicationYear(int publicationYear) {
 		this.publicationYear = publicationYear;
 	}
 
 	/**
-	 * @param startedReading the startedReading to set
+	 * @param startedReading
+	 *            the startedReading to set
 	 */
 	public void setStartedReading(Date startedReading) {
 		this.startedReading = startedReading;
 	}
 
 	/**
-	 * @param finishedReading the finishedReading to set
+	 * @param finishedReading
+	 *            the finishedReading to set
 	 */
 	public void setFinishedReading(Date finishedReading) {
 		this.finishedReading = finishedReading;
 	}
 
 	/**
-	 * @param author the author to set
+	 * @param author
+	 *            the author to set
 	 */
 	public void setAuthor(Author author) {
 		this.author = author;
@@ -146,7 +152,8 @@ public class Book {
 	}
 
 	/**
-	 * @param comment the comment to set
+	 * @param comment
+	 *            the comment to set
 	 */
 	public void setComment(String comment) {
 		this.comment = comment;
@@ -160,7 +167,8 @@ public class Book {
 	}
 
 	/**
-	 * @param epoche the epoche to set
+	 * @param epoche
+	 *            the epoche to set
 	 */
 	public void setEpoche(String epoche) {
 		this.epoche = epoche;
@@ -174,9 +182,29 @@ public class Book {
 	}
 
 	/**
-	 * @param genre the genre to set
+	 * @param genre
+	 *            the genre to set
 	 */
 	public void setGenre(String genre) {
 		this.genre = genre;
+	}
+
+	/**
+	 * Checks if this book was read.
+	 * 
+	 * @return <ul>
+	 *         <li><b>-1</b> if neither startedReading nor finishedReading has
+	 *         been set</li>
+	 *         <li><b>0</b> if startedReading has been set</li>
+	 *         <li><b>1</b> if finishedReading, has been set</li>
+	 */
+	public int isRead() {
+		if (startedReading != null)
+			return 0;
+
+		if (finishedReading == null)
+			return -1;
+
+		return 1;
 	}
 }
