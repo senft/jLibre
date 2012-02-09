@@ -101,13 +101,7 @@ public class MainWindow extends JFrame {
 				.getResource("/images/new-author.png")));
 		btnAddAuthor.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				boolean success = authorPanel.addNew();
-
-				if (!success) {
-					JOptionPane.showMessageDialog(MainWindow.this,
-							"Could not add the author to the database.",
-							"Database error", JOptionPane.ERROR_MESSAGE);
-				}
+				authorPanel.addNew();
 			}
 		});
 		toolBar.add(btnAddAuthor);
@@ -159,6 +153,7 @@ public class MainWindow extends JFrame {
 		toolBar.add(btnEditSelected);
 
 		btnDeleteSelected = new JButton("");
+		btnDeleteSelected.setMnemonic(KeyEvent.VK_DELETE);
 		btnDeleteSelected.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				OverviewPanel currentPanel = (OverviewPanel) tabbedPane

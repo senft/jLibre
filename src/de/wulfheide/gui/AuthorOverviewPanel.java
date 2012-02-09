@@ -123,6 +123,10 @@ public class AuthorOverviewPanel extends OverviewPanel {
 				table.getSelectionModel().setSelectionInterval(newRow, newRow);
 
 				success = true;
+			} else {
+				JOptionPane.showMessageDialog(this,
+						"Could not add the author to the database.",
+						"Database error", JOptionPane.ERROR_MESSAGE);
 			}
 		}
 		return success;
