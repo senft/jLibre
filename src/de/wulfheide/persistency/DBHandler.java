@@ -2,6 +2,7 @@ package de.wulfheide.persistency;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -35,7 +36,7 @@ public class DBHandler {
 			// TODO Get a real path here
 			conn = DriverManager
 					.getConnection(
-							"jdbc:hsqldb:file://home/jln/Code/Eclipse Workspace/jLibre/bookdb;shutdown=true",
+							"jdbc:hsqldb:file://home/jln/Code/Eclipse-Workspace/jLibre/bookdb;shutdown=true",
 							"sa", "");
 		} catch (SQLException se) {
 			handleSQLException(se);
@@ -257,7 +258,8 @@ public class DBHandler {
 	 * {@link de.wulfheide.model.Book Book} object, containing all data
 	 * displayed on an info panel.
 	 * 
-	 * @param id the books id
+	 * @param id
+	 *            the books id
 	 * @return an {@link de.wulfheide.model.Book Book} object containing all the
 	 *         data
 	 */
@@ -309,7 +311,8 @@ public class DBHandler {
 	 * {@link de.wulfheide.model.Author Author} object, containing all data
 	 * displayed on an info panel.
 	 * 
-	 * @param id the authors id
+	 * @param id
+	 *            the authors id
 	 * @return an {@link de.wulfheide.model.Author Author} object containing all
 	 *         the data
 	 */
@@ -368,7 +371,8 @@ public class DBHandler {
 	 * {@link de.wulfheide.model.Quote Quote} object, containing all data
 	 * displayed on an info panel.
 	 * 
-	 * @param id the books id
+	 * @param id
+	 *            the books id
 	 * @return an {@link de.wulfheide.model.Book Book} object containing all the
 	 *         data
 	 */
@@ -427,12 +431,13 @@ public class DBHandler {
 	 * Stores an {@link de.wulfheide.model.Book Book} in the DB and returns the
 	 * id (created by the DB) for this quote.
 	 * 
-	 * @param book the quote to store
+	 * @param book
+	 *            the quote to store
 	 * @return the id of this book (-1 if something went wrong)
 	 */
 	public int makeBook(Book book) {
-		Statement stmt;
-		int result = 0;
+		PreparedStatement stmt;
+		int rowsChanged = 0;
 		int id = -1;
 
 		String title = book.getTitle();
@@ -454,21 +459,31 @@ public class DBHandler {
 			sqlFinished = new java.sql.Date(finished.getTime());
 
 		try {
-			stmt = conn.createStatement();
-			result = stmt
-					.executeUpdate(String
+			stmt = conn
+					.prepareStatement(String
 							.format("INSERT INTO BOOK (authorid, title, comment,"
 									+ " epoche, genre, pubyear, startread, finishread)"
-									+ "VALUES (%d, '%s', '%s', '%s', '%s', %d, '%s', '%s');",
+									+ "VALUES (%d, '%s', '%s', '%s', '%s', %d, ?, ?);",
 									authorId, title, comment, epoche, genre,
-									published, sqlStarted, sqlFinished));
+									published));
 
-			if (result != 0) {
+			if (sqlStarted == null)
+				stmt.setNull(1, java.sql.Types.DATE);
+			else
+				stmt.setDate(1, sqlStarted);
+
+			if (sqlFinished == null)
+				stmt.setNull(2, java.sql.Types.DATE);
+			stmt.setDate(2, sqlFinished);
+
+			rowsChanged = stmt.executeUpdate();
+
+			if (rowsChanged != 0) {
 				// When we inserted something -> get the created ID(s)
 				// (hopefully this is == 1)
-				ResultSet rs = stmt.executeQuery("CALL IDENTITY();");
-				while (rs.next())
-					id = rs.getInt(1);
+//				ResultSet rs = stmt.executeQuery("CALL IDENTITY();");
+//				while (rs.next())
+//					id = rs.getInt(1);
 			}
 
 		} catch (SQLException se) {
@@ -482,7 +497,8 @@ public class DBHandler {
 	 * Stores an {@link de.wulfheide.model.Author Author} in the DB and returns
 	 * the id (created by the DB) for this author.
 	 * 
-	 * @param author the author to store
+	 * @param author
+	 *            the author to store
 	 * @return the id of this author (-1 if someting went wrong)
 	 */
 	public int makeAuthor(Author author) {
@@ -522,7 +538,8 @@ public class DBHandler {
 	 * Stores an {@link de.wulfheide.model.Quote Quote} in the DB, and returns
 	 * the id (created by the DB) for this quote.
 	 * 
-	 * @param quote the quote to store
+	 * @param quote
+	 *            the quote to store
 	 * @return the id of this quote (-1 if someting went wrong)
 	 */
 	public int makeQuote(Quote quote) {
@@ -734,7 +751,7 @@ public class DBHandler {
 
 		// Loop through the SQL Exceptions
 		while (se != null) {
-			logger.error("State  : " + se.getSQLState());
+			se.printStackTrace();
 			logger.error("Message: " + se.getMessage());
 			logger.error("Error  : " + se.getErrorCode());
 

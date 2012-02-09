@@ -105,6 +105,15 @@ public class BookOverviewPanel extends OverviewPanel {
 					Date finishedReading = book.getFinishedReading();
 					Set<Quote> quotes = book.getQuotes();
 
+					String started = "-";
+					String finished = "-";
+
+					if (startedReading != null)
+						started = df.format(startedReading);
+
+					if (finishedReading != null)
+						finished = df.format(finishedReading);
+
 					sb.append("<html><B>Title:</B><br>")
 							.append("&nbsp;&nbsp;&nbsp;&nbsp;").append(title);
 					sb.append("<p><B>Author:</B><br>")
@@ -114,11 +123,11 @@ public class BookOverviewPanel extends OverviewPanel {
 							.append("&nbsp;&nbsp;&nbsp;&nbsp;").append(pubYear)
 							.append("</p>");
 					sb.append("<p><B>Started reading:</B><br>")
-							.append("&nbsp;&nbsp;&nbsp;&nbsp;")
-							.append(df.format(startedReading)).append("</p>");
+							.append("&nbsp;&nbsp;&nbsp;&nbsp;").append(started)
+							.append("</p>");
 					sb.append("<p><B>Finished reading:</B><br>")
 							.append("&nbsp;&nbsp;&nbsp;&nbsp;")
-							.append(df.format(finishedReading)).append("</p>");
+							.append(finished).append("</p>");
 
 					sb.append("<p><B>Quotes from this book:</B><br>");
 					if (quotes.isEmpty())
@@ -238,7 +247,7 @@ public class BookOverviewPanel extends OverviewPanel {
 						selectedRow);
 
 				success = true;
-			}else {
+			} else {
 				JOptionPane.showMessageDialog(this,
 						"Couldn't update the book. "
 								+ "No data has been changed.",

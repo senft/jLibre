@@ -1,6 +1,7 @@
 package de.wulfheide.gui;
 
 import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.util.Vector;
@@ -220,7 +221,8 @@ public abstract class OverviewPanel extends JPanel {
 		// infoPane.setBackground(new Color(0, 0, 0, 0));
 		scrollPane_1.setViewportView(infoPane);
 		infoPane.setEditable(false);
-
+		infoPane.setFocusable(false);
+		
 		tablePanel.setLeftComponent(scrollPane);
 		tablePanel.setRightComponent(scrollPane_1);
 	}
