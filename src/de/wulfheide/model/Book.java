@@ -17,6 +17,10 @@ public class Book {
 	private Author author;
 	private Set<Quote> quotes;
 
+	public static final int NOT_READ = -1;
+	public static final int STARTED_READING = 0;
+	public static final int FINISHED_READING = 1;
+
 	public Book() {
 		quotes = new HashSet<Quote>();
 	}
@@ -199,12 +203,22 @@ public class Book {
 	 *         <li><b>1</b> if finishedReading, has been set</li>
 	 */
 	public int isRead() {
-		if (startedReading != null)
-			return 0;
+		if (startedReading == null)
+			return NOT_READ;
 
 		if (finishedReading == null)
-			return -1;
+			return STARTED_READING;
 
-		return 1;
+		return FINISHED_READING;
+	}
+
+	public static int datesRead(Date started, Date finished) {
+		if (started == null)
+			return NOT_READ;
+
+		if (finished == null)
+			return STARTED_READING;
+
+		return FINISHED_READING;
 	}
 }

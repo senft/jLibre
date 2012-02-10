@@ -82,7 +82,8 @@ public class DBHandler {
 			// Execute the query
 			ResultSet rs = stmt
 					.executeQuery("SELECT book.id, book.title, author.firstname,"
-							+ " author.lastname, book.pubyear, book.genre, book.epoche"
+							+ " author.lastname, book.pubyear, book.genre, book.epoche,"
+							+ " book.startread, book.finishread"
 							+ " FROM BOOK, AUTHOR"
 							+ " WHERE book.authorid = author.id;");
 
@@ -95,6 +96,8 @@ public class DBHandler {
 				current.add(rs.getInt("pubyear"));
 				current.add(rs.getString("epoche"));
 				current.add(rs.getString("genre"));
+				current.add(Book.datesRead(rs.getDate("startread"),
+						rs.getDate("finishread")));
 
 				result.add(current);
 			}
@@ -472,7 +475,8 @@ public class DBHandler {
 
 			if (sqlFinished == null)
 				stmt.setNull(2, java.sql.Types.DATE);
-			stmt.setDate(2, sqlFinished);
+			else
+				stmt.setDate(2, sqlFinished);
 
 			rowsChanged = stmt.executeUpdate();
 
@@ -572,8 +576,8 @@ public class DBHandler {
 	}
 
 	public boolean updateBook(Book book) {
-		Statement stmt;
-		int result = 0;
+		PreparedStatement stmt;
+		int rowsChanged = 0;
 
 		int bookId = book.getId();
 		String title = book.getTitle();
@@ -585,26 +589,40 @@ public class DBHandler {
 		Date started = book.getStartedReading();
 		Date finished = book.getFinishedReading();
 
-		java.sql.Date sqlStarted = new java.sql.Date(started.getTime());
-		java.sql.Date sqlFinished = new java.sql.Date(finished.getTime());
+		java.sql.Date sqlStarted = null;
+		java.sql.Date sqlFinished = null;
+
+		if (started != null)
+			sqlStarted = new java.sql.Date(started.getTime());
+
+		if (finished != null)
+			sqlFinished = new java.sql.Date(finished.getTime());
 
 		try {
-			stmt = conn.createStatement();
+			stmt = conn.prepareStatement(String.format(
+					"UPDATE Book SET authorid = %d, title = '%s',"
+							+ " pubyear = %d, startread = ?, finishread = ?,"
+							+ " comment = '%s', epoche = '%s', genre = '%s'"
+							+ " WHERE id = %d;", authorId, title, published,
+					comment, epoche, genre, bookId));
 
-			result = stmt
-					.executeUpdate(String
-							.format("UPDATE Book SET authorid = %d, title = '%s',"
-									+ " pubyear = %d, startread = '%s', finishread = '%s',"
-									+ " comment = '%s', epoche = '%s', genre = '%s'"
-									+ " WHERE id = %d;", authorId, title,
-									published, sqlStarted, sqlFinished,
-									comment, epoche, genre, bookId));
+			if (sqlStarted == null)
+				stmt.setNull(1, java.sql.Types.DATE);
+			else
+				stmt.setDate(1, sqlStarted);
+
+			if (sqlFinished == null)
+				stmt.setNull(2, java.sql.Types.DATE);
+			else
+				stmt.setDate(2, sqlFinished);
+
+			rowsChanged = stmt.executeUpdate();
 
 		} catch (SQLException se) {
 			handleSQLException(se);
 		}
 
-		return result != 0;
+		return rowsChanged != 0;
 	}
 
 	public boolean updateAuthor(Author author) {

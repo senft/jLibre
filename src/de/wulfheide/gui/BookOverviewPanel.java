@@ -8,6 +8,7 @@ import java.util.Date;
 import java.util.Set;
 import java.util.Vector;
 
+import javax.swing.ImageIcon;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPopupMenu;
@@ -29,8 +30,10 @@ public class BookOverviewPanel extends OverviewPanel {
 		columnNames.add("Year of publication");
 		columnNames.add("Epoche");
 		columnNames.add("Genre");
+		columnNames.add("Read?");
 		columnClasses = new Class[] { Integer.class, String.class,
-				String.class, Integer.class, String.class, String.class };
+				String.class, Integer.class, String.class, String.class,
+				ImageIcon.class };
 
 		tableModel.fireTableStructureChanged();
 
@@ -43,6 +46,9 @@ public class BookOverviewPanel extends OverviewPanel {
 				});
 		((DefaultTableCellRenderer) table.getColumnModel().getColumn(0)
 				.getCellRenderer()).setHorizontalAlignment(SwingConstants.LEFT);
+
+		 table.getColumnModel().getColumn(6).setCellRenderer(new
+		 IsReadCellRenderer());
 
 		rowData = dbHandler.getBooksForTable();
 
