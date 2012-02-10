@@ -20,7 +20,7 @@ public class IsReadCellRenderer implements TableCellRenderer {
 
 		JLabel label = new JLabel();
 
-		int isRead = Integer.valueOf((int) value);
+		int isRead = Integer.valueOf((Integer) value);
 
 		label.setHorizontalAlignment(SwingConstants.CENTER);
 
