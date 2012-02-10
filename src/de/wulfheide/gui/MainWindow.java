@@ -62,7 +62,6 @@ public class MainWindow extends JFrame {
 
 		// TODO Setting colors here, probably isnt needed
 		JMenuBar menuBar = new JMenuBar();
-		menuBar.setForeground(SystemColor.text);
 		setJMenuBar(menuBar);
 
 		JMenu mnFile = new JMenu("File");

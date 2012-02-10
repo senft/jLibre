@@ -34,7 +34,6 @@ public class DBHandler {
 
 		try {
 			String path = System.getProperty("user.dir");
-			// TODO Get a real path here
 			conn = DriverManager.getConnection(String.format(
 					"jdbc:hsqldb:file:/%s/bookdb;shutdown=true", path), "sa",
 					"");

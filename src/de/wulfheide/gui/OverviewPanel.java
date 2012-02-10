@@ -214,7 +214,6 @@ public abstract class OverviewPanel extends JPanel {
 		// gbc_scrollPane_1.gridy = 0;
 		// panel.add(scrollPane_1, gbc_scrollPane_1);
 
-		// TODO Maybe add forced word wrap: http://java-sl.com/wrap.html
 		infoPane = new JTextPane();
 		infoPane.setContentType("text/html");
 		infoPane.setFont(UIManager.getFont("Label.font"));
