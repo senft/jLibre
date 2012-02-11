@@ -17,6 +17,10 @@ import de.wulfheide.model.Book;
 import de.wulfheide.model.Quote;
 
 public class DBHandler {
+	/*
+	 * TODO: Refactor. Change all 'CALL IDENTITIY()' to PreparedStatements with
+	 * getGeneratedKeys()
+	 */
 
 	private static DBHandler dbHandler;
 	private static Logger logger = Logger.getLogger("DBHandler");
@@ -457,30 +461,29 @@ public class DBHandler {
 			sqlFinished = new java.sql.Date(finished.getTime());
 
 		try {
-			stmt = conn.prepareStatement(String.format(
-					"INSERT INTO BOOK (authorid, title, comment,"
-							+ " epoche, genre, pubyear, startread, finishread)"
-							+ "VALUES (%d, '%s', '%s', '%s', '%s', %d, ?, ?);",
-					authorId, title, comment, epoche, genre, published));
+			stmt = conn
+					.prepareStatement(
+							String.format(
+									"INSERT INTO BOOK (authorid, title, comment,"
+											+ " epoche, genre, pubyear, startread, finishread)"
+											+ " VALUES (%d, '%s', '%s', '%s', '%s', %d, ?, ?);",
+									authorId, title, comment, epoche, genre,
+									published),
+							PreparedStatement.RETURN_GENERATED_KEYS);
 
-			if (sqlStarted == null)
-				stmt.setNull(1, java.sql.Types.DATE);
-			else
-				stmt.setDate(1, sqlStarted);
+			stmt.setDate(1, sqlStarted);
+			stmt.setDate(2, sqlFinished);
 
-			if (sqlFinished == null)
-				stmt.setNull(2, java.sql.Types.DATE);
-			else
-				stmt.setDate(2, sqlFinished);
+			logger.debug("Executing query: " + stmt.toString());
 
+			// TODO: get real id here
 			rowsChanged = stmt.executeUpdate();
-
 			if (rowsChanged != 0) {
-				// When we inserted something -> get the created ID(s)
-				// (hopefully this is == 1)
-				// ResultSet rs = stmt.executeQuery("CALL IDENTITY();");
-				// while (rs.next())
-				// id = rs.getInt(1);
+				logger.debug("Changed " + rowsChanged + " row(s) in DB");
+
+				ResultSet rs = stmt.getGeneratedKeys();
+				while (rs.next())
+					id = rs.getInt(1);
 			}
 
 		} catch (SQLException se) {

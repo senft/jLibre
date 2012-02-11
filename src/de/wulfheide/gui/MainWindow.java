@@ -26,6 +26,8 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
+import javax.swing.event.TableModelEvent;
+import javax.swing.event.TableModelListener;
 
 import org.apache.log4j.Logger;
 
@@ -241,8 +243,40 @@ public class MainWindow extends JFrame {
 		lblStatusbar = new JLabel();
 		lblStatusbar.setVerticalAlignment(SwingConstants.BOTTOM);
 		lblStatusbar.setHorizontalAlignment(SwingConstants.LEFT);
-		lblStatusbar.setText("hellerr");
+		updateStatusbar();
+
+		bookPanel.tableModel.addTableModelListener(new TableModelListener() {
+			@Override
+			public void tableChanged(TableModelEvent e) {
+				updateStatusbar();
+			}
+		});
+
+		authorPanel.tableModel.addTableModelListener(new TableModelListener() {
+			@Override
+			public void tableChanged(TableModelEvent e) {
+				updateStatusbar();
+			}
+		});
+
+		quotePanel.tableModel.addTableModelListener(new TableModelListener() {
+			@Override
+			public void tableChanged(TableModelEvent e) {
+				updateStatusbar();
+			}
+		});
+
 		panel.add(lblStatusbar);
+	}
+
+	private void updateStatusbar() {
+		int numBook = bookPanel.table.getRowCount();
+		int numAuthor = authorPanel.table.getRowCount();
+		int numQuote = quotePanel.table.getRowCount();
+
+		lblStatusbar.setText(String.format(
+				"%d authors, %d books, %d quotes in database", numAuthor,
+				numBook, numQuote));
 	}
 
 	private void onTableSelectionChange() {

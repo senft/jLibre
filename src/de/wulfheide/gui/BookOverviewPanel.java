@@ -47,8 +47,8 @@ public class BookOverviewPanel extends OverviewPanel {
 		((DefaultTableCellRenderer) table.getColumnModel().getColumn(0)
 				.getCellRenderer()).setHorizontalAlignment(SwingConstants.LEFT);
 
-		 table.getColumnModel().getColumn(6).setCellRenderer(new
-		 IsReadCellRenderer());
+		table.getColumnModel().getColumn(6)
+				.setCellRenderer(new IsReadCellRenderer());
 
 		rowData = dbHandler.getBooksForTable();
 
@@ -167,7 +167,6 @@ public class BookOverviewPanel extends OverviewPanel {
 		Book book = dialog.showDialog();
 
 		if (book != null) {
-
 			int id = dbHandler.makeBook(book);
 
 			if (id != -1) {
@@ -178,6 +177,8 @@ public class BookOverviewPanel extends OverviewPanel {
 				vecBook.add(book.getPublicationYear());
 				vecBook.add(book.getEpoche());
 				vecBook.add(book.getGenre());
+				vecBook.add(Book.datesRead(book.getStartedReading(),
+						book.getFinishedReading()));
 				rowData.add(vecBook);
 
 				tableModel.fireTableDataChanged();
