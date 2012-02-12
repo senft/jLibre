@@ -265,7 +265,8 @@ public class DBHandler {
 	 * {@link de.wulfheide.model.Book Book} object, containing all data
 	 * displayed on an info panel.
 	 * 
-	 * @param id the books id
+	 * @param id
+	 *            the books id
 	 * @return an {@link de.wulfheide.model.Book Book} object containing all the
 	 *         data
 	 */
@@ -317,7 +318,8 @@ public class DBHandler {
 	 * {@link de.wulfheide.model.Author Author} object, containing all data
 	 * displayed on an info panel.
 	 * 
-	 * @param id the authors id
+	 * @param id
+	 *            the authors id
 	 * @return an {@link de.wulfheide.model.Author Author} object containing all
 	 *         the data
 	 */
@@ -376,7 +378,8 @@ public class DBHandler {
 	 * {@link de.wulfheide.model.Quote Quote} object, containing all data
 	 * displayed on an info panel.
 	 * 
-	 * @param id the books id
+	 * @param id
+	 *            the books id
 	 * @return an {@link de.wulfheide.model.Book Book} object containing all the
 	 *         data
 	 */
@@ -435,7 +438,8 @@ public class DBHandler {
 	 * Stores an {@link de.wulfheide.model.Book Book} in the DB and returns the
 	 * id (created by the DB) for this quote.
 	 * 
-	 * @param book the quote to store
+	 * @param book
+	 *            the quote to store
 	 * @return the id of this book (-1 if something went wrong)
 	 */
 	public int makeBook(Book book) {
@@ -477,7 +481,6 @@ public class DBHandler {
 
 			logger.debug("Executing query: " + stmt.toString());
 
-			// TODO: get real id here
 			rowsChanged = stmt.executeUpdate();
 			if (rowsChanged != 0) {
 				logger.debug("Changed " + rowsChanged + " row(s) in DB");
@@ -498,7 +501,8 @@ public class DBHandler {
 	 * Stores an {@link de.wulfheide.model.Author Author} in the DB and returns
 	 * the id (created by the DB) for this author.
 	 * 
-	 * @param author the author to store
+	 * @param author
+	 *            the author to store
 	 * @return the id of this author (-1 if someting went wrong)
 	 */
 	public int makeAuthor(Author author) {
@@ -538,7 +542,8 @@ public class DBHandler {
 	 * Stores an {@link de.wulfheide.model.Quote Quote} in the DB, and returns
 	 * the id (created by the DB) for this quote.
 	 * 
-	 * @param quote the quote to store
+	 * @param quote
+	 *            the quote to store
 	 * @return the id of this quote (-1 if someting went wrong)
 	 */
 	public int makeQuote(Quote quote) {
@@ -783,7 +788,7 @@ public class DBHandler {
 
 		return epoches.toArray(new String[] {});
 	}
-	
+
 	public String[] getCommonGenres() {
 		List<String> genres = new ArrayList<String>();
 

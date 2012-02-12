@@ -1,7 +1,6 @@
 package de.wulfheide.gui;
 
 import java.awt.BorderLayout;
-import java.awt.Dimension;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.util.Vector;
@@ -45,7 +44,6 @@ public abstract class OverviewPanel extends JPanel {
 	protected Vector<Object> columnNames = new Vector<Object>();
 	@SuppressWarnings("rawtypes")
 	protected Class[] columnClasses = new Class[0];
-	private JPanel panel;
 	private JScrollPane scrollPane_1;
 
 	/**
@@ -122,7 +120,7 @@ public abstract class OverviewPanel extends JPanel {
 		filterTextField.setColumns(10);
 
 		JSplitPane tablePanel = new JSplitPane();
-		//		tablePanel.setContinuousLayout(true);
+		// tablePanel.setContinuousLayout(true);
 		tablePanel.setResizeWeight(0.7);
 		add(tablePanel, BorderLayout.CENTER);
 		// GridBagLayout gbl_tablePanel = new GridBagLayout();
@@ -221,7 +219,7 @@ public abstract class OverviewPanel extends JPanel {
 		scrollPane_1.setViewportView(infoPane);
 		infoPane.setEditable(false);
 		infoPane.setFocusable(false);
-		
+
 		tablePanel.setLeftComponent(scrollPane);
 		tablePanel.setRightComponent(scrollPane_1);
 	}

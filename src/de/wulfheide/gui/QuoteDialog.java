@@ -8,7 +8,6 @@ import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import javax.swing.ComboBoxModel;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -30,7 +29,7 @@ public class QuoteDialog extends JDialog {
 	private final JPanel contentPanel = new JPanel();
 
 	private Quote quote;
-	private JComboBox cmbBook;
+	private JComboBox<String> cmbBook;
 	private JTextArea txtText;
 	private JTextArea txtComment;
 
@@ -83,20 +82,23 @@ public class QuoteDialog extends JDialog {
 			gbl_panel.rowWeights = new double[] { 0.0, Double.MIN_VALUE };
 			panel.setLayout(gbl_panel);
 			{
+				cmbBook = new JComboBox<String>(
+						new DefaultComboBoxModel<String>() {
+							@Override
+							public int getSize() {
+								return books.length;
+							}
 
-				ComboBoxModel cmbModel = new DefaultComboBoxModel() {
-					@Override
-					public int getSize() {
-						return books.length;
-					}
-
-					@Override
-					public Object getElementAt(int index) {
-						return books[index][1];
-					}
-				};
-				cmbBook = new JComboBox(cmbModel);
-				cmbBook.setSelectedIndex(0);// What if no authors available?
+							@Override
+							public String getElementAt(int index) {
+								return books[index][1].toString();
+							}
+						});
+				try {
+					cmbBook.setSelectedIndex(0);
+				} catch (IllegalArgumentException e) {
+					cmbBook.setSelectedIndex(1);
+				}
 
 				GridBagConstraints gbc_cmbAuthor = new GridBagConstraints();
 				gbc_cmbAuthor.fill = GridBagConstraints.HORIZONTAL;
@@ -196,6 +198,14 @@ public class QuoteDialog extends JDialog {
 		}
 	}
 
+	/**
+	 * Constructor for creating a Dialog to edit a quote. Fills all passed
+	 * values in the corresponding widget.
+	 * @param id the id of the quote to edit
+	 * @param text
+	 * @param comment
+	 * @param book
+	 */
 	public QuoteDialog(int id, String text, String comment, Book book) {
 		this();
 		setTitle("Edit quote...");

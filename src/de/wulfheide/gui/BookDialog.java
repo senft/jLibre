@@ -9,7 +9,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Date;
 
-import javax.swing.ComboBoxModel;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -33,43 +32,19 @@ public class BookDialog extends JDialog {
 
 	private final JPanel contentPanel = new JPanel();
 	private JTextField txtTitle;
-	private JComboBox cmbAuthor;
+	private JComboBox<String> cmbAuthor;
 	private JDateChooser dtStarted;
 	private JTextArea txtComment;
 	private JDateChooser dtFinished;
 	private JTextField txtPublished;
-	private JComboBox cmbEpoche;
-	private JComboBox cmbGenre;
+	private JComboBox<String> cmbEpoche;
+	private JComboBox<String> cmbGenre;
 
 	private DBHandler dbHandler = DBHandler.getInstance();
 
 	private Object[][] authors = dbHandler.getAuthorsForComboBox();
 
 	private Book book;
-
-	public BookDialog(int id, String title, Author author, Date started,
-			Date finished, String comment, int published, String epoche,
-			String genre) {
-		this();
-		setTitle("Edit book...");
-		txtTitle.setText(title);
-
-		dtStarted.setDate(started);
-		dtFinished.setDate(finished);
-		txtComment.setText(comment);
-		txtPublished.setText(Integer.valueOf(published).toString());
-		// cmbEpoche.setText(epoche);
-		cmbEpoche.setSelectedItem(epoche);
-		// cmbGenre.setText(genre);
-		cmbGenre.setSelectedItem(genre);
-
-		for (int i = 0; i < authors.length; i++) {
-			if (Integer.valueOf(authors[i][0].toString()) == author.getId()) {
-				cmbAuthor.setSelectedIndex(i);
-				break;
-			}
-		}
-	}
 
 	/**
 	 * Create the dialog.
@@ -136,19 +111,23 @@ public class BookDialog extends JDialog {
 			gbl_panel.rowWeights = new double[] { 0.0, Double.MIN_VALUE };
 			panel.setLayout(gbl_panel);
 			{
-				ComboBoxModel cmbModel = new DefaultComboBoxModel() {
-					@Override
-					public int getSize() {
-						return authors.length;
-					}
+				cmbAuthor = new JComboBox<String>(
+						new DefaultComboBoxModel<String>() {
+							@Override
+							public int getSize() {
+								return authors.length;
+							}
 
-					@Override
-					public Object getElementAt(int index) {
-						return authors[index][1];
-					}
-				};
-				cmbAuthor = new JComboBox(cmbModel);
-				cmbAuthor.setSelectedIndex(0);// What if no authors available?
+							@Override
+							public String getElementAt(int index) {
+								return authors[index][1].toString();
+							}
+						});
+				try {
+					cmbAuthor.setSelectedIndex(0);
+				} catch (IllegalArgumentException e) {
+					cmbAuthor.setSelectedIndex(1);
+				}
 
 				GridBagConstraints gbc_cmbAuthor = new GridBagConstraints();
 				gbc_cmbAuthor.fill = GridBagConstraints.HORIZONTAL;
@@ -183,8 +162,10 @@ public class BookDialog extends JDialog {
 			contentPanel.add(lblEpoche, gbc_lblEpoche);
 		}
 		{
-			cmbEpoche = new JComboBox();
+			cmbEpoche = new JComboBox<String>(dbHandler.getCommonEpoches());
+			cmbEpoche.setSelectedIndex(-1);
 			cmbEpoche.setEditable(true);
+
 			GridBagConstraints gbc_txtEpoche = new GridBagConstraints();
 			gbc_txtEpoche.insets = new Insets(0, 0, 5, 0);
 			gbc_txtEpoche.fill = GridBagConstraints.HORIZONTAL;
@@ -202,11 +183,10 @@ public class BookDialog extends JDialog {
 			contentPanel.add(lblGenre, gbc_lblGenre);
 		}
 		{
-			cmbGenre = new JComboBox(dbHandler.getCommonGenres());
-
+			cmbGenre = new JComboBox<String>(dbHandler.getCommonGenres());
 			cmbGenre.setSelectedIndex(-1);
-
 			cmbGenre.setEditable(true);
+
 			GridBagConstraints gbc_txtGenre = new GridBagConstraints();
 			gbc_txtGenre.insets = new Insets(0, 0, 5, 0);
 			gbc_txtGenre.fill = GridBagConstraints.HORIZONTAL;
@@ -323,6 +303,43 @@ public class BookDialog extends JDialog {
 		}
 	}
 
+	/**
+	 * Constructor for creating a dialog to edit a book. Fills all passed values
+	 * in the corresponding widget.
+	 * 
+	 * @param id
+	 *            the id of the book to edit
+	 * @param title
+	 * @param author
+	 * @param started
+	 * @param finished
+	 * @param comment
+	 * @param published
+	 * @param epoche
+	 * @param genre
+	 */
+	public BookDialog(int id, String title, Author author, Date started,
+			Date finished, String comment, int published, String epoche,
+			String genre) {
+		this();
+		setTitle("Edit book...");
+		txtTitle.setText(title);
+
+		dtStarted.setDate(started);
+		dtFinished.setDate(finished);
+		txtComment.setText(comment);
+		txtPublished.setText(Integer.valueOf(published).toString());
+		cmbEpoche.setSelectedItem(epoche);
+		cmbGenre.setSelectedItem(genre);
+
+		for (int i = 0; i < authors.length; i++) {
+			if (Integer.valueOf(authors[i][0].toString()) == author.getId()) {
+				cmbAuthor.setSelectedIndex(i);
+				break;
+			}
+		}
+	}
+
 	public Book showDialog() {
 		setVisible(true);
 		return book;
@@ -330,9 +347,7 @@ public class BookDialog extends JDialog {
 
 	private void clickedOK() {
 		String title = txtTitle.getText().trim();
-		// String epoche = cmbEpoche.getText().trim();
 		String epoche = cmbEpoche.getSelectedItem().toString();
-		// String genre = cmbGenre.getText().trim();
 		String genre = cmbGenre.getSelectedItem().toString();
 		String comment = txtComment.getText().trim();
 		int authorId = -1;

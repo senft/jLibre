@@ -153,7 +153,6 @@ public class AuthorDialog extends JDialog {
 				JButton okButton = new JButton("OK");
 				okButton.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
-						// OK
 						clickedOK();
 					}
 				});
@@ -165,7 +164,6 @@ public class AuthorDialog extends JDialog {
 				JButton cancelButton = new JButton("Cancel");
 				cancelButton.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
-						// CANCEL
 						clickedCancel();
 					}
 				});
@@ -175,6 +173,18 @@ public class AuthorDialog extends JDialog {
 		}
 	}
 
+	/**
+	 * Constructor for creating a Dialog to edit an author. Fills all passed
+	 * values in the corresponding widget.
+	 * 
+	 * @param id
+	 *            the id of the author to edit
+	 * @param firstname
+	 * @param lastname
+	 * @param country
+	 * @param born
+	 * @param died
+	 */
 	public AuthorDialog(int id, String firstname, String lastname,
 			String country, int born, int died) {
 		this();
@@ -211,9 +221,8 @@ public class AuthorDialog extends JDialog {
 					JOptionPane.WARNING_MESSAGE);
 		} else if (died < born) {
 			JOptionPane.showMessageDialog(this,
-					"The date of birth is bigger than the death." // TODO
-																	// wording
-					, "Warning", JOptionPane.WARNING_MESSAGE);
+					"The date of birth is bigger than the death.", "Warning",
+					JOptionPane.WARNING_MESSAGE);
 		} else {
 			author = new Author();
 			author.setFirstname(firstname);
