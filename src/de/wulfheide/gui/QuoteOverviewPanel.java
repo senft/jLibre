@@ -54,14 +54,19 @@ public class QuoteOverviewPanel extends OverviewPanel {
 					Book book = quote.getBook();
 					Author author = book.getAuthor();
 
-					sb.append("<p>\"").append(text).append("\"");
+					sb.append("<p><font size=6>\"").append(text)
+							.append("\"</font>");
 
-					sb.append("</p>").append(author.toString()).append(": <i>")
+					sb.append("</p><div align=\"right\">");
+					sb.append(author.toString()).append(": <i>")
 							.append(book.getTitle()).append("</i>, ")
-							.append(book.getPublicationYear());
+							.append(book.getPublicationYear()).append("</div>");
 
-					if (comment != null)
-						sb.append("<br><br>").append(quote.getComment());
+					if (comment != null) {
+						sb.append(
+								"<br><br><b>Comment:</b><br /><div style=\"margin-left: " + INFOPANEL_LINEFEED + "px;\">")
+								.append(quote.getComment()).append("</div>");
+					}
 
 					infoPane.setText(sb.toString());
 				} else {

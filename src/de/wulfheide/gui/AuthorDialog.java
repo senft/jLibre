@@ -19,6 +19,7 @@ import javax.swing.border.TitledBorder;
 
 import com.toedter.calendar.JYearChooser;
 
+import de.wulfheide.io.WikipediaAuthorParser;
 import de.wulfheide.model.Author;
 
 public class AuthorDialog extends JDialog {
@@ -40,7 +41,7 @@ public class AuthorDialog extends JDialog {
 		setTitle("New author...");
 		setResizable(false);
 		setModal(true);
-		setBounds(100, 100, 381, 220);
+		setBounds(100, 100, 381, 239);
 		getContentPane().setLayout(new BorderLayout());
 		contentPanel.setBorder(new TitledBorder(null, "New author...",
 				TitledBorder.LEADING, TitledBorder.TOP, null, null));
@@ -156,6 +157,21 @@ public class AuthorDialog extends JDialog {
 						clickedOK();
 					}
 				});
+				{
+					JButton btnGetDataFrom = new JButton(
+							"Get data from wikipedia");
+					btnGetDataFrom.addActionListener(new ActionListener() {
+						public void actionPerformed(ActionEvent e) {
+							Author fetchedAuthor = WikipediaAuthorParser.getAuthor(
+									txtFirstname.getText().trim(), txtLastname
+											.getText().trim());
+							
+							dtBorn.setYear(fetchedAuthor.getBorn());
+							dtDied.setYear(fetchedAuthor.getDied());
+						}
+					});
+					buttonPane.add(btnGetDataFrom);
+				}
 				okButton.setActionCommand("OK");
 				buttonPane.add(okButton);
 				getRootPane().setDefaultButton(okButton);

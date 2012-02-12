@@ -25,7 +25,7 @@ import javax.swing.table.TableRowSorter;
 
 import org.apache.log4j.Logger;
 
-import de.wulfheide.persistency.DBHandler;
+import de.wulfheide.io.DBHandler;
 
 public abstract class OverviewPanel extends JPanel {
 
@@ -45,6 +45,10 @@ public abstract class OverviewPanel extends JPanel {
 	@SuppressWarnings("rawtypes")
 	protected Class[] columnClasses = new Class[0];
 	private JScrollPane scrollPane_1;
+
+	// Determines the left margin of the data in the info panel (not the
+	// "headings")
+	final int INFOPANEL_LINEFEED = 15;
 
 	/**
 	 * Creates a {@link javax.swing.event.ListSelectionListener
@@ -89,7 +93,8 @@ public abstract class OverviewPanel extends JPanel {
 	// ID
 	// * "ID", but the row where the entity's ID (column 0) is ID.
 	// *
-	// * @param id the ID of the entity to delete
+	// * @param id
+	// * the ID of the entity to delete
 	// * @return true if successful
 	// */
 	// protected abstract boolean delete(int id);
@@ -120,16 +125,8 @@ public abstract class OverviewPanel extends JPanel {
 		filterTextField.setColumns(10);
 
 		JSplitPane tablePanel = new JSplitPane();
-		// tablePanel.setContinuousLayout(true);
 		tablePanel.setResizeWeight(0.7);
 		add(tablePanel, BorderLayout.CENTER);
-		// GridBagLayout gbl_tablePanel = new GridBagLayout();
-		// gbl_tablePanel.columnWidths = new int[] { 157, 210, 0 };
-		// gbl_tablePanel.rowHeights = new int[] { 418, 0 };
-		// gbl_tablePanel.columnWeights = new double[] { 1.0, 0.0,
-		// Double.MIN_VALUE };
-		// gbl_tablePanel.rowWeights = new double[] { 1.0, Double.MIN_VALUE };
-		// tablePanel.setLayout(gbl_tablePanel);
 
 		tableModel = new AbstractTableModel() {
 
@@ -177,45 +174,14 @@ public abstract class OverviewPanel extends JPanel {
 
 		JScrollPane scrollPane = new JScrollPane(table);
 
-		// GridBagConstraints gbc_scrollPane = new GridBagConstraints();
-		// gbc_scrollPane.anchor = GridBagConstraints.NORTHWEST;
-		// gbc_scrollPane.weighty = 1.0;
-		// gbc_scrollPane.weightx = 1.0;
-		// gbc_scrollPane.fill = GridBagConstraints.BOTH;
-		// gbc_scrollPane.gridx = 0;
-		// gbc_scrollPane.gridy = 0;
-		// tablePanel.add(scrollPane, gbc_scrollPane);
-
-		// panel = new JPanel();
-		// GridBagConstraints gbc_panel = new GridBagConstraints();
-		// gbc_panel.anchor = GridBagConstraints.EAST;
-		// gbc_panel.insets = new Insets(5, 5, 5, 5);
-		// gbc_panel.fill = GridBagConstraints.VERTICAL;
-		// gbc_panel.gridx = 1;
-		// gbc_panel.gridy = 0;
-		// tablePanel.add(panel, gbc_panel);
-		// GridBagLayout gbl_panel = new GridBagLayout();
-		// gbl_panel.columnWidths = new int[] { 210, 0 };
-		// gbl_panel.rowHeights = new int[] { 418, 0 };
-		// gbl_panel.columnWeights = new double[] { 0.0, Double.MIN_VALUE };
-		// gbl_panel.rowWeights = new double[] { 0.0, Double.MIN_VALUE };
-		// panel.setLayout(gbl_panel);
-
 		scrollPane_1 = new JScrollPane();
 		scrollPane_1.setViewportBorder(new LineBorder(null));
 		scrollPane_1
 				.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
-		// GridBagConstraints gbc_scrollPane_1 = new GridBagConstraints();
-		// gbc_scrollPane_1.weighty = 1.0;
-		// gbc_scrollPane_1.fill = GridBagConstraints.BOTH;
-		// gbc_scrollPane_1.gridx = 0;
-		// gbc_scrollPane_1.gridy = 0;
-		// panel.add(scrollPane_1, gbc_scrollPane_1);
 
 		infoPane = new JTextPane();
 		infoPane.setContentType("text/html");
 		infoPane.setFont(UIManager.getFont("Label.font"));
-		// infoPane.setBackground(new Color(0, 0, 0, 0));
 		scrollPane_1.setViewportView(infoPane);
 		infoPane.setEditable(false);
 		infoPane.setFocusable(false);
