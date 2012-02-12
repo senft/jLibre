@@ -8,6 +8,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Vector;
 
 import org.apache.log4j.Logger;
@@ -756,6 +757,56 @@ public class DBHandler {
 				result = false;
 		}
 		return result;
+	}
+
+	public String[] getCommonEpoches() {
+		List<String> epoches = new ArrayList<String>();
+
+		String sql = "SELECT DISTINCT epoche FROM BOOK;";
+
+		Statement stmt;
+
+		try {
+			stmt = conn.createStatement();
+
+			ResultSet rs = stmt.executeQuery(sql);
+
+			while (rs.next()) {
+				String epoche = rs.getString("epoche");
+				if (epoche != null && !epoche.equals(""))
+					epoches.add(epoche);
+			}
+
+		} catch (SQLException se) {
+			handleSQLException(se);
+		}
+
+		return epoches.toArray(new String[] {});
+	}
+	
+	public String[] getCommonGenres() {
+		List<String> genres = new ArrayList<String>();
+
+		String sql = "SELECT DISTINCT genre FROM BOOK;";
+
+		Statement stmt;
+
+		try {
+			stmt = conn.createStatement();
+
+			ResultSet rs = stmt.executeQuery(sql);
+
+			while (rs.next()) {
+				String genre = rs.getString("genre");
+				if (genre != null && !genre.equals(""))
+					genres.add(genre);
+			}
+
+		} catch (SQLException se) {
+			handleSQLException(se);
+		}
+
+		return genres.toArray(new String[] {});
 	}
 
 	private void handleSQLException(SQLException se) {

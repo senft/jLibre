@@ -38,8 +38,8 @@ public class BookDialog extends JDialog {
 	private JTextArea txtComment;
 	private JDateChooser dtFinished;
 	private JTextField txtPublished;
-	private JTextField txtEpoche;
-	private JTextField txtGenre;
+	private JComboBox cmbEpoche;
+	private JComboBox cmbGenre;
 
 	private DBHandler dbHandler = DBHandler.getInstance();
 
@@ -58,8 +58,10 @@ public class BookDialog extends JDialog {
 		dtFinished.setDate(finished);
 		txtComment.setText(comment);
 		txtPublished.setText(Integer.valueOf(published).toString());
-		txtEpoche.setText(epoche);
-		txtGenre.setText(genre);
+		// cmbEpoche.setText(epoche);
+		cmbEpoche.setSelectedItem(epoche);
+		// cmbGenre.setText(genre);
+		cmbGenre.setSelectedItem(genre);
 
 		for (int i = 0; i < authors.length; i++) {
 			if (Integer.valueOf(authors[i][0].toString()) == author.getId()) {
@@ -181,14 +183,14 @@ public class BookDialog extends JDialog {
 			contentPanel.add(lblEpoche, gbc_lblEpoche);
 		}
 		{
-			txtEpoche = new JTextField();
+			cmbEpoche = new JComboBox();
+			cmbEpoche.setEditable(true);
 			GridBagConstraints gbc_txtEpoche = new GridBagConstraints();
 			gbc_txtEpoche.insets = new Insets(0, 0, 5, 0);
 			gbc_txtEpoche.fill = GridBagConstraints.HORIZONTAL;
 			gbc_txtEpoche.gridx = 1;
 			gbc_txtEpoche.gridy = 2;
-			contentPanel.add(txtEpoche, gbc_txtEpoche);
-			txtEpoche.setColumns(10);
+			contentPanel.add(cmbEpoche, gbc_txtEpoche);
 		}
 		{
 			JLabel lblGenre = new JLabel("Genre:");
@@ -200,14 +202,17 @@ public class BookDialog extends JDialog {
 			contentPanel.add(lblGenre, gbc_lblGenre);
 		}
 		{
-			txtGenre = new JTextField();
+			cmbGenre = new JComboBox(dbHandler.getCommonGenres());
+
+			cmbGenre.setSelectedIndex(-1);
+
+			cmbGenre.setEditable(true);
 			GridBagConstraints gbc_txtGenre = new GridBagConstraints();
 			gbc_txtGenre.insets = new Insets(0, 0, 5, 0);
 			gbc_txtGenre.fill = GridBagConstraints.HORIZONTAL;
 			gbc_txtGenre.gridx = 1;
 			gbc_txtGenre.gridy = 3;
-			contentPanel.add(txtGenre, gbc_txtGenre);
-			txtGenre.setColumns(10);
+			contentPanel.add(cmbGenre, gbc_txtGenre);
 		}
 		{
 			JLabel lblYearOfPublication = new JLabel("Year of publication:");
@@ -325,8 +330,10 @@ public class BookDialog extends JDialog {
 
 	private void clickedOK() {
 		String title = txtTitle.getText().trim();
-		String epoche = txtEpoche.getText().trim();
-		String genre = txtGenre.getText().trim();
+		// String epoche = cmbEpoche.getText().trim();
+		String epoche = cmbEpoche.getSelectedItem().toString();
+		// String genre = cmbGenre.getText().trim();
+		String genre = cmbGenre.getSelectedItem().toString();
 		String comment = txtComment.getText().trim();
 		int authorId = -1;
 		int published;
