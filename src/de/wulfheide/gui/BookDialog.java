@@ -24,9 +24,9 @@ import javax.swing.border.TitledBorder;
 
 import com.toedter.calendar.JDateChooser;
 
+import de.wulfheide.io.DBHandler;
 import de.wulfheide.model.Author;
 import de.wulfheide.model.Book;
-import de.wulfheide.persistency.DBHandler;
 
 public class BookDialog extends JDialog {
 

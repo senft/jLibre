@@ -121,23 +121,30 @@ public class BookOverviewPanel extends OverviewPanel {
 						finished = df.format(finishedReading);
 
 					sb.append("<html><B>Title:</B><br>")
-							.append("&nbsp;&nbsp;&nbsp;&nbsp;").append(title);
+							.append("<div style=\"margin-left: "
+									+ INFOPANEL_LINEFEED + "px;\">")
+							.append(title).append("</div>");
 					sb.append("<p><B>Author:</B><br>")
-							.append("&nbsp;&nbsp;&nbsp;&nbsp;").append(author)
-							.append("</p>");
+							.append("<div style=\"margin-left: "
+									+ INFOPANEL_LINEFEED + "px;\">")
+							.append(author).append("</div>").append("</p>");
 					sb.append("<p><B>Year of publication:</B><br>")
-							.append("&nbsp;&nbsp;&nbsp;&nbsp;").append(pubYear)
-							.append("</p>");
+							.append("<div style=\"margin-left: "
+									+ INFOPANEL_LINEFEED + "px;\">")
+							.append(pubYear).append("</div>").append("</p>");
 					sb.append("<p><B>Started reading:</B><br>")
-							.append("&nbsp;&nbsp;&nbsp;&nbsp;").append(started)
-							.append("</p>");
+							.append("<div style=\"margin-left: "
+									+ INFOPANEL_LINEFEED + "px;\">")
+							.append(started).append("</div>").append("</p>");
 					sb.append("<p><B>Finished reading:</B><br>")
-							.append("&nbsp;&nbsp;&nbsp;&nbsp;")
-							.append(finished).append("</p>");
+							.append("<div style=\"margin-left: "
+									+ INFOPANEL_LINEFEED + "px;\">")
+							.append(finished).append("</div>").append("</p>");
 
 					sb.append("<p><B>Quotes from this book:</B><br>");
 					if (quotes.isEmpty())
-						sb.append("&nbsp;&nbsp;&nbsp;&nbsp;-");
+						sb.append("<div style=\"margin-left: "
+								+ INFOPANEL_LINEFEED + "px;\">-</div>");
 					else {
 						sb.append("<ul>");
 

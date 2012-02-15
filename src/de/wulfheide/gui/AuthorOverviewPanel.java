@@ -58,12 +58,13 @@ public class AuthorOverviewPanel extends OverviewPanel {
 					Set<Quote> quotes = author.getQuotes();
 
 					sb.append("<html><B>Name:</B><br>")
-							.append("&nbsp;&nbsp;&nbsp;&nbsp;")
-							.append(firstname).append(" ").append(lastname);
+							.append("<div style=\"margin-left: " + INFOPANEL_LINEFEED + "px;\">")
+							.append(firstname).append(" ").append(lastname)
+							.append("</div>");
 
 					sb.append("<p><B>Books from this author:</B><br>");
 					if (books.isEmpty())
-						sb.append("&nbsp;&nbsp;&nbsp;&nbsp;-");
+						sb.append("<div style=\"margin-left: " + INFOPANEL_LINEFEED + "px;\">-</div>");
 					else {
 						sb.append("<ul>");
 						for (Book b : books) {
@@ -78,7 +79,7 @@ public class AuthorOverviewPanel extends OverviewPanel {
 
 					sb.append("<p><B>Quotes from this author:</B><br>");
 					if (quotes.isEmpty())
-						sb.append("&nbsp;&nbsp;&nbsp;&nbsp;-");
+						sb.append("<div style=\"margin-left: " + INFOPANEL_LINEFEED + "px;\">-</div>");
 					else {
 						sb.append("<ul>");
 						for (Quote q : quotes) {

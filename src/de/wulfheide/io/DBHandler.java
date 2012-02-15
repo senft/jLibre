@@ -1,4 +1,4 @@
-package de.wulfheide.persistency;
+package de.wulfheide.io;
 
 import java.sql.Connection;
 import java.sql.DriverManager;

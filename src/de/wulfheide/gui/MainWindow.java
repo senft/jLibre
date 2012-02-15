@@ -31,7 +31,7 @@ import javax.swing.event.TableModelListener;
 
 import org.apache.log4j.Logger;
 
-import de.wulfheide.persistency.DBHandler;
+import de.wulfheide.io.DBHandler;
 
 public class MainWindow extends JFrame {
 

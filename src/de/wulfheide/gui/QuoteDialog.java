@@ -20,9 +20,9 @@ import javax.swing.JTextArea;
 import javax.swing.border.BevelBorder;
 import javax.swing.border.TitledBorder;
 
+import de.wulfheide.io.DBHandler;
 import de.wulfheide.model.Book;
 import de.wulfheide.model.Quote;
-import de.wulfheide.persistency.DBHandler;
 
 public class QuoteDialog extends JDialog {
 
