@@ -32,6 +32,8 @@ public class AuthorDialog extends JDialog {
 	private JYearChooser dtBorn;
 	private JYearChooser dtDied;
 
+	private WikipediaAuthorParser wikiParser;
+
 	/**
 	 * The author object the eventually gets returned if after adding/editing
 	 */
@@ -162,12 +164,19 @@ public class AuthorDialog extends JDialog {
 							"Get data from wikipedia");
 					btnGetDataFrom.addActionListener(new ActionListener() {
 						public void actionPerformed(ActionEvent e) {
-							Author fetchedAuthor = WikipediaAuthorParser.getAuthor(
+							Author fetchedAuthor = wikiParser.getAuthor(
 									txtFirstname.getText().trim(), txtLastname
 											.getText().trim());
-							
-							dtBorn.setYear(fetchedAuthor.getBorn());
-							dtDied.setYear(fetchedAuthor.getDied());
+							if (fetchedAuthor != null) {
+								dtBorn.setYear(fetchedAuthor.getBorn());
+								dtDied.setYear(fetchedAuthor.getDied());
+							} else {
+								// No data has been fetched
+								JOptionPane.showMessageDialog(
+										AuthorDialog.this,
+										"Could not fetch any data.", "Error",
+										JOptionPane.ERROR_MESSAGE);
+							}
 						}
 					});
 					buttonPane.add(btnGetDataFrom);
@@ -187,6 +196,8 @@ public class AuthorDialog extends JDialog {
 				buttonPane.add(cancelButton);
 			}
 		}
+
+		wikiParser = new WikipediaAuthorParser();
 	}
 
 	/**
