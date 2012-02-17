@@ -167,6 +167,7 @@ public class AuthorDialog extends JDialog {
 							Author fetchedAuthor = wikiParser.getAuthor(
 									txtFirstname.getText().trim(), txtLastname
 											.getText().trim());
+
 							if (fetchedAuthor != null) {
 								dtBorn.setYear(fetchedAuthor.getBorn());
 								dtDied.setYear(fetchedAuthor.getDied());

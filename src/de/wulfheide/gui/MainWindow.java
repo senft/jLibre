@@ -53,9 +53,7 @@ public class MainWindow extends JFrame {
 		addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowClosing(WindowEvent e) {
-				logger.info("Closing MainWindow");
-				DBHandler.getInstance().closeConnection();
-				System.exit(0);
+				close();
 			}
 		});
 		setTitle("jLibre");
@@ -73,6 +71,11 @@ public class MainWindow extends JFrame {
 		mnFile.add(new JSeparator());
 
 		JMenuItem mntmExit = new JMenuItem("Exit");
+		mntmExit.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				close();
+			}
+		});
 		mnFile.add(mntmExit);
 
 		JMenu mnHelp = new JMenu("Help");
@@ -175,12 +178,6 @@ public class MainWindow extends JFrame {
 		toolBar.add(btnDeleteSelected);
 
 		toolBar.addSeparator();
-
-		JButton btnFind = new JButton("");
-		btnFind.setToolTipText("Find author/book/quote");
-		btnFind.setIcon(new ImageIcon(MainWindow.class
-				.getResource("/images/find.png")));
-		toolBar.add(btnFind);
 
 		tabbedPane = new JTabbedPane(JTabbedPane.TOP);
 
@@ -292,5 +289,11 @@ public class MainWindow extends JFrame {
 		}
 
 		// TODO maybe add something to statusbar "3 items selected"...
+	}
+
+	private void close() {
+		logger.info("Closing MainWindow");
+		DBHandler.getInstance().closeConnection();
+		System.exit(0);
 	}
 }
