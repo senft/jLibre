@@ -5,6 +5,7 @@ public class Quote {
 	private String text;
 	private String comment;
 	private Book book;
+	private String pages;
 
 	public Quote() {
 	}
@@ -50,6 +51,14 @@ public class Quote {
 
 	public void setId(int id) {
 		this.id = id;
+	}
+
+	public String getPages() {
+		return pages;
+	}
+
+	public void setPages(String pages) {
+		this.pages = pages;
 	}
 
 }
