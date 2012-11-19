@@ -29,7 +29,7 @@ import de.wulfheide.io.DBHandler;
 
 public abstract class OverviewPanel extends JPanel {
 
-	protected static Logger logger = Logger.getLogger("OverviewPanel");
+	protected static Logger logger = Logger.getLogger(OverviewPanel.class);
 
 	protected DBHandler dbHandler;
 

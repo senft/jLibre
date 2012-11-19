@@ -7,6 +7,8 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
+import java.net.URISyntaxException;
 import java.util.Calendar;
 
 import javax.swing.JButton;
@@ -19,6 +21,8 @@ import javax.swing.border.TitledBorder;
 
 import com.toedter.calendar.JYearChooser;
 
+import de.wulfheide.io.wiki.FetchException;
+import de.wulfheide.io.wiki.WikipediaAuthorParser;
 import de.wulfheide.model.Author;
 
 public class AuthorDialog extends JDialog {
@@ -40,7 +44,7 @@ public class AuthorDialog extends JDialog {
 		setTitle("New author...");
 		setResizable(false);
 		setModal(true);
-		setBounds(100, 100, 381, 220);
+		setBounds(100, 100, 381, 239);
 		getContentPane().setLayout(new BorderLayout());
 		contentPanel.setBorder(new TitledBorder(null, "New author...",
 				TitledBorder.LEADING, TitledBorder.TOP, null, null));
@@ -156,6 +160,69 @@ public class AuthorDialog extends JDialog {
 						clickedOK();
 					}
 				});
+				{
+					JButton btnGetDataFrom = new JButton(
+							"Get data from wikipedia");
+					btnGetDataFrom.addActionListener(new ActionListener() {
+						public void actionPerformed(ActionEvent e) {
+							String firstname = txtFirstname.getText().trim();
+							String lastname = txtLastname.getText().trim();
+
+							if (firstname.isEmpty() || lastname.isEmpty()) {
+								JOptionPane
+										.showMessageDialog(AuthorDialog.this,
+												"Fill in firstname and lastname first.");
+							} else {
+
+								WikipediaAuthorParser wikiParser = null;
+								try {
+									wikiParser = new WikipediaAuthorParser(
+											firstname, lastname);
+
+									dtBorn.setYear(wikiParser.getBirthdate());
+									dtDied.setYear(wikiParser.getDeathdate());
+
+								} catch (IOException e1) {
+									JOptionPane.showMessageDialog(
+											AuthorDialog.this,
+											"Couldn't find Wikipedia page for "
+													+ txtFirstname.getText()
+															.trim()
+													+ " "
+													+ txtLastname.getText()
+															.trim());
+								} catch (FetchException e1) {
+									int choice = JOptionPane
+											.showOptionDialog(
+													AuthorDialog.this,
+													"Could not fetch all data. Open Wikipage in browser?",
+													"Could not fetch data",
+													JOptionPane.YES_NO_OPTION,
+													JOptionPane.QUESTION_MESSAGE,
+													null, new String[] { "Yes",
+															"No" }, null);
+
+									if (choice == JOptionPane.YES_OPTION) {
+										java.awt.Desktop desktop = java.awt.Desktop
+												.getDesktop();
+										java.net.URI uri;
+										try {
+											uri = new java.net.URI(wikiParser
+													.getWikiURL());
+											desktop.browse(uri);
+										} catch (URISyntaxException e2) {
+											// TODO Auto-generated catch block
+										} catch (IOException e3) {
+											// TODO Auto-generated catch block
+										}
+									}
+
+								}
+							}
+						}
+					});
+					buttonPane.add(btnGetDataFrom);
+				}
 				okButton.setActionCommand("OK");
 				buttonPane.add(okButton);
 				getRootPane().setDefaultButton(okButton);

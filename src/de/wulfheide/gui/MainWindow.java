@@ -35,7 +35,7 @@ import de.wulfheide.io.DBHandler;
 
 public class MainWindow extends JFrame {
 
-	private static Logger logger = Logger.getLogger("MainWindow");
+	private static Logger logger = Logger.getLogger(MainWindow.class);
 
 	private JPanel contentPane;
 	private BookOverviewPanel bookPanel;
@@ -53,9 +53,7 @@ public class MainWindow extends JFrame {
 		addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowClosing(WindowEvent e) {
-				logger.info("Closing MainWindow");
-				DBHandler.getInstance().closeConnection();
-				System.exit(0);
+				close();
 			}
 		});
 		setTitle("jLibre");
@@ -73,6 +71,11 @@ public class MainWindow extends JFrame {
 		mnFile.add(new JSeparator());
 
 		JMenuItem mntmExit = new JMenuItem("Exit");
+		mntmExit.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				close();
+			}
+		});
 		mnFile.add(mntmExit);
 
 		JMenu mnHelp = new JMenu("Help");
@@ -176,12 +179,6 @@ public class MainWindow extends JFrame {
 
 		toolBar.addSeparator();
 
-		JButton btnFind = new JButton("");
-		btnFind.setToolTipText("Find author/book/quote");
-		btnFind.setIcon(new ImageIcon(MainWindow.class
-				.getResource("/images/find.png")));
-		toolBar.add(btnFind);
-
 		tabbedPane = new JTabbedPane(JTabbedPane.TOP);
 
 		tabbedPane.addChangeListener(new ChangeListener() {
@@ -280,6 +277,10 @@ public class MainWindow extends JFrame {
 	}
 
 	private void onTableSelectionChange() {
+		if (tabbedPane.getSelectedIndex() == 3) {
+			// Settingspane
+			return;
+		}
 		OverviewPanel currentPanel = (OverviewPanel) tabbedPane
 				.getSelectedComponent();
 
@@ -290,7 +291,11 @@ public class MainWindow extends JFrame {
 			btnEditSelected.setEnabled(false);
 			btnDeleteSelected.setEnabled(false);
 		}
+	}
 
-		// TODO maybe add something to statusbar "3 items selected"...
+	private void close() {
+		logger.info("Closing MainWindow");
+		DBHandler.getInstance().closeConnection();
+		System.exit(0);
 	}
 }

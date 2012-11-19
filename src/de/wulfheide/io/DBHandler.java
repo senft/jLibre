@@ -24,7 +24,7 @@ public class DBHandler {
 	 */
 
 	private static DBHandler dbHandler;
-	private static Logger logger = Logger.getLogger("DBHandler");
+	private static Logger logger = Logger.getLogger(DBHandler.class);
 
 	private Connection conn;
 

@@ -1,0 +1,8 @@
+/bin
+/logs
+/images
+/.settings
+/bookdb.script
+/bookdb.properties
+/bookdb.log
+jLibre.jar
