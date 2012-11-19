@@ -173,10 +173,15 @@ public class AuthorDialog extends JDialog {
 								dtDied.setYear(fetchedAuthor.getDied());
 							} else {
 								// No data has been fetched
-								JOptionPane.showMessageDialog(
-										AuthorDialog.this,
-										"Could not fetch any data.", "Error",
-										JOptionPane.ERROR_MESSAGE);
+								int choice = JOptionPane
+										.showOptionDialog(
+												AuthorDialog.this,
+												"Could not fetch any data. Open Wikipage in browser?",
+												"Could not fetch data",
+												JOptionPane.YES_NO_OPTION,
+												JOptionPane.QUESTION_MESSAGE,
+												null, new String[] { "No",
+														"Yes" }, null);
 							}
 						}
 					});

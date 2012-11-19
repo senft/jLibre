@@ -23,10 +23,8 @@ public class WikipediaAuthorParser {
 	public Author getAuthor(String firstname, String lastname) {
 		Author author = new Author();
 		Document document;
-		firstname = firstname.replace(" ", "_");
-		lastname = lastname.replace(" ", "_");
-		String name = firstname + "_" + lastname;
-		String url = "https://en.wikipedia.org/wiki/" + name;
+
+		String url = getWikiURL(firstname, lastname);
 
 		try {
 			logger.debug("Fetching " + url);
@@ -54,6 +52,13 @@ public class WikipediaAuthorParser {
 		}
 
 		return author;
+	}
+
+	public String getWikiURL(String firstname, String lastname) {
+		firstname = firstname.replace(" ", "_");
+		lastname = lastname.replace(" ", "_");
+		String name = firstname + "_" + lastname;
+		return "https://en.wikipedia.org/wiki/" + name;
 	}
 
 	private int getBirthdate(Document document) throws FetchException {
