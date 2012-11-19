@@ -1,11 +1,11 @@
-package de.wulfheide.main;
+package de.senft.jlibre.main;
 
 import java.awt.EventQueue;
 
 import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
 
-import de.wulfheide.gui.MainWindow;
+import de.senft.jlibre.gui.MainWindow;
 
 public class Main {
 

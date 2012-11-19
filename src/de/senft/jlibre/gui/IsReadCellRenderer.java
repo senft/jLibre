@@ -1,4 +1,4 @@
-package de.wulfheide.gui;
+package de.senft.jlibre.gui;
 
 import java.awt.Component;
 
@@ -8,7 +8,7 @@ import javax.swing.JTable;
 import javax.swing.SwingConstants;
 import javax.swing.table.TableCellRenderer;
 
-import de.wulfheide.model.Book;
+import de.senft.jlibre.model.Book;
 
 /**
  * A TableCellRenderer that renders exactly one icon to the cell.

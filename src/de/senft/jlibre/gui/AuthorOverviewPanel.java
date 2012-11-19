@@ -1,4 +1,4 @@
-package de.wulfheide.gui;
+package de.senft.jlibre.gui;
 
 import java.util.Set;
 import java.util.Vector;
@@ -9,9 +9,9 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableCellRenderer;
 
-import de.wulfheide.model.Author;
-import de.wulfheide.model.Book;
-import de.wulfheide.model.Quote;
+import de.senft.jlibre.model.Author;
+import de.senft.jlibre.model.Book;
+import de.senft.jlibre.model.Quote;
 
 public class AuthorOverviewPanel extends OverviewPanel {
 

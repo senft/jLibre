@@ -1,4 +1,4 @@
-package de.wulfheide.io;
+package de.senft.jlibre.io;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -13,9 +13,9 @@ import java.util.Vector;
 
 import org.apache.log4j.Logger;
 
-import de.wulfheide.model.Author;
-import de.wulfheide.model.Book;
-import de.wulfheide.model.Quote;
+import de.senft.jlibre.model.Author;
+import de.senft.jlibre.model.Book;
+import de.senft.jlibre.model.Quote;
 
 public class DBHandler {
 	/*
@@ -262,12 +262,12 @@ public class DBHandler {
 
 	/**
 	 * Fetches all necessary data from the DB to create a
-	 * {@link de.wulfheide.model.Book Book} object, containing all data
+	 * {@link de.senft.jlibre.model.Book Book} object, containing all data
 	 * displayed on an info panel.
 	 * 
 	 * @param id
 	 *            the books id
-	 * @return an {@link de.wulfheide.model.Book Book} object containing all the
+	 * @return an {@link de.senft.jlibre.model.Book Book} object containing all the
 	 *         data
 	 */
 	public Book getBook(int id) {
@@ -315,12 +315,12 @@ public class DBHandler {
 
 	/**
 	 * Fetches all necessary data from the DB to create an
-	 * {@link de.wulfheide.model.Author Author} object, containing all data
+	 * {@link de.senft.jlibre.model.Author Author} object, containing all data
 	 * displayed on an info panel.
 	 * 
 	 * @param id
 	 *            the authors id
-	 * @return an {@link de.wulfheide.model.Author Author} object containing all
+	 * @return an {@link de.senft.jlibre.model.Author Author} object containing all
 	 *         the data
 	 */
 	public Author getAuthor(int id) {
@@ -375,12 +375,12 @@ public class DBHandler {
 
 	/**
 	 * Fetches all necessary data from the DB to create a
-	 * {@link de.wulfheide.model.Quote Quote} object, containing all data
+	 * {@link de.senft.jlibre.model.Quote Quote} object, containing all data
 	 * displayed on an info panel.
 	 * 
 	 * @param id
 	 *            the books id
-	 * @return an {@link de.wulfheide.model.Book Book} object containing all the
+	 * @return an {@link de.senft.jlibre.model.Book Book} object containing all the
 	 *         data
 	 */
 	public Quote getQuote(int id) {
@@ -435,7 +435,7 @@ public class DBHandler {
 	}
 
 	/**
-	 * Stores an {@link de.wulfheide.model.Book Book} in the DB and returns the
+	 * Stores an {@link de.senft.jlibre.model.Book Book} in the DB and returns the
 	 * id (created by the DB) for this quote.
 	 * 
 	 * @param book
@@ -498,7 +498,7 @@ public class DBHandler {
 	}
 
 	/**
-	 * Stores an {@link de.wulfheide.model.Author Author} in the DB and returns
+	 * Stores an {@link de.senft.jlibre.model.Author Author} in the DB and returns
 	 * the id (created by the DB) for this author.
 	 * 
 	 * @param author
@@ -539,7 +539,7 @@ public class DBHandler {
 	}
 
 	/**
-	 * Stores an {@link de.wulfheide.model.Quote Quote} in the DB, and returns
+	 * Stores an {@link de.senft.jlibre.model.Quote Quote} in the DB, and returns
 	 * the id (created by the DB) for this quote.
 	 * 
 	 * @param quote

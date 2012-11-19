@@ -1,4 +1,4 @@
-package de.wulfheide.gui;
+package de.senft.jlibre.gui;
 
 import java.awt.BorderLayout;
 import java.awt.event.KeyAdapter;
@@ -25,7 +25,7 @@ import javax.swing.table.TableRowSorter;
 
 import org.apache.log4j.Logger;
 
-import de.wulfheide.io.DBHandler;
+import de.senft.jlibre.io.DBHandler;
 
 public abstract class OverviewPanel extends JPanel {
 

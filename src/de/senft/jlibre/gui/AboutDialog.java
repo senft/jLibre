@@ -1,4 +1,4 @@
-package de.wulfheide.gui;
+package de.senft.jlibre.gui;
 
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;

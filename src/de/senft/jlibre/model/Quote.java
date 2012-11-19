@@ -1,4 +1,4 @@
-package de.wulfheide.model;
+package de.senft.jlibre.model;
 
 public class Quote {
 	private int id;

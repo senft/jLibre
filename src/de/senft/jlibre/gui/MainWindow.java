@@ -1,4 +1,4 @@
-package de.wulfheide.gui;
+package de.senft.jlibre.gui;
 
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
@@ -31,7 +31,7 @@ import javax.swing.event.TableModelListener;
 
 import org.apache.log4j.Logger;
 
-import de.wulfheide.io.DBHandler;
+import de.senft.jlibre.io.DBHandler;
 
 public class MainWindow extends JFrame {
 

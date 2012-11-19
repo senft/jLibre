@@ -1,4 +1,4 @@
-package de.wulfheide.gui;
+package de.senft.jlibre.gui;
 
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
@@ -20,9 +20,9 @@ import javax.swing.JTextArea;
 import javax.swing.border.BevelBorder;
 import javax.swing.border.TitledBorder;
 
-import de.wulfheide.io.DBHandler;
-import de.wulfheide.model.Book;
-import de.wulfheide.model.Quote;
+import de.senft.jlibre.io.DBHandler;
+import de.senft.jlibre.model.Book;
+import de.senft.jlibre.model.Quote;
 
 public class QuoteDialog extends JDialog {
 

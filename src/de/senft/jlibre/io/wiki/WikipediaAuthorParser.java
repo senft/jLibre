@@ -1,4 +1,4 @@
-package de.wulfheide.io.wiki;
+package de.senft.jlibre.io.wiki;
 
 import java.io.IOException;
 import java.net.URL;

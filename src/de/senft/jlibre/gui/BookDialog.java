@@ -1,4 +1,4 @@
-package de.wulfheide.gui;
+package de.senft.jlibre.gui;
 
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
@@ -24,9 +24,9 @@ import javax.swing.border.TitledBorder;
 
 import com.toedter.calendar.JDateChooser;
 
-import de.wulfheide.io.DBHandler;
-import de.wulfheide.model.Author;
-import de.wulfheide.model.Book;
+import de.senft.jlibre.io.DBHandler;
+import de.senft.jlibre.model.Author;
+import de.senft.jlibre.model.Book;
 
 public class BookDialog extends JDialog {
 

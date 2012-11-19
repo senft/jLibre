@@ -1,4 +1,4 @@
-package de.wulfheide.gui;
+package de.senft.jlibre.gui;
 
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
@@ -21,9 +21,9 @@ import javax.swing.border.TitledBorder;
 
 import com.toedter.calendar.JYearChooser;
 
-import de.wulfheide.io.wiki.FetchException;
-import de.wulfheide.io.wiki.WikipediaAuthorParser;
-import de.wulfheide.model.Author;
+import de.senft.jlibre.io.wiki.FetchException;
+import de.senft.jlibre.io.wiki.WikipediaAuthorParser;
+import de.senft.jlibre.model.Author;
 
 public class AuthorDialog extends JDialog {
 
