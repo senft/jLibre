@@ -17,9 +17,9 @@ public class Book {
 	private Author author;
 	private Set<Quote> quotes;
 
-	public static final int NOT_READ = -1;
-	public static final int STARTED_READING = 0;
-	public static final int FINISHED_READING = 1;
+	public static final byte NOT_READ = -1;
+	public static final byte STARTED_READING = 0;
+	public static final byte FINISHED_READING = 1;
 
 	public Book() {
 		quotes = new HashSet<Quote>();
@@ -134,10 +134,10 @@ public class Book {
 	 * Checks if this book was read.
 	 * 
 	 * @return <ul>
-	 *         <li><b>-1</b> if neither startedReading nor finishedReading has
-	 *         been set</li>
-	 *         <li><b>0</b> if startedReading has been set</li>
-	 *         <li><b>1</b> if finishedReading, has been set</li>
+	 *         <li>{@link #NOT_READ} if neither startedReading nor
+	 *         finishedReading has been set</li>
+	 *         <li>{@link #STARTED_READING} if startedReading has been set</li>
+	 *         <li>{@link #finishedReading} if finishedReading, has been set</li>
 	 */
 	public int isRead() {
 		if (startedReading == null)
