@@ -35,7 +35,7 @@ import de.wulfheide.io.DBHandler;
 
 public class MainWindow extends JFrame {
 
-	private static Logger logger = Logger.getLogger("MainWindow");
+	private static Logger logger = Logger.getLogger(MainWindow.class);
 
 	private JPanel contentPane;
 	private BookOverviewPanel bookPanel;
@@ -277,6 +277,10 @@ public class MainWindow extends JFrame {
 	}
 
 	private void onTableSelectionChange() {
+		if (tabbedPane.getSelectedIndex() == 3) {
+			// Settingspane
+			return;
+		}
 		OverviewPanel currentPanel = (OverviewPanel) tabbedPane
 				.getSelectedComponent();
 
@@ -287,8 +291,6 @@ public class MainWindow extends JFrame {
 			btnEditSelected.setEnabled(false);
 			btnDeleteSelected.setEnabled(false);
 		}
-
-		// TODO maybe add something to statusbar "3 items selected"...
 	}
 
 	private void close() {

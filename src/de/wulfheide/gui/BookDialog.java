@@ -347,8 +347,8 @@ public class BookDialog extends JDialog {
 
 	private void clickedOK() {
 		String title = txtTitle.getText().trim();
-		String epoche = cmbEpoche.getSelectedItem().toString();
-		String genre = cmbGenre.getSelectedItem().toString();
+		String epoche = (String) cmbEpoche.getSelectedItem();
+		String genre = (String) cmbGenre.getSelectedItem();
 		String comment = txtComment.getText().trim();
 		int authorId = -1;
 		int published;

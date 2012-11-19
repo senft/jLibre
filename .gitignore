@@ -2,8 +2,7 @@
 /logs
 /images
 /.settings
-.classpath
-.project
 /bookdb.script
 /bookdb.properties
 /bookdb.log
+jLibre.jar
