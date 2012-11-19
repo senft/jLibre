@@ -16,30 +16,18 @@ public class Quote {
 		book = theBook;
 	}
 
-	/**
-	 * @return the text
-	 */
 	public String getText() {
 		return text;
 	}
 
-	/**
-	 * @param text the text to set
-	 */
 	public void setText(String text) {
 		this.text = text;
 	}
 
-	/**
-	 * @return the book
-	 */
 	public Book getBook() {
 		return book;
 	}
 
-	/**
-	 * @param book the book to set
-	 */
 	public void setBook(Book book) {
 		this.book = book;
 	}
@@ -48,16 +36,10 @@ public class Quote {
 		return text;
 	}
 
-	/**
-	 * @return the comment
-	 */
 	public String getComment() {
 		return comment;
 	}
 
-	/**
-	 * @param comment the comment to set
-	 */
 	public void setComment(String comment) {
 		this.comment = comment;
 	}
@@ -66,9 +48,6 @@ public class Quote {
 		return id;
 	}
 
-	/**
-	 * @param id the id to set
-	 */
 	public void setId(int id) {
 		this.id = id;
 	}

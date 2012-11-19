@@ -50,37 +50,22 @@ public class Book {
 		return quotes;
 	}
 
-	/**
-	 * @return the title
-	 */
 	public String getTitle() {
 		return title;
 	}
 
-	/**
-	 * @return the startedReading
-	 */
 	public Date getStartedReading() {
 		return startedReading;
 	}
 
-	/**
-	 * @return the finishedReading
-	 */
 	public Date getFinishedReading() {
 		return finishedReading;
 	}
 
-	/**
-	 * @return the author
-	 */
 	public Author getAuthor() {
 		return author;
 	}
 
-	/**
-	 * @return the publicationYear
-	 */
 	public int getPublicationYear() {
 		return publicationYear;
 	}
@@ -93,102 +78,54 @@ public class Book {
 		return sb.toString();
 	}
 
-	/**
-	 * @return the id
-	 */
 	public int getId() {
 		return id;
 	}
 
-	/**
-	 * @param id
-	 *            the id to set
-	 */
 	public void setId(int id) {
 		this.id = id;
 	}
 
-	/**
-	 * @param title
-	 *            the title to set
-	 */
 	public void setTitle(String title) {
 		this.title = title;
 	}
 
-	/**
-	 * @param publicationYear
-	 *            the publicationYear to set
-	 */
 	public void setPublicationYear(int publicationYear) {
 		this.publicationYear = publicationYear;
 	}
 
-	/**
-	 * @param startedReading
-	 *            the startedReading to set
-	 */
 	public void setStartedReading(Date startedReading) {
 		this.startedReading = startedReading;
 	}
 
-	/**
-	 * @param finishedReading
-	 *            the finishedReading to set
-	 */
 	public void setFinishedReading(Date finishedReading) {
 		this.finishedReading = finishedReading;
 	}
 
-	/**
-	 * @param author
-	 *            the author to set
-	 */
 	public void setAuthor(Author author) {
 		this.author = author;
 	}
 
-	/**
-	 * @return the comment
-	 */
 	public String getComment() {
 		return comment;
 	}
 
-	/**
-	 * @param comment
-	 *            the comment to set
-	 */
 	public void setComment(String comment) {
 		this.comment = comment;
 	}
 
-	/**
-	 * @return the epoche
-	 */
 	public String getEpoche() {
 		return epoche;
 	}
 
-	/**
-	 * @param epoche
-	 *            the epoche to set
-	 */
 	public void setEpoche(String epoche) {
 		this.epoche = epoche;
 	}
 
-	/**
-	 * @return the genre
-	 */
 	public String getGenre() {
 		return genre;
 	}
 
-	/**
-	 * @param genre
-	 *            the genre to set
-	 */
 	public void setGenre(String genre) {
 		this.genre = genre;
 	}
