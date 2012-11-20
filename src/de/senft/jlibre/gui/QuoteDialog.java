@@ -17,6 +17,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
+import javax.swing.JTextField;
 import javax.swing.border.BevelBorder;
 import javax.swing.border.TitledBorder;
 
@@ -37,6 +38,7 @@ public class QuoteDialog extends JDialog {
 	private DBHandler dbHandler = HSQLHibernateHandler.getInstance();
 
 	private Object[][] books = dbHandler.getBooksForComboBox();
+	private JTextField txtPages;
 
 	/**
 	 * Create the dialog.
@@ -51,21 +53,21 @@ public class QuoteDialog extends JDialog {
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
 		GridBagLayout gbl_contentPanel = new GridBagLayout();
 		gbl_contentPanel.columnWidths = new int[] { 70, 218, 0 };
-		gbl_contentPanel.rowHeights = new int[] { 23, 0, 0, 0 };
+		gbl_contentPanel.rowHeights = new int[] { 23, 0, 0, 0, 0 };
 		gbl_contentPanel.columnWeights = new double[] { 0.0, 1.0,
 				Double.MIN_VALUE };
-		gbl_contentPanel.rowWeights = new double[] { 0.0, 1.0, 1.0,
+		gbl_contentPanel.rowWeights = new double[] { 0.0, 0.0, 1.0, 1.0,
 				Double.MIN_VALUE };
 		contentPanel.setLayout(gbl_contentPanel);
 		{
-			JLabel lblAuthor = new JLabel("Book:");
-			GridBagConstraints gbc_lblAuthor = new GridBagConstraints();
-			gbc_lblAuthor.anchor = GridBagConstraints.WEST;
-			gbc_lblAuthor.fill = GridBagConstraints.VERTICAL;
-			gbc_lblAuthor.insets = new Insets(0, 0, 5, 5);
-			gbc_lblAuthor.gridx = 0;
-			gbc_lblAuthor.gridy = 0;
-			contentPanel.add(lblAuthor, gbc_lblAuthor);
+			JLabel lblBook = new JLabel("Book:");
+			GridBagConstraints gbc_lblBook = new GridBagConstraints();
+			gbc_lblBook.anchor = GridBagConstraints.WEST;
+			gbc_lblBook.fill = GridBagConstraints.VERTICAL;
+			gbc_lblBook.insets = new Insets(0, 0, 5, 5);
+			gbc_lblBook.gridx = 0;
+			gbc_lblBook.gridy = 0;
+			contentPanel.add(lblBook, gbc_lblBook);
 		}
 		{
 			JPanel panel = new JPanel();
@@ -125,13 +127,32 @@ public class QuoteDialog extends JDialog {
 			}
 		}
 		{
-			JLabel lblDescription = new JLabel("Text:");
-			GridBagConstraints gbc_lblDescription = new GridBagConstraints();
-			gbc_lblDescription.anchor = GridBagConstraints.NORTHWEST;
-			gbc_lblDescription.insets = new Insets(0, 0, 5, 5);
-			gbc_lblDescription.gridx = 0;
-			gbc_lblDescription.gridy = 1;
-			contentPanel.add(lblDescription, gbc_lblDescription);
+			JLabel lblPages = new JLabel("Pages");
+			GridBagConstraints gbc_lblPages = new GridBagConstraints();
+			gbc_lblPages.anchor = GridBagConstraints.NORTHWEST;
+			gbc_lblPages.insets = new Insets(0, 0, 5, 5);
+			gbc_lblPages.gridx = 0;
+			gbc_lblPages.gridy = 1;
+			contentPanel.add(lblPages, gbc_lblPages);
+		}
+		{
+			txtPages = new JTextField();
+			GridBagConstraints gbc_txtPages = new GridBagConstraints();
+			gbc_txtPages.insets = new Insets(0, 0, 5, 0);
+			gbc_txtPages.fill = GridBagConstraints.HORIZONTAL;
+			gbc_txtPages.gridx = 1;
+			gbc_txtPages.gridy = 1;
+			contentPanel.add(txtPages, gbc_txtPages);
+			txtPages.setColumns(10);
+		}
+		{
+			JLabel lblText = new JLabel("Text:");
+			GridBagConstraints gbc_lblText = new GridBagConstraints();
+			gbc_lblText.anchor = GridBagConstraints.NORTHWEST;
+			gbc_lblText.insets = new Insets(0, 0, 5, 5);
+			gbc_lblText.gridx = 0;
+			gbc_lblText.gridy = 2;
+			contentPanel.add(lblText, gbc_lblText);
 		}
 		{
 			JScrollPane scrollPane = new JScrollPane();
@@ -141,7 +162,7 @@ public class QuoteDialog extends JDialog {
 			gbc_scrollPane.fill = GridBagConstraints.BOTH;
 			gbc_scrollPane.insets = new Insets(0, 0, 5, 0);
 			gbc_scrollPane.gridx = 1;
-			gbc_scrollPane.gridy = 1;
+			gbc_scrollPane.gridy = 2;
 			contentPanel.add(scrollPane, gbc_scrollPane);
 			{
 				txtText = new JTextArea();
@@ -154,7 +175,7 @@ public class QuoteDialog extends JDialog {
 			gbc_lblComment.anchor = GridBagConstraints.NORTHWEST;
 			gbc_lblComment.insets = new Insets(0, 0, 0, 5);
 			gbc_lblComment.gridx = 0;
-			gbc_lblComment.gridy = 2;
+			gbc_lblComment.gridy = 3;
 			contentPanel.add(lblComment, gbc_lblComment);
 		}
 		{
@@ -164,7 +185,7 @@ public class QuoteDialog extends JDialog {
 			GridBagConstraints gbc_scrollPane = new GridBagConstraints();
 			gbc_scrollPane.fill = GridBagConstraints.BOTH;
 			gbc_scrollPane.gridx = 1;
-			gbc_scrollPane.gridy = 2;
+			gbc_scrollPane.gridy = 3;
 			contentPanel.add(scrollPane, gbc_scrollPane);
 			{
 				txtComment = new JTextArea();
@@ -250,7 +271,8 @@ public class QuoteDialog extends JDialog {
 			quote = new Quote();
 			quote.setText(text);
 			quote.setComment(comment);
-			quote.setBook(dbHandler.getBook(bookId)); // ugly
+			quote.setBook(dbHandler.getBook(bookId));
+			quote.setPages(txtPages.getText());
 
 			setVisible(false);
 		}
@@ -259,5 +281,4 @@ public class QuoteDialog extends JDialog {
 	private void clickedCancel() {
 		setVisible(false);
 	}
-
 }
