@@ -12,6 +12,8 @@ import java.util.List;
 import java.util.Vector;
 
 import org.apache.log4j.Logger;
+import org.hibernate.Session;
+import org.hibernate.Transaction;
 
 import de.senft.jlibre.model.Author;
 import de.senft.jlibre.model.Book;
@@ -267,8 +269,8 @@ public class DBHandler {
 	 * 
 	 * @param id
 	 *            the books id
-	 * @return an {@link de.senft.jlibre.model.Book Book} object containing all the
-	 *         data
+	 * @return an {@link de.senft.jlibre.model.Book Book} object containing all
+	 *         the data
 	 */
 	public Book getBook(int id) {
 		Statement stmt;
@@ -323,8 +325,8 @@ public class DBHandler {
 	 * 
 	 * @param id
 	 *            the authors id
-	 * @return an {@link de.senft.jlibre.model.Author Author} object containing all
-	 *         the data
+	 * @return an {@link de.senft.jlibre.model.Author Author} object containing
+	 *         all the data
 	 */
 	public Author getAuthor(int id) {
 		Statement stmt;
@@ -387,8 +389,8 @@ public class DBHandler {
 	 * 
 	 * @param id
 	 *            the books id
-	 * @return an {@link de.senft.jlibre.model.Book Book} object containing all the
-	 *         data
+	 * @return an {@link de.senft.jlibre.model.Book Book} object containing all
+	 *         the data
 	 */
 	public Quote getQuote(int id) {
 		Statement stmt;
@@ -442,8 +444,8 @@ public class DBHandler {
 	}
 
 	/**
-	 * Stores an {@link de.senft.jlibre.model.Book Book} in the DB and returns the
-	 * id (created by the DB) for this quote.
+	 * Stores an {@link de.senft.jlibre.model.Book Book} in the DB and returns
+	 * the id (created by the DB) for this quote.
 	 * 
 	 * @param book
 	 *            the quote to store
@@ -505,49 +507,31 @@ public class DBHandler {
 	}
 
 	/**
-	 * Stores an {@link de.senft.jlibre.model.Author Author} in the DB and returns
-	 * the id (created by the DB) for this author.
+	 * Stores an {@link de.senft.jlibre.model.Author Author} in the DB and
+	 * returns the id (created by the DB) for this author.
 	 * 
 	 * @param author
 	 *            the author to store
 	 * @return the id of this author (-1 if someting went wrong)
 	 */
 	public int makeAuthor(Author author) {
-		Statement stmt;
-		int result = 0;
-		int id = -1;
 
-		String firstname = author.getFirstname();
-		String lastname = author.getLastname();
-		int born = author.getBorn();
-		int died = author.getDied();
-		String country = author.getCountry();
+		Session session = HibernateUtil.getSessionFactory().openSession();
+		Transaction tx = session.beginTransaction();
+		session.save(author);
+		tx.commit();
 
-		try {
-			stmt = conn.createStatement();
-			result = stmt.executeUpdate(String.format(
-					"INSERT INTO AUTHOR (firstname, lastname, born, died, country)"
-							+ "VALUES ('%s', '%s', %d, %d, '%s');", firstname,
-					lastname, born, died, country));
+		// session.get(Author.class, arg1)
 
-			if (result != 0) {
-				// When we inserted something -> get the created ID(s)
-				// (hopefully this is == 1)
-				ResultSet rs = stmt.executeQuery("CALL IDENTITY();");
-				while (rs.next())
-					id = rs.getInt(1);
-			}
+		session.close();
 
-		} catch (SQLException se) {
-			handleSQLException(se);
-		}
-
-		return id;
+		// TODO return the ID here
+		return 1;
 	}
 
 	/**
-	 * Stores an {@link de.senft.jlibre.model.Quote Quote} in the DB, and returns
-	 * the id (created by the DB) for this quote.
+	 * Stores an {@link de.senft.jlibre.model.Quote Quote} in the DB, and
+	 * returns the id (created by the DB) for this quote.
 	 * 
 	 * @param quote
 	 *            the quote to store

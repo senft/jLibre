@@ -1,24 +1,45 @@
 package de.senft.jlibre.model;
 
+import java.io.Serializable;
 import java.util.HashSet;
+import java.util.Set;
 
-public class Author {
-	private int id = -1;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import javax.persistence.Transient;
+
+@Entity
+@Table(name = "AUTHOR")
+public class Author implements Serializable {
+
+	private int id = 0;
 	private String firstname;
 	private String lastname;
 	private String country;
 	private int born;
 	private int died;
 
-	private HashSet<Book> books = null;
+	private Set<Book> books = new HashSet<Book>();;
 
 	public Author() {
 	}
 
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "id", unique = true)
+	public int getId() {
+		return id;
 	}
 
+	public void setId(int id) {
+		this.id = id;
 	}
 
+	@Column(name = "firstname", nullable = false)
 	public String getFirstname() {
 		return firstname;
 	}
@@ -27,6 +48,7 @@ public class Author {
 		this.firstname = firstname;
 	}
 
+	@Column(name = "lastname", nullable = false)
 	public String getLastname() {
 		return lastname;
 	}
@@ -35,16 +57,7 @@ public class Author {
 		this.lastname = lastname;
 	}
 
-	public String toString() {
-		StringBuilder sb = new StringBuilder(120);
-		sb.append(firstname).append(" ").append(lastname);
-		return sb.toString();
-	}
-
-	public int getId() {
-		return id;
-	}
-
+	@Transient
 	public HashSet<Quote> getQuotes() {
 		HashSet<Quote> quotes = new HashSet<Quote>();
 
@@ -55,6 +68,7 @@ public class Author {
 		return quotes;
 	}
 
+	@Transient
 	public Set<Book> getBooks() {
 		return books;
 	}
@@ -67,6 +81,7 @@ public class Author {
 		return books.remove(book);
 	}
 
+	@Column(name = "country")
 	public String getCountry() {
 		return country;
 	}
@@ -91,7 +106,9 @@ public class Author {
 		this.died = death;
 	}
 
-	public void setId(int id) {
-		this.id = id;
+	public String toString() {
+		StringBuilder sb = new StringBuilder(120);
+		sb.append(firstname).append(" ").append(lastname);
+		return sb.toString();
 	}
 }
