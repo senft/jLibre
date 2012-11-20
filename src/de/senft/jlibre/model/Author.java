@@ -23,7 +23,7 @@ public class Author implements Serializable {
 	private int born;
 	private int died;
 
-	private Set<Book> books = new HashSet<Book>();;
+	private Set<Book> books = new HashSet<Book>();
 
 	public Author() {
 	}
