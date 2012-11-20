@@ -287,12 +287,15 @@ public class DBHandler {
 									+ "AND book.id=%d;", id));
 
 			while (rs.next()) {
-				book = new Book(id, rs.getString("title"), new Author(
-						rs.getInt("authorid"), rs.getString("firstname"),
-						rs.getString("lastname")), rs.getInt("pubyear"),
-						rs.getDate("startread"), rs.getDate("finishread"),
-						rs.getString("comment"), rs.getString("epoche"),
-						rs.getString("genre"));
+				Author author = new Author();
+				author.setId(rs.getInt("authorid"));
+				author.setFirstname(rs.getString("firstname"));
+				author.setLastname(rs.getString("lastname"));
+
+				book = new Book(id, rs.getString("title"), author,
+						rs.getInt("pubyear"), rs.getDate("startread"),
+						rs.getDate("finishread"), rs.getString("comment"),
+						rs.getString("epoche"), rs.getString("genre"));
 			}
 
 			// Get quotes from this book
@@ -335,8 +338,12 @@ public class DBHandler {
 							+ "FROM AUTHOR " + "WHERE id=%d;", id));
 
 			while (rs.next()) {
-				author = new Author(id, rs.getString("firstname"),
-						rs.getString("lastname"));
+				// author = new Author(id, rs.getString("firstname"),
+				// rs.getString("lastname"));
+				author = new Author();
+				author.setId(id);
+				author.setFirstname(rs.getString("firstname"));
+				author.setLastname(rs.getString("lastname"));
 				author.setCountry(rs.getString("country"));
 				author.setBorn(rs.getInt("born"));
 				author.setDied(rs.getInt("died"));

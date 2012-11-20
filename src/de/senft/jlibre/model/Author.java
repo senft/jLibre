@@ -12,23 +12,11 @@ public class Author {
 
 	private HashSet<Book> books = null;
 
-	public Author(String theFirstname, String theLastname) {
-		firstname = theFirstname;
-		lastname = theLastname;
-
-		books = new HashSet<Book>();
-	}
-
-	public Author(int theId, String theFirstname, String theLastname) {
-		id = theId;
-		firstname = theFirstname;
-		lastname = theLastname;
-
-		books = new HashSet<Book>();
-	}
-
 	public Author() {
-		books = new HashSet<Book>();
+	}
+
+	}
+
 	}
 
 	public String getFirstname() {
