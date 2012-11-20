@@ -31,7 +31,7 @@ import javax.swing.event.TableModelListener;
 
 import org.apache.log4j.Logger;
 
-import de.senft.jlibre.io.DBHandler;
+import de.senft.jlibre.io.HSQLHibernateHandler;
 
 public class MainWindow extends JFrame {
 
@@ -295,7 +295,7 @@ public class MainWindow extends JFrame {
 
 	private void close() {
 		logger.info("Closing MainWindow");
-		DBHandler.getInstance().closeConnection();
+		HSQLHibernateHandler.getInstance().closeConnection();
 		System.exit(0);
 	}
 }

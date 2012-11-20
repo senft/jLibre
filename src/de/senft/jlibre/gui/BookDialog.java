@@ -25,6 +25,7 @@ import javax.swing.border.TitledBorder;
 import com.toedter.calendar.JDateChooser;
 
 import de.senft.jlibre.io.DBHandler;
+import de.senft.jlibre.io.HSQLHibernateHandler;
 import de.senft.jlibre.model.Author;
 import de.senft.jlibre.model.Book;
 
@@ -40,7 +41,7 @@ public class BookDialog extends JDialog {
 	private JComboBox<String> cmbEpoche;
 	private JComboBox<String> cmbGenre;
 
-	private DBHandler dbHandler = DBHandler.getInstance();
+	private DBHandler dbHandler = HSQLHibernateHandler.getInstance();
 
 	private Object[][] authors = dbHandler.getAuthorsForComboBox();
 

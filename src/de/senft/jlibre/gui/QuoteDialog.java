@@ -21,6 +21,7 @@ import javax.swing.border.BevelBorder;
 import javax.swing.border.TitledBorder;
 
 import de.senft.jlibre.io.DBHandler;
+import de.senft.jlibre.io.HSQLHibernateHandler;
 import de.senft.jlibre.model.Book;
 import de.senft.jlibre.model.Quote;
 
@@ -33,7 +34,7 @@ public class QuoteDialog extends JDialog {
 	private JTextArea txtText;
 	private JTextArea txtComment;
 
-	private DBHandler dbHandler = DBHandler.getInstance();
+	private DBHandler dbHandler = HSQLHibernateHandler.getInstance();
 
 	private Object[][] books = dbHandler.getBooksForComboBox();
 

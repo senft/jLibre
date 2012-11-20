@@ -26,6 +26,7 @@ import javax.swing.table.TableRowSorter;
 import org.apache.log4j.Logger;
 
 import de.senft.jlibre.io.DBHandler;
+import de.senft.jlibre.io.HSQLHibernateHandler;
 
 public abstract class OverviewPanel extends JPanel {
 
@@ -103,7 +104,7 @@ public abstract class OverviewPanel extends JPanel {
 	 * Create the panel.
 	 */
 	public OverviewPanel() {
-		dbHandler = DBHandler.getInstance();
+		dbHandler = HSQLHibernateHandler.getInstance();
 
 		setLayout(new BorderLayout(0, 0));
 
