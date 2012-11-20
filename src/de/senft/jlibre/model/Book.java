@@ -4,6 +4,18 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
+import javax.persistence.Transient;
+
+@Entity()
 public class Book {
 	private int id;
 	private String title;
@@ -15,71 +27,67 @@ public class Book {
 	private Date finishedReading;
 
 	private Author author;
-	private Set<Quote> quotes;
+	private Set<Quote> quotes = new HashSet<Quote>();
 
 	public static final byte NOT_READ = -1;
 	public static final byte STARTED_READING = 0;
 	public static final byte FINISHED_READING = 1;
 
 	public Book() {
-		quotes = new HashSet<Quote>();
 	}
 
-	public Book(int theId, String theTitle, Author theAuthor,
-			int thePublicationYear, Date theStartedReading,
-			Date theFinishedReading, String theComment, String theEpoche,
-			String theGenre) {
-		this();
-		id = theId;
-		title = theTitle;
-		author = theAuthor;
-		publicationYear = thePublicationYear;
-		startedReading = theStartedReading;
-		finishedReading = theFinishedReading;
-
-		comment = theComment;
-		epoche = theEpoche;
-		genre = theGenre;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "book_id", unique = true)
+	public int getId() {
+		return id;
 	}
 
-	public boolean addQuote(Quote q) {
-		return quotes.add(q);
-	}
-
-	public Set<Quote> getQuotes() {
-		return quotes;
-	}
-
+	@Column(name = "title")
 	public String getTitle() {
 		return title;
 	}
 
+	@Column(name = "startread", nullable = true)
 	public Date getStartedReading() {
 		return startedReading;
 	}
 
+	@Column(name = "finishread", nullable = true)
 	public Date getFinishedReading() {
 		return finishedReading;
 	}
 
-	public Author getAuthor() {
-		return author;
-	}
-
+	@Column(name = "pubyear")
 	public int getPublicationYear() {
 		return publicationYear;
 	}
 
-	public String toString() {
-		StringBuilder sb = new StringBuilder(200);
-		sb.append(author.toString()).append(": ");
-		sb.append(title);
-		sb.append(", ").append(publicationYear);
-		return sb.toString();
+	@Column(name = "comment")
+	public String getComment() {
+		return comment;
 	}
 
-	public int getId() {
-		return id;
+	@Column(name = "epoche")
+	public String getEpoche() {
+		return epoche;
+	}
+
+	@Column(name = "genre")
+	public String getGenre() {
+		return genre;
+	}
+
+	@JoinColumn(name = "author_id")
+	@OneToOne()
+	public Author getAuthor() {
+		return author;
+	}
+
+	// TODO: Maybe there is a way, to do this lazy
+	@OneToMany(mappedBy = "book", fetch = FetchType.EAGER)
+	public Set<Quote> getQuotes() {
+		return quotes;
 	}
 
 	public void setId(int id) {
@@ -106,28 +114,24 @@ public class Book {
 		this.author = author;
 	}
 
-	public String getComment() {
-		return comment;
-	}
-
 	public void setComment(String comment) {
 		this.comment = comment;
-	}
-
-	public String getEpoche() {
-		return epoche;
 	}
 
 	public void setEpoche(String epoche) {
 		this.epoche = epoche;
 	}
 
-	public String getGenre() {
-		return genre;
-	}
-
 	public void setGenre(String genre) {
 		this.genre = genre;
+	}
+
+	public void setQuotes(Set<Quote> quotes) {
+		this.quotes = quotes;
+	}
+
+	public boolean addQuote(Quote q) {
+		return quotes.add(q);
 	}
 
 	/**
@@ -139,7 +143,9 @@ public class Book {
 	 *         <li>{@link #STARTED_READING} if startedReading has been set</li>
 	 *         <li>{@link #finishedReading} if finishedReading, has been set</li>
 	 */
+	@Transient
 	public int isRead() {
+		// TODO: maybe make this a @GeneratedValue
 		if (startedReading == null)
 			return NOT_READ;
 
@@ -157,5 +163,13 @@ public class Book {
 			return STARTED_READING;
 
 		return FINISHED_READING;
+	}
+
+	public String toString() {
+		StringBuilder sb = new StringBuilder(200);
+		sb.append(author.toString()).append(": ");
+		sb.append(title);
+		sb.append(", ").append(publicationYear);
+		return sb.toString();
 	}
 }

@@ -6,14 +6,14 @@ import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.OneToMany;
 import javax.persistence.Transient;
 
 @Entity
-@Table(name = "AUTHOR")
 public class Author implements Serializable {
 
 	private int id = 0;
@@ -30,7 +30,7 @@ public class Author implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "id", unique = true)
+	@Column(name = "author_id", unique = true)
 	public int getId() {
 		return id;
 	}
@@ -68,9 +68,14 @@ public class Author implements Serializable {
 		return quotes;
 	}
 
-	@Transient
+	// TODO: Maybe there is a way, to do this lazy
+	@OneToMany(mappedBy = "author", fetch = FetchType.EAGER)
 	public Set<Book> getBooks() {
 		return books;
+	}
+
+	public void setBooks(Set<Book> books) {
+		this.books = books;
 	}
 
 	public boolean addBook(Book book) {
