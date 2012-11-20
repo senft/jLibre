@@ -4,7 +4,8 @@ Just (probably yet another) database application for managing books (authors and
 ## Used libraries:
 
 * Swing
-* HSQLDB - http://hsqldb.org/
+* HSQLDB 2- http://hsqldb.org/
+* hibernate - http://www.hibernate.org/
 * log4j - http://logging.apache.org/log4j/
 * jCalendar - http://www.toedter.com/en/jcalendar/
 
