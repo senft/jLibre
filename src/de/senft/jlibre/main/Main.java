@@ -17,19 +17,11 @@ public class Main {
 		logger.info("Started application...");
 
 		mainWindow = new MainWindow();
-
 		mainWindow.setVisible(true);
 		logger.info("Succesfully initialized all vital components...");
 	}
 
 	public static void main(String args[]) {
-		// try {
-		// UIManager
-		// .setLookAndFeel("com.sun.java.swing.plaf.gtk.GTKLookAndFeel");
-		// } catch (Exception e) {
-		// logger.error("Couldnt set LAF to \"com.sun.java.swing.plaf.gtk.GTKLookAndFeel\"");
-		// }
-
 		PropertyConfigurator.configureAndWatch("log4j.properties");
 
 		EventQueue.invokeLater(new Runnable() {
