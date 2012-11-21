@@ -31,11 +31,6 @@ public interface DBHandler {
 	 */
 	public List<Quote> getQuotes();
 
-
-	public Object[][] getBooksForComboBox();
-
-	public Object[][] getAuthorsForComboBox();
-
 	/**
 	 * Fetches all necessary data from the DB to create a
 	 * {@link de.senft.jlibre.model.Book Book} object, containing all data
@@ -80,7 +75,7 @@ public interface DBHandler {
 	 *            the quote to store
 	 * @return the id of this book (-1 if something went wrong)
 	 */
-	public int makeBook(Book book);
+	public int save(Book book);
 
 	/**
 	 * Stores an {@link de.senft.jlibre.model.Author Author} in the DB and
@@ -90,7 +85,7 @@ public interface DBHandler {
 	 *            the author to store
 	 * @return the id of this author (-1 if someting went wrong)
 	 */
-	public int makeAuthor(Author author);
+	public int save(Author author);
 
 	/**
 	 * Stores an {@link de.senft.jlibre.model.Quote Quote} in the DB, and
@@ -100,28 +95,17 @@ public interface DBHandler {
 	 *            the quote to store
 	 * @return the id of this quote (-1 if someting went wrong)
 	 */
-	public int makeQuote(Quote quote);
+	public int save(Quote quote);
 
-	public void updateBook(Book book);
+	public void update(Book book);
 
-	public void updateAuthor(Author author);
+	public void update(Author author);
 
-	public void updateQuote(Quote quote);
+	public void update(Quote quote);
 
-	public boolean delete(Author author);
+	public void delete(Author author);
 
-	public boolean delete(Book book);
+	public void delete(Book book);
 
-	public boolean delete(Quote quote);
-
-	public boolean delete(Author[] authors);
-
-	public boolean delete(Book[] books);
-
-	public boolean delete(Quote[] quotes);
-
-	public String[] getCommonEpoches();
-
-	public String[] getCommonGenres();
-
+	public void delete(Quote quote);
 }
