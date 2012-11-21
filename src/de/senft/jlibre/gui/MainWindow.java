@@ -161,12 +161,8 @@ public class MainWindow extends JFrame {
 				OverviewPanel currentPanel = (OverviewPanel) tabbedPane
 						.getSelectedComponent();
 
-				boolean dataChanged = currentPanel.deleteSelected();
+				currentPanel.deleteSelected();
 
-				if (dataChanged) {
-					bookPanel.updateData();
-					quotePanel.updateData();
-				}
 			}
 		});
 		btnDeleteSelected.setIcon(new ImageIcon(MainWindow.class

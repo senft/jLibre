@@ -74,8 +74,10 @@ public class QuoteOverviewPanel extends OverviewPanel {
 	}
 
 	@Override
-	protected boolean deleteSelected() {
-		return false;
+	protected void deleteSelected() {
+		int selectedRow = table.getSelectedRow();
+		quotes.remove(selectedRow);
+		tableModel.fireTableDataChanged();
 	}
 
 	@Override
@@ -97,10 +99,5 @@ public class QuoteOverviewPanel extends OverviewPanel {
 	protected Quote getSelected() {
 		int selectedRow = table.getSelectedRow();
 		return quotes.get(selectedRow);
-	}
-
-	@Override
-	public void updateData() {
-		// rowData = dbHandler.getQuotesForTable();
 	}
 }

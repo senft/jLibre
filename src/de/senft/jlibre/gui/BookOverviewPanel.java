@@ -14,7 +14,6 @@ import javax.swing.JPopupMenu;
 import javax.swing.JSeparator;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
-import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 
@@ -179,8 +178,7 @@ public class BookOverviewPanel extends OverviewPanel {
 	}
 
 	@Override
-	protected boolean deleteSelected() {
-		boolean success = false;
+	protected void deleteSelected() {
 		int choice = JOptionPane.showOptionDialog(this,
 				"This will also delete all quotes from this book.\n"
 						+ "Do you want to continue?", "Continue?",
@@ -188,14 +186,10 @@ public class BookOverviewPanel extends OverviewPanel {
 				new String[] { "No", "Yes" }, null);
 
 		if (choice == 1) { // User clicked "Yes"
-			// dbHandler.delete(getSelected());
-
 			int selectedRow = table.getSelectedRow();
-			rowData.remove(selectedRow);
+			books.remove(selectedRow);
 			tableModel.fireTableDataChanged();
-			success = true;
 		}
-		return success;
 	}
 
 	/**
@@ -207,13 +201,5 @@ public class BookOverviewPanel extends OverviewPanel {
 	protected Book getSelected() {
 		int selectedRow = table.getSelectedRow();
 		return books.get(selectedRow);
-	}
-
-	@Override
-	public void updateData() {
-		// rowData = dbHandler.getBooksForTable();
-		((AbstractTableModel) this.table.getModel())
-				.fireTableStructureChanged();
-		((AbstractTableModel) this.table.getModel()).fireTableDataChanged();
 	}
 }

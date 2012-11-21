@@ -23,8 +23,6 @@ public class AuthorOverviewPanel extends OverviewPanel {
 		table.setModel(tableModel);
 
 		tableModel.fireTableStructureChanged();
-
-		updateData();
 	}
 
 	@Override
@@ -111,8 +109,7 @@ public class AuthorOverviewPanel extends OverviewPanel {
 	}
 
 	@Override
-	protected boolean deleteSelected() {
-		boolean success = false;
+	protected void deleteSelected() {
 		int choice = JOptionPane.showOptionDialog(this,
 				"This will also delete all books and quotes by this authors.\n"
 						+ "Do you want to continue?", "Continue?",
@@ -120,14 +117,10 @@ public class AuthorOverviewPanel extends OverviewPanel {
 				new String[] { "No", "Yes" }, null);
 
 		if (choice == 1) { // User clicked "Yes"
-			// dbHandler.delete(getSelected());
-
 			int selectedRow = table.getSelectedRow();
-			rowData.remove(selectedRow);
+			authors.remove(selectedRow);
 			tableModel.fireTableDataChanged();
-			success = true;
 		}
-		return success;
 	}
 
 	/**
@@ -139,10 +132,5 @@ public class AuthorOverviewPanel extends OverviewPanel {
 	protected Author getSelected() {
 		int selectedRow = table.getSelectedRow();
 		return authors.get(selectedRow);
-	}
-
-	@Override
-	public void updateData() {
-		// tableModel.sdbHandler.getAuthors();
 	}
 }

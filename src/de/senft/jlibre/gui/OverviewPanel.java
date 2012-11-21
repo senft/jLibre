@@ -55,11 +55,6 @@ public abstract class OverviewPanel extends JPanel {
 	protected abstract ListSelectionListener makeListSelectionListener();
 
 	/**
-	 * Updates all data from the DB.
-	 */
-	public abstract void updateData();
-
-	/**
 	 * Adds a new entity to this table.
 	 * 
 	 * @return true if successful
@@ -78,7 +73,7 @@ public abstract class OverviewPanel extends JPanel {
 	 * 
 	 * @return true if successful
 	 */
-	protected abstract boolean deleteSelected();
+	protected abstract void deleteSelected();
 
 	// /**
 	// * Deletes the entity with the given ID.<br />
