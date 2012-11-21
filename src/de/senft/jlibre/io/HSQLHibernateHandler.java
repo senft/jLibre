@@ -2,14 +2,11 @@ package de.senft.jlibre.io;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-import java.util.Vector;
 
 import org.apache.log4j.Logger;
 import org.hibernate.Session;
@@ -19,6 +16,7 @@ import de.senft.jlibre.model.Author;
 import de.senft.jlibre.model.Book;
 import de.senft.jlibre.model.Quote;
 import de.senft.jlibre.util.HibernateUtil;
+import de.senft.jlibre.util.ListUtil;
 
 public class HSQLHibernateHandler implements DBHandler {
 	private static HSQLHibernateHandler dbHandler;
@@ -27,6 +25,7 @@ public class HSQLHibernateHandler implements DBHandler {
 	private Connection conn;
 
 	private HSQLHibernateHandler() {
+		// Not needed anymore when switched to hibernate
 		try {
 			Class.forName("org.hsqldb.jdbcDriver");
 		} catch (Exception e) {
@@ -54,6 +53,7 @@ public class HSQLHibernateHandler implements DBHandler {
 	}
 
 	public void closeConnection() {
+		// Not needed anymore when switched to hibernate
 		logger.info("Closing database connection");
 		try {
 			conn.close();
@@ -65,121 +65,58 @@ public class HSQLHibernateHandler implements DBHandler {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see de.senft.jlibre.io.DBHandler#getBooksForTable()
+	 * @see de.senft.jlibre.io.DBHandler#getBooks()
 	 */
-	@Override
-	public Vector<Vector<Object>> getBooksForTable() {
-		Statement stmt;
-		Vector<Vector<Object>> result = new Vector<Vector<Object>>();
+	public List<Book> getBooks() {
+		logger.info("Fetching books");
+		Session session = HibernateUtil.getSessionFactory().openSession();
+		session.beginTransaction();
 
-		try {
-			stmt = conn.createStatement();
+		List<Book> books = ListUtil.castList(Book.class,
+				session.createQuery("from Book").list());
+		session.getTransaction().commit();
+		session.close();
 
-			// Execute the query
-			ResultSet rs = stmt
-					.executeQuery("SELECT book_id, book.title, author.firstname,"
-							+ " author.lastname, book.pubyear, book.genre, book.epoche,"
-							+ " book.startread, book.finishread"
-							+ " FROM BOOK, AUTHOR"
-							+ " WHERE book.author_id = author.author_id;");
-
-			while (rs.next()) {
-				Vector<Object> current = new Vector<Object>();
-				current.add(rs.getInt("book_id"));
-				current.add(rs.getString("title"));
-				current.add(rs.getString("firstname") + " "
-						+ rs.getString("lastname"));
-				current.add(rs.getInt("pubyear"));
-				current.add(rs.getString("epoche"));
-				current.add(rs.getString("genre"));
-				current.add(Book.datesRead(rs.getDate("startread"),
-						rs.getDate("finishread")));
-
-				result.add(current);
-			}
-
-		} catch (SQLException se) {
-			handleSQLException(se);
-		}
-		logger.debug(String.format("Loaded table represetation for %d books",
-				result.size()));
-		return result;
+		logger.info("Fetched " + books.size() + " books");
+		return books;
 	}
 
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see de.senft.jlibre.io.DBHandler#getAuthorsForTable()
+	 * @see de.senft.jlibre.io.DBHandler#getAuthors()
 	 */
-	@Override
-	public Vector<Vector<Object>> getAuthorsForTable() {
-		Statement stmt;
-		Vector<Vector<Object>> result = new Vector<Vector<Object>>();
+	public List<Author> getAuthors() {
+		logger.info("Fetching authors");
+		Session session = HibernateUtil.getSessionFactory().openSession();
+		session.beginTransaction();
 
-		try {
-			stmt = conn.createStatement();
+		List<Author> authors = ListUtil.castList(Author.class, session
+				.createQuery("from Author").list());
+		session.getTransaction().commit();
+		session.close();
 
-			ResultSet rs = stmt
-					.executeQuery("SELECT author_id, firstname, lastname, born, died, country FROM AUTHOR;");
-
-			while (rs.next()) {
-				Vector<Object> current = new Vector<Object>();
-				current.add(rs.getInt("author_id"));
-				current.add(rs.getString("firstname"));
-				current.add(rs.getString("lastname"));
-				current.add(rs.getInt("born"));
-				current.add(rs.getInt("died"));
-				current.add(rs.getString("country"));
-				result.add(current);
-			}
-
-		} catch (SQLException se) {
-			handleSQLException(se);
-		}
-		logger.debug(String.format("Loaded table represetation for %d authors",
-				result.size()));
-		return result;
+		logger.info("Fetched " + authors.size() + " authors");
+		return authors;
 	}
 
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see de.senft.jlibre.io.DBHandler#getQuotesForTable()
+	 * @see de.senft.jlibre.io.DBHandler#getQuotes()
 	 */
-	@Override
-	public Vector<Vector<Object>> getQuotesForTable() {
-		Statement stmt;
-		Vector<Vector<Object>> result = new Vector<Vector<Object>>();
+	public List<Quote> getQuotes() {
+		logger.info("Fetching quotes");
+		Session session = HibernateUtil.getSessionFactory().openSession();
+		session.beginTransaction();
 
-		try {
-			stmt = conn.createStatement();
+		List<Quote> quotes = ListUtil.castList(Quote.class, session
+				.createQuery("from Quote").list());
+		session.getTransaction().commit();
+		session.close();
 
-			// Execute the query
-			ResultSet rs = stmt
-					.executeQuery("SELECT quote_id, quote.quotetext, book.title,"
-							+ "author.firstname, author.lastname"
-							+ " FROM QUOTE, BOOK, AUTHOR"
-							+ " WHERE quote.book_id = book.book_id"
-							+ " AND author.author_id = book.author_id;");
-
-			while (rs.next()) {
-
-				Vector<Object> current = new Vector<Object>();
-				current.add(rs.getInt("quote_id"));
-				current.add(rs.getString("quotetext"));
-				current.add(rs.getString("title"));
-				current.add(rs.getString("firstname") + " "
-						+ rs.getString("lastname"));
-
-				result.add(current);
-			}
-
-		} catch (SQLException se) {
-			handleSQLException(se);
-		}
-		logger.debug(String.format("Loaded table represetation for %d quotes",
-				result.size()));
-		return result;
+		logger.info("Fetched " + quotes.size() + " quotes");
+		return quotes;
 	}
 
 	/*
@@ -309,15 +246,55 @@ public class HSQLHibernateHandler implements DBHandler {
 	public int makeBook(Book book) {
 		Session session = HibernateUtil.getSessionFactory().openSession();
 		Transaction tx = session.beginTransaction();
-		session.save(book);
+		session.saveOrUpdate(book);
 		tx.commit();
 		session.close();
 		return book.getId();
+	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * de.senft.jlibre.io.DBHandler#makeAuthor(de.senft.jlibre.model.Author)
+	 */
+	@Override
+	public int makeAuthor(Author author) {
+		Session session = HibernateUtil.getSessionFactory().openSession();
+		Transaction tx = session.beginTransaction();
+		session.saveOrUpdate(author);
+		tx.commit();
+		session.close();
+		return author.getId();
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see de.senft.jlibre.io.DBHandler#makeQuote(de.senft.jlibre.model.Quote)
+	 */
+	@Override
+	public int makeQuote(Quote quote) {
+		Session session = HibernateUtil.getSessionFactory().openSession();
+		Transaction tx = session.beginTransaction();
+		session.saveOrUpdate(quote);
+		tx.commit();
+		session.close();
+		return quote.getId();
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see de.senft.jlibre.io.DBHandler#updateBook(de.senft.jlibre.model.Book)
+	 */
+	@Override
+	public void updateBook(Book book) {
+		makeBook(book);
 		// PreparedStatement stmt;
 		// int rowsChanged = 0;
-		// int id = -1;
 		//
+		// int bookId = book.getId();
 		// String title = book.getTitle();
 		// String epoche = book.getEpoche();
 		// String comment = book.getComment();
@@ -337,151 +314,30 @@ public class HSQLHibernateHandler implements DBHandler {
 		// sqlFinished = new java.sql.Date(finished.getTime());
 		//
 		// try {
-		// stmt = conn
-		// .prepareStatement(
-		// String.format(
-		// "INSERT INTO BOOK (authorid, title, comment,"
-		// + " epoche, genre, pubyear, startread, finishread)"
-		// + " VALUES (%d, '%s', '%s', '%s', '%s', %d, ?, ?);",
-		// authorId, title, comment, epoche, genre,
-		// published),
-		// PreparedStatement.RETURN_GENERATED_KEYS);
+		// stmt = conn.prepareStatement(String.format(
+		// "UPDATE Book SET authorid = %d, title = '%s',"
+		// + " pubyear = %d, startread = ?, finishread = ?,"
+		// + " comment = '%s', epoche = '%s', genre = '%s'"
+		// + " WHERE id = %d;", authorId, title, published,
+		// comment, epoche, genre, bookId));
 		//
+		// if (sqlStarted == null)
+		// stmt.setNull(1, java.sql.Types.DATE);
+		// else
 		// stmt.setDate(1, sqlStarted);
+		//
+		// if (sqlFinished == null)
+		// stmt.setNull(2, java.sql.Types.DATE);
+		// else
 		// stmt.setDate(2, sqlFinished);
 		//
-		// logger.debug("Executing query: " + stmt.toString());
-		//
 		// rowsChanged = stmt.executeUpdate();
-		// if (rowsChanged != 0) {
-		// logger.debug("Changed " + rowsChanged + " row(s) in DB");
-		//
-		// ResultSet rs = stmt.getGeneratedKeys();
-		// while (rs.next())
-		// id = rs.getInt(1);
-		// }
 		//
 		// } catch (SQLException se) {
 		// handleSQLException(se);
 		// }
 		//
-		// return id;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * de.senft.jlibre.io.DBHandler#makeAuthor(de.senft.jlibre.model.Author)
-	 */
-	@Override
-	public int makeAuthor(Author author) {
-		Session session = HibernateUtil.getSessionFactory().openSession();
-		Transaction tx = session.beginTransaction();
-		session.save(author);
-		tx.commit();
-		session.close();
-		return author.getId();
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see de.senft.jlibre.io.DBHandler#makeQuote(de.senft.jlibre.model.Quote)
-	 */
-	@Override
-	public int makeQuote(Quote quote) {
-		Session session = HibernateUtil.getSessionFactory().openSession();
-		Transaction tx = session.beginTransaction();
-		session.save(quote);
-		tx.commit();
-		session.close();
-		return quote.getId();
-
-		// Statement stmt;
-		// int result = 0;
-		// int id = -1;
-		//
-		// String text = quote.getText();
-		// String comment = quote.getComment();
-		// Book book = quote.getBook();
-		//
-		// try {
-		// stmt = conn.createStatement();
-		// result = stmt.executeUpdate(String.format(
-		// "INSERT INTO QUOTE (quotetext, comment, bookid)"
-		// + "VALUES ('%s', '%s', %d);", text, comment,
-		// book.getId()));
-		//
-		// if (result != 0) {
-		// // When we inserted something -> get the created ID(s)
-		// // (hopefully this is == 1)
-		// ResultSet rs = stmt.executeQuery("CALL IDENTITY();");
-		// while (rs.next())
-		// id = rs.getInt(1);
-		// }
-		//
-		// } catch (SQLException se) {
-		// handleSQLException(se);
-		// }
-		//
-		// return id;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see de.senft.jlibre.io.DBHandler#updateBook(de.senft.jlibre.model.Book)
-	 */
-	@Override
-	public boolean updateBook(Book book) {
-		PreparedStatement stmt;
-		int rowsChanged = 0;
-
-		int bookId = book.getId();
-		String title = book.getTitle();
-		String epoche = book.getEpoche();
-		String comment = book.getComment();
-		String genre = book.getGenre();
-		int authorId = book.getAuthor().getId();
-		int published = book.getPublicationYear();
-		Date started = book.getStartedReading();
-		Date finished = book.getFinishedReading();
-
-		java.sql.Date sqlStarted = null;
-		java.sql.Date sqlFinished = null;
-
-		if (started != null)
-			sqlStarted = new java.sql.Date(started.getTime());
-
-		if (finished != null)
-			sqlFinished = new java.sql.Date(finished.getTime());
-
-		try {
-			stmt = conn.prepareStatement(String.format(
-					"UPDATE Book SET authorid = %d, title = '%s',"
-							+ " pubyear = %d, startread = ?, finishread = ?,"
-							+ " comment = '%s', epoche = '%s', genre = '%s'"
-							+ " WHERE id = %d;", authorId, title, published,
-					comment, epoche, genre, bookId));
-
-			if (sqlStarted == null)
-				stmt.setNull(1, java.sql.Types.DATE);
-			else
-				stmt.setDate(1, sqlStarted);
-
-			if (sqlFinished == null)
-				stmt.setNull(2, java.sql.Types.DATE);
-			else
-				stmt.setDate(2, sqlFinished);
-
-			rowsChanged = stmt.executeUpdate();
-
-		} catch (SQLException se) {
-			handleSQLException(se);
-		}
-
-		return rowsChanged != 0;
+		// return rowsChanged != 0;
 	}
 
 	/*
@@ -491,25 +347,26 @@ public class HSQLHibernateHandler implements DBHandler {
 	 * de.senft.jlibre.io.DBHandler#updateAuthor(de.senft.jlibre.model.Author)
 	 */
 	@Override
-	public boolean updateAuthor(Author author) {
-		Statement stmt;
-		int result = 0;
-
-		try {
-			stmt = conn.createStatement();
-			result = stmt
-					.executeUpdate(String.format(
-							"UPDATE Author SET firstname = '%s',"
-									+ "lastname = '%s', country = '%s', born = %d, died = %d"
-									+ "WHERE id = %d;", author.getFirstname(),
-							author.getLastname(), author.getCountry(),
-							author.getBorn(), author.getDied(), author.getId()));
-
-		} catch (SQLException se) {
-			handleSQLException(se);
-		}
-
-		return result != 0;
+	public void updateAuthor(Author author) {
+		makeAuthor(author);
+		// Statement stmt;
+		// int result = 0;
+		//
+		// try {
+		// stmt = conn.createStatement();
+		// result = stmt
+		// .executeUpdate(String.format(
+		// "UPDATE Author SET firstname = '%s',"
+		// + "lastname = '%s', country = '%s', born = %d, died = %d"
+		// + "WHERE id = %d;", author.getFirstname(),
+		// author.getLastname(), author.getCountry(),
+		// author.getBorn(), author.getDied(), author.getId()));
+		//
+		// } catch (SQLException se) {
+		// handleSQLException(se);
+		// }
+		//
+		// return result != 0;
 	}
 
 	/*
@@ -519,23 +376,24 @@ public class HSQLHibernateHandler implements DBHandler {
 	 * de.senft.jlibre.io.DBHandler#updateQuote(de.senft.jlibre.model.Quote)
 	 */
 	@Override
-	public boolean updateQuote(Quote quote) {
-		Statement stmt;
-		int result = 0;
-
-		try {
-			stmt = conn.createStatement();
-			result = stmt.executeUpdate(String.format(
-					"UPDATE Quote SET quotetext = '%s',"
-							+ "comment = '%s', bookid= %d" + "WHERE id = %d ",
-					quote.getText(), quote.getComment(), quote.getBook()
-							.getId(), quote.getId()));
-
-		} catch (SQLException se) {
-			handleSQLException(se);
-		}
-
-		return result != 0;
+	public void updateQuote(Quote quote) {
+		makeQuote(quote);
+		// Statement stmt;
+		// int result = 0;
+		//
+		// try {
+		// stmt = conn.createStatement();
+		// result = stmt.executeUpdate(String.format(
+		// "UPDATE Quote SET quotetext = '%s',"
+		// + "comment = '%s', bookid= %d" + "WHERE id = %d ",
+		// quote.getText(), quote.getComment(), quote.getBook()
+		// .getId(), quote.getId()));
+		//
+		// } catch (SQLException se) {
+		// handleSQLException(se);
+		// }
+		//
+		// return result != 0;
 	}
 
 	/*

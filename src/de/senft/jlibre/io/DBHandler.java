@@ -1,6 +1,6 @@
 package de.senft.jlibre.io;
 
-import java.util.Vector;
+import java.util.List;
 
 import de.senft.jlibre.model.Author;
 import de.senft.jlibre.model.Book;
@@ -8,44 +8,29 @@ import de.senft.jlibre.model.Quote;
 
 public interface DBHandler {
 
-	/**
-	 * Fetches all books from the database and puts them in a 2-dimensional
-	 * array for direct use in a {@link javax.swing.table.TableModel TableModel}
-	 * . The array has this structure:
-	 * 
-	 * <pre>
-	 * {@code new Object[] { "ID", "Title", "Author", "Year of publication" };}
-	 * </pre>
-	 * 
-	 * @return 2-dimensional array containing data of books
-	 */
-	public Vector<Vector<Object>> getBooksForTable();
+	// TODO: JavaDoc
 
 	/**
-	 * Fetches all authors from the database and puts them in a 2-dimensional
-	 * array for direct use in a {@link javax.swing.table.TableModel TableModel}
-	 * . The array has this structure:
+	 * Fetches all books from the database.
 	 * 
-	 * <pre>
-	 * {@code new Object[] { "ID", "Firstname", "Lastname" };}
-	 * </pre>
-	 * 
-	 * @return 2-dimensional array containing data of authors
+	 * @return a list of {@link de.senft.jlibre.model.Book books}
 	 */
-	public Vector<Vector<Object>> getAuthorsForTable();
+	public List<Book> getBooks();
 
 	/**
-	 * Fetches all quotes from the database and puts them in a 2-dimensional
-	 * array for direct use in a {@link javax.swing.table.TableModel TableModel}
-	 * . The array has this structure:
+	 * Fetches all authors from the database.
 	 * 
-	 * <pre>
-	 * {@code new Object[] { "ID", "Text", "Book", "Author" };}
-	 * </pre>
-	 * 
-	 * @return 2-dimensional array containing data of quotes
+	 * @return a list of {@link de.senft.jlibre.model.Author authors}
 	 */
-	public Vector<Vector<Object>> getQuotesForTable();
+	public List<Author> getAuthors();
+
+	/**
+	 * Fetches all quotes from the database.
+	 * 
+	 * @return a list of {@link de.senft.jlibre.model.Quote quotes}
+	 */
+	public List<Quote> getQuotes();
+
 
 	public Object[][] getBooksForComboBox();
 
@@ -117,11 +102,11 @@ public interface DBHandler {
 	 */
 	public int makeQuote(Quote quote);
 
-	public boolean updateBook(Book book);
+	public void updateBook(Book book);
 
-	public boolean updateAuthor(Author author);
+	public void updateAuthor(Author author);
 
-	public boolean updateQuote(Quote quote);
+	public void updateQuote(Quote quote);
 
 	public boolean delete(Author author);
 
