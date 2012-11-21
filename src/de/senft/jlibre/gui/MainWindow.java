@@ -53,24 +53,25 @@ public class MainWindow extends JFrame {
 	 * Create the frame.
 	 */
 	public MainWindow() {
+		super("jLibre");
+
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setBounds(100, 100, 850, 539);
+
 		addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowClosing(WindowEvent e) {
 				close();
 			}
 		});
-		setTitle("jLibre");
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 850, 539);
 
-		// TODO Setting colors here, probably isnt needed
 		libreCollection = new LibreCollection();
 
 		JMenuBar menuBar = new JMenuBar();
+		menuBar.setForeground(SystemColor.BLACK);
 		setJMenuBar(menuBar);
 
 		JMenu mnFile = new JMenu("File");
-		mnFile.setForeground(SystemColor.text);
 		menuBar.add(mnFile);
 
 		mnFile.add(new JSeparator());
@@ -84,7 +85,6 @@ public class MainWindow extends JFrame {
 		mnFile.add(mntmExit);
 
 		JMenu mnHelp = new JMenu("Help");
-		mnHelp.setForeground(SystemColor.text);
 		menuBar.add(mnHelp);
 
 		JMenuItem mntmAbout = new JMenuItem("About");
