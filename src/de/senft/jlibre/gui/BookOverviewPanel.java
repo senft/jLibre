@@ -23,19 +23,25 @@ import de.senft.jlibre.model.Quote;
 
 public class BookOverviewPanel extends OverviewPanel {
 
-	public BookOverviewPanel() {
-		columnNames.add("ID");
-		columnNames.add("Title");
-		columnNames.add("Author");
-		columnNames.add("Year of publication");
-		columnNames.add("Epoche");
-		columnNames.add("Genre");
-		columnNames.add("Read?");
-		columnClasses = new Class[] { Integer.class, String.class,
-				String.class, Integer.class, String.class, String.class,
-				ImageIcon.class };
 
-		tableModel.fireTableStructureChanged();
+	public BookOverviewPanel(List<Book> books) {
+		super();
+		this.books = books;
+		tableModel = new BookTableModel(books);
+		table.setModel(tableModel);
+
+		table.setFillsViewportHeight(true);
+		table.setRowSorter(new TableRowSorter<TableModel>(table.getModel()));
+		table.getSelectionModel().addListSelectionListener(
+				makeListSelectionListener());
+
+		tableModel.addTableModelListener(new TableModelListener() {
+			@Override
+			public void tableChanged(TableModelEvent e) {
+				logger.debug(String.format("Table data in %s changed",
+						this.toString()));
+			}
+		});
 
 		table.getColumnModel().getColumn(0).setResizable(false);
 		table.getColumnModel().getColumn(0).setMaxWidth(75);

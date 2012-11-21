@@ -15,16 +15,9 @@ import de.senft.jlibre.model.Quote;
 
 public class AuthorOverviewPanel extends OverviewPanel {
 
-	public AuthorOverviewPanel() {
-		columnNames.add("ID");
-		columnNames.add("Firstname");
-		columnNames.add("Lastname");
-		columnNames.add("Born");
-		columnNames.add("Died");
-		columnNames.add("Country");
 
-		columnClasses = new Class[] { Integer.class, String.class,
-				String.class, Integer.class, Integer.class, String.class };
+		tableModel = new AuthorTableModel(authors);
+		table.setModel(tableModel);
 
 		tableModel.fireTableStructureChanged();
 		table.getColumnModel().getColumn(0).setResizable(false);

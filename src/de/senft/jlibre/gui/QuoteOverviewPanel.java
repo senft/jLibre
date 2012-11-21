@@ -14,16 +14,14 @@ import de.senft.jlibre.model.Quote;
 
 public class QuoteOverviewPanel extends OverviewPanel {
 
-	public QuoteOverviewPanel() {
-		columnNames.add("ID");
-		columnNames.add("Text");
-		columnNames.add("Book");
-		columnNames.add("Author");
 
-		columnClasses = new Class[] { Integer.class, String.class,
-				String.class, String.class };
+	public QuoteOverviewPanel(List<Quote> quotes) {
+		super();
+		this.quotes = quotes;
+		tableModel = new QuoteTableModel(quotes);
+		table.setModel(tableModel);
 
-		tableModel.fireTableStructureChanged();
+		// tableModel.fireTableStructureChanged();
 		table.getColumnModel().getColumn(0).setResizable(false);
 		table.getColumnModel().getColumn(0).setMaxWidth(75);
 
@@ -33,8 +31,6 @@ public class QuoteOverviewPanel extends OverviewPanel {
 				});
 		((DefaultTableCellRenderer) table.getColumnModel().getColumn(0)
 				.getCellRenderer()).setHorizontalAlignment(SwingConstants.LEFT);
-
-		rowData = dbHandler.getQuotesForTable();
 	}
 
 	@Override
