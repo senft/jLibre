@@ -160,7 +160,8 @@ public class BookOverviewPanel extends OverviewPanel {
 	@Override
 	protected void addNew() {
 		Book book = new Book();
-		BookDialog dialog = new BookDialog(book, collection.getAuthors());
+		BookDialog dialog = new BookDialog(book, collection.getAuthors(),
+				collection.getCommonEpoches(), collection.getCommonGenres());
 
 		if (dialog.showDialog()) {
 			books.add(book);
@@ -170,7 +171,8 @@ public class BookOverviewPanel extends OverviewPanel {
 
 	public void editSelected() {
 		Book oldBook = this.getSelected();
-		BookDialog dialog = new BookDialog(oldBook, collection.getAuthors());
+		BookDialog dialog = new BookDialog(oldBook, collection.getAuthors(),
+				collection.getCommonEpoches(), collection.getCommonGenres());
 
 		if (dialog.showDialog()) {
 			tableModel.fireTableDataChanged();

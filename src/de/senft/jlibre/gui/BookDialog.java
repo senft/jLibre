@@ -25,8 +25,6 @@ import javax.swing.border.TitledBorder;
 
 import com.toedter.calendar.JDateChooser;
 
-import de.senft.jlibre.io.DBHandler;
-import de.senft.jlibre.io.HSQLHibernateHandler;
 import de.senft.jlibre.model.Author;
 import de.senft.jlibre.model.Book;
 
@@ -39,6 +37,12 @@ public class BookDialog extends JDialog {
 	private JTextArea txtComment;
 	private JDateChooser dtFinished;
 	private JTextField txtPublished;
+
+	// TODO: Check this:
+	// http://www.java2s.com/Code/Java/Swing-Components/AutocompleteComboBox.htm
+	// or this
+	// http://download.java.net/javadesktop/swinglabs/releases/0.8/docs/api/org/jdesktop/swingx/autocomplete/package-summary.html
+	// ... probably the second
 	private JComboBox<String> cmbEpoche;
 	private JComboBox<String> cmbGenre;
 
@@ -48,9 +52,6 @@ public class BookDialog extends JDialog {
 
 	private boolean result = false;
 
-	// TODO: get rid of this!
-	private DBHandler dbHandler = HSQLHibernateHandler.getInstance();
-
 	/**
 	 * Creates a Dialog to edit a book. Fills the values of the passed book in
 	 * the corresponding widgets.
@@ -58,7 +59,8 @@ public class BookDialog extends JDialog {
 	 * @param book
 	 *            the book to edit
 	 */
-	public BookDialog(Book book, List<Author> theAuthors) {
+	public BookDialog(Book book, List<Author> theAuthors, String[] epoches,
+			String[] genres) {
 		this.book = book;
 		this.authors = theAuthors;
 
@@ -174,7 +176,7 @@ public class BookDialog extends JDialog {
 			contentPanel.add(lblEpoche, gbc_lblEpoche);
 		}
 		{
-			cmbEpoche = new JComboBox<String>(dbHandler.getCommonEpoches());
+			cmbEpoche = new JComboBox<String>(epoches);
 			cmbEpoche.setSelectedIndex(-1);
 			cmbEpoche.setEditable(true);
 
@@ -195,7 +197,7 @@ public class BookDialog extends JDialog {
 			contentPanel.add(lblGenre, gbc_lblGenre);
 		}
 		{
-			cmbGenre = new JComboBox<String>(dbHandler.getCommonGenres());
+			cmbGenre = new JComboBox<String>(genres);
 			cmbGenre.setSelectedIndex(-1);
 			cmbGenre.setEditable(true);
 
