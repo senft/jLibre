@@ -1,37 +1,26 @@
 package de.senft.jlibre.gui;
 
 import java.util.List;
-import java.util.Vector;
 
-import javax.swing.SwingConstants;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
-import javax.swing.table.DefaultTableCellRenderer;
 
 import de.senft.jlibre.model.Author;
 import de.senft.jlibre.model.Book;
+import de.senft.jlibre.model.LibreCollection;
 import de.senft.jlibre.model.Quote;
 
 public class QuoteOverviewPanel extends OverviewPanel {
 
+	private LibreCollection collection;
 	private List<Quote> quotes;
 
-	public QuoteOverviewPanel(List<Quote> quotes) {
+	public QuoteOverviewPanel(LibreCollection collection) {
 		super();
-		this.quotes = quotes;
+		this.quotes = collection.getQuotes();
+		this.collection = collection;
 		tableModel = new QuoteTableModel(quotes);
 		table.setModel(tableModel);
-
-		// tableModel.fireTableStructureChanged();
-		table.getColumnModel().getColumn(0).setResizable(false);
-		table.getColumnModel().getColumn(0).setMaxWidth(75);
-
-		// TODO What the fuck is this shit? There has got to be an easier way!
-		table.getColumnModel().getColumn(0)
-				.setCellRenderer(new DefaultTableCellRenderer() {
-				});
-		((DefaultTableCellRenderer) table.getColumnModel().getColumn(0)
-				.getCellRenderer()).setHorizontalAlignment(SwingConstants.LEFT);
 	}
 
 	@Override
@@ -61,7 +50,8 @@ public class QuoteOverviewPanel extends OverviewPanel {
 
 					if (comment != null) {
 						sb.append(
-								"<br><br><b>Comment:</b><br /><div style=\"margin-left: " + INFOPANEL_LINEFEED + "px;\">")
+								"<br><br><b>Comment:</b><br /><div style=\"margin-left: "
+										+ INFOPANEL_LINEFEED + "px;\">")
 								.append(quote.getComment()).append("</div>");
 					}
 
@@ -76,30 +66,12 @@ public class QuoteOverviewPanel extends OverviewPanel {
 	@Override
 	protected boolean addNew() {
 		boolean success = false;
-		QuoteDialog dialog = new QuoteDialog();
-		Quote quote = dialog.showDialog();
-
-		if (quote != null) {
-			// int id = dbHandler.makeQuote(quote);
-			//
-			// if (id != -1) {
-			// Vector<Object> vecQuote = new Vector<Object>();
-			// vecQuote.add(id);
-			// vecQuote.add(quote.getText());
-			// vecQuote.add(quote.getBook().getTitle());
-			// vecQuote.add(quote.getBook().getAuthor().toString());
-			// rowData.add(vecQuote);
-			//
-			// tableModel.fireTableDataChanged();
-			// int newRow = rowData.size() - 1;
-			// table.getSelectionModel().setSelectionInterval(newRow, newRow);
-			//
-			// success = true;
-			// } else {
-			// JOptionPane.showMessageDialog(this,
-			// "Could not add the quote to the database.",
-			// "Database error", JOptionPane.ERROR_MESSAGE);
-			// }
+		Quote quote = new Quote();
+		QuoteDialog dialog = new QuoteDialog(quote, collection.getBooks());
+		if (dialog.showDialog()) {
+			quotes.add(quote);
+			tableModel.fireTableDataChanged();
+			success = true;
 		}
 		return success;
 	}
@@ -111,36 +83,14 @@ public class QuoteOverviewPanel extends OverviewPanel {
 
 	@Override
 	protected boolean editSelected() {
-		boolean success = false;
 		Quote oldQuote = this.getSelected();
+		QuoteDialog dialog = new QuoteDialog(oldQuote, collection.getBooks());
 
-		QuoteDialog dialog = new QuoteDialog(oldQuote.getId(),
-				oldQuote.getText(), oldQuote.getComment(), oldQuote.getBook());
-		Quote newQuote = dialog.showDialog();
-
-		if (newQuote != null) {
-			newQuote.setId(oldQuote.getId()); // Set new authors ID to old
-												// authors ID, so we can
-												// overwrite
-
-			// dbHandler.updateQuote(newQuote);
-
-				// Publish changes to table
-				int selectedRow = table.getSelectedRow();
-
-				Vector<Object> vecQuote = new Vector<Object>();
-				vecQuote.add(newQuote.getId());
-				vecQuote.add(newQuote.getText());
-				vecQuote.add(newQuote.getBook().getTitle());
-				vecQuote.add(newQuote.getBook().getAuthor().toString());
-
-				rowData.set(selectedRow, vecQuote);
-
-				tableModel.fireTableDataChanged();
-				table.getSelectionModel().setSelectionInterval(selectedRow,
-						selectedRow);
+		if (dialog.showDialog()) {
+			tableModel.fireTableDataChanged();
 		}
-		return success;
+
+		return true;
 	}
 
 	/**

@@ -10,7 +10,7 @@ import javax.persistence.OneToOne;
 
 @Entity
 public class Quote {
-	private int id;
+	private int id = -1;
 	private String text;
 	private String comment;
 	private Book book;

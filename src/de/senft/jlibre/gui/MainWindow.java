@@ -195,7 +195,7 @@ public class MainWindow extends JFrame {
 
 		contentPane.add(tabbedPane, BorderLayout.CENTER);
 
-		bookPanel = new BookOverviewPanel(libreCollection.getBooks());
+		bookPanel = new BookOverviewPanel(libreCollection);
 		bookPanel.addListSelectionListener(new ListSelectionListener() {
 			@Override
 			public void valueChanged(ListSelectionEvent e) {
@@ -208,7 +208,7 @@ public class MainWindow extends JFrame {
 		tabbedPane.addTab("Books", null, bookPanel, null);
 		tabbedPane.setMnemonicAt(0, KeyEvent.VK_1);
 
-		authorPanel = new AuthorOverviewPanel(libreCollection.getAuthors());
+		authorPanel = new AuthorOverviewPanel(libreCollection);
 		authorPanel.addListSelectionListener(new ListSelectionListener() {
 			@Override
 			public void valueChanged(ListSelectionEvent e) {
@@ -221,7 +221,7 @@ public class MainWindow extends JFrame {
 		tabbedPane.addTab("Authors", null, authorPanel, null);
 		tabbedPane.setMnemonicAt(1, KeyEvent.VK_2);
 
-		quotePanel = new QuoteOverviewPanel(libreCollection.getQuotes());
+		quotePanel = new QuoteOverviewPanel(libreCollection);
 		quotePanel.addListSelectionListener(new ListSelectionListener() {
 			@Override
 			public void valueChanged(ListSelectionEvent e) {

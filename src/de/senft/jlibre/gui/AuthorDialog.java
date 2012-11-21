@@ -35,18 +35,27 @@ public class AuthorDialog extends JDialog {
 	private JYearChooser dtBorn;
 	private JYearChooser dtDied;
 
+	public boolean result = false;
+
 	/**
 	 * The author object the eventually gets returned if after adding/editing
 	 */
 	private Author author;
 
-	public AuthorDialog() {
-		setTitle("New author...");
+	/**
+	 * Creates a Dialog to edit an author. Fills the values of the passed author
+	 * in the corresponding widgets.
+	 * 
+	 * @param author
+	 *            the author to edit
+	 */
+	public AuthorDialog(Author author) {
+		setTitle("Edit author...");
 		setResizable(false);
 		setModal(true);
 		setBounds(100, 100, 381, 239);
 		getContentPane().setLayout(new BorderLayout());
-		contentPanel.setBorder(new TitledBorder(null, "New author...",
+		contentPanel.setBorder(new TitledBorder(null, "Edit author...",
 				TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
 		GridBagLayout gbl_contentPanel = new GridBagLayout();
@@ -238,35 +247,19 @@ public class AuthorDialog extends JDialog {
 				buttonPane.add(cancelButton);
 			}
 		}
+
+		txtFirstname.setText(author.getFirstname());
+		txtLastname.setText(author.getLastname());
+		txtCountry.setText(author.getCountry());
+		dtBorn.setYear(author.getBorn());
+		dtDied.setYear(author.getDied());
+
+		this.author = author;
 	}
 
-	/**
-	 * Constructor for creating a Dialog to edit an author. Fills all passed
-	 * values in the corresponding widget.
-	 * 
-	 * @param id
-	 *            the id of the author to edit
-	 * @param firstname
-	 * @param lastname
-	 * @param country
-	 * @param born
-	 * @param died
-	 */
-	public AuthorDialog(int id, String firstname, String lastname,
-			String country, int born, int died) {
-		this();
-		setTitle("Edit author...");
-
-		txtFirstname.setText(firstname);
-		txtLastname.setText(lastname);
-		txtCountry.setText(country);
-		dtBorn.setYear(born);
-		dtDied.setYear(died);
-	}
-
-	public Author showDialog() {
+	public boolean showDialog() {
 		setVisible(true);
-		return author;
+		return result;
 	}
 
 	private void clickedOK() {
@@ -291,18 +284,19 @@ public class AuthorDialog extends JDialog {
 					"The date of birth is bigger than the death.", "Warning",
 					JOptionPane.WARNING_MESSAGE);
 		} else {
-			author = new Author();
+			result = true;
 			author.setFirstname(firstname);
 			author.setLastname(lastname);
 			author.setBorn(born);
 			author.setDied(died);
 			author.setCountry(country);
-			setVisible(false);
+			dispose();
 		}
 	}
 
 	private void clickedCancel() {
-		setVisible(false);
+		result = false;
+		dispose();
 	}
 
 }

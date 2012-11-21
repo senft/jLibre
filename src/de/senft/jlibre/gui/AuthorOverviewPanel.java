@@ -2,38 +2,27 @@ package de.senft.jlibre.gui;
 
 import java.util.List;
 import java.util.Set;
-import java.util.Vector;
 
 import javax.swing.JOptionPane;
-import javax.swing.SwingConstants;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
-import javax.swing.table.DefaultTableCellRenderer;
 
 import de.senft.jlibre.model.Author;
 import de.senft.jlibre.model.Book;
+import de.senft.jlibre.model.LibreCollection;
 import de.senft.jlibre.model.Quote;
 
 public class AuthorOverviewPanel extends OverviewPanel {
 
 	private List<Author> authors;
 
-	public AuthorOverviewPanel(List<Author> authors) {
+	public AuthorOverviewPanel(LibreCollection collection) {
 		super();
-		this.authors = authors;
+		this.authors = collection.getAuthors();
 		tableModel = new AuthorTableModel(authors);
 		table.setModel(tableModel);
 
 		tableModel.fireTableStructureChanged();
-		table.getColumnModel().getColumn(0).setResizable(false);
-		table.getColumnModel().getColumn(0).setMaxWidth(75);
-
-		// TODO What the fuck is this shit? There has got to be an easier way!
-		table.getColumnModel().getColumn(0)
-				.setCellRenderer(new DefaultTableCellRenderer() {
-				});
-		((DefaultTableCellRenderer) table.getColumnModel().getColumn(0)
-				.getCellRenderer()).setHorizontalAlignment(SwingConstants.LEFT);
 
 		updateData();
 	}
@@ -104,62 +93,26 @@ public class AuthorOverviewPanel extends OverviewPanel {
 	@Override
 	protected boolean addNew() {
 		boolean success = false;
-		AuthorDialog dialog = new AuthorDialog();
-		Author author = dialog.showDialog();
+		Author author = new Author();
+		AuthorDialog dialog = new AuthorDialog(author);
 
-		if (author != null) {
-			// int id = dbHandler.makeAuthor(author);
-
+		if (dialog.showDialog()) {
 			authors.add(author);
-			
 			tableModel.fireTableDataChanged();
-//			int newRow = rowData.size() - 1;
-//			table.getSelectionModel().setSelectionInterval(newRow, newRow);
-
 			success = true;
 		}
 		return success;
 	}
 
 	public boolean editSelected() {
-		boolean success = false;
 		Author oldAuthor = this.getSelected();
+		AuthorDialog dialog = new AuthorDialog(oldAuthor);
 
-		AuthorDialog dialog = new AuthorDialog(oldAuthor.getId(),
-				oldAuthor.getFirstname(), oldAuthor.getLastname(),
-				oldAuthor.getCountry(), oldAuthor.getBorn(),
-				oldAuthor.getDied());
-		Author newAuthor = dialog.showDialog();
-
-		if (newAuthor != null) {
-
-			newAuthor.setId(oldAuthor.getId()); // Set new authors ID to old
-												// authors ID, so we can
-												// overwrite
-
-			// dbHandler.updateAuthor(newAuthor);
-
-			// Publish changes to table
-			int selectedRow = table.getSelectedRow();
-
-			Vector<Object> vecAuthor = new Vector<Object>();
-			vecAuthor.add(newAuthor.getId());
-			vecAuthor.add(newAuthor.getFirstname());
-			vecAuthor.add(newAuthor.getLastname());
-			vecAuthor.add(newAuthor.getBorn());
-			vecAuthor.add(newAuthor.getDied());
-			vecAuthor.add(newAuthor.getCountry());
-
-			rowData.set(selectedRow, vecAuthor);
-
+		if (dialog.showDialog()) {
 			tableModel.fireTableDataChanged();
-			table.getSelectionModel().setSelectionInterval(selectedRow,
-					selectedRow);
-
-			success = true;
-
 		}
-		return success;
+
+		return true;
 	}
 
 	@Override

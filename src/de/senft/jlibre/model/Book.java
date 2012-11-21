@@ -17,7 +17,7 @@ import javax.persistence.Transient;
 
 @Entity()
 public class Book {
-	private int id;
+	private int id = -1;
 	private String title;
 	private String comment;
 	private String epoche;

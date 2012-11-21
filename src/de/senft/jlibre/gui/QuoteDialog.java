@@ -7,6 +7,7 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.List;
 
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
@@ -21,8 +22,6 @@ import javax.swing.JTextField;
 import javax.swing.border.BevelBorder;
 import javax.swing.border.TitledBorder;
 
-import de.senft.jlibre.io.DBHandler;
-import de.senft.jlibre.io.HSQLHibernateHandler;
 import de.senft.jlibre.model.Book;
 import de.senft.jlibre.model.Quote;
 
@@ -35,20 +34,28 @@ public class QuoteDialog extends JDialog {
 	private JTextArea txtText;
 	private JTextArea txtComment;
 
-	private DBHandler dbHandler = HSQLHibernateHandler.getInstance();
+	private List<Book> books;
 
-	private Object[][] books = dbHandler.getBooksForComboBox();
 	private JTextField txtPages;
 
+	private boolean result = false;
+
 	/**
-	 * Create the dialog.
+	 * Creates a Dialog to edit a quote. Fills the values of the passed quote in
+	 * the corresponding widgets.
+	 * 
+	 * @param quote
+	 *            the quote to edit
 	 */
-	public QuoteDialog() {
-		setTitle("New quote...");
+	public QuoteDialog(Quote quote, List<Book> theBooks) {
+		this.quote = quote;
+		this.books = theBooks;
+
+		setTitle("Edit quote...");
 		setModal(true);
 		setBounds(100, 100, 534, 373);
 		getContentPane().setLayout(new BorderLayout());
-		contentPanel.setBorder(new TitledBorder(null, "New quote...",
+		contentPanel.setBorder(new TitledBorder(null, "Edit quote...",
 				TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
 		GridBagLayout gbl_contentPanel = new GridBagLayout();
@@ -89,12 +96,12 @@ public class QuoteDialog extends JDialog {
 						new DefaultComboBoxModel<String>() {
 							@Override
 							public int getSize() {
-								return books.length;
+								return books.size();
 							}
 
 							@Override
 							public String getElementAt(int index) {
-								return books[index][1].toString();
+								return books.get(index).toString();
 							}
 						});
 				try {
@@ -166,6 +173,7 @@ public class QuoteDialog extends JDialog {
 			contentPanel.add(scrollPane, gbc_scrollPane);
 			{
 				txtText = new JTextArea();
+				txtText.setLineWrap(true);
 				scrollPane.setViewportView(txtText);
 			}
 		}
@@ -189,6 +197,7 @@ public class QuoteDialog extends JDialog {
 			contentPanel.add(scrollPane, gbc_scrollPane);
 			{
 				txtComment = new JTextArea();
+				txtComment.setLineWrap(true);
 				scrollPane.setViewportView(txtComment);
 			}
 		}
@@ -218,67 +227,46 @@ public class QuoteDialog extends JDialog {
 				buttonPane.add(cancelButton);
 			}
 		}
-	}
 
-	/**
-	 * Constructor for creating a Dialog to edit a quote. Fills all passed
-	 * values in the corresponding widget.
-	 * @param id the id of the quote to edit
-	 * @param text
-	 * @param comment
-	 * @param book
-	 */
-	public QuoteDialog(int id, String text, String comment, Book book) {
-		this();
-		setTitle("Edit quote...");
+		txtText.setText(quote.getText());
+		txtComment.setText(quote.getComment());
+		txtPages.setText(quote.getPages());
 
-		txtText.setText(text);
-		txtComment.setText(comment);
-
-		for (int i = 0; i < books.length; i++) {
-			if (Integer.valueOf(books[i][0].toString()) == book.getId()) {
-				cmbBook.setSelectedIndex(i);
-				break;
+		if (quote.getBook() != null) {
+			for (int i = 0; i < books.size(); i++) {
+				if (Integer.valueOf(books.get(i).getId()) == quote.getBook()
+						.getId()) {
+					cmbBook.setSelectedIndex(i);
+					break;
+				}
 			}
 		}
 	}
 
-	public Quote showDialog() {
+	public boolean showDialog() {
 		setVisible(true);
-		return quote;
+		return result;
 	}
 
 	private void clickedOK() {
 		String text = txtText.getText().trim();
 		String comment = txtComment.getText().trim();
-		int bookId = -1;
-
-		// Internally we keep an Object[][] in the JComboBox that holds
-		// Object<int><String>, or Object<ID><Title> (only the title
-		// Object[i][1] is displayed of course).
-		// Here we then fetch the selected book's title, and iterate over the
-		// Object[][] to get the book's id (Object[i][0])
-		String selectedBook = cmbBook.getSelectedItem().toString();
-		for (int i = 0; i < books.length; i++) {
-			if (books[i][1].toString().equals(selectedBook))
-				bookId = (Integer) books[i][0];
-		}
 
 		if (text.equals("")) {
 			JOptionPane.showMessageDialog(this, "Please enter a text.",
 					"Warning", JOptionPane.WARNING_MESSAGE);
 		} else {
-			quote = new Quote();
+			result = true;
 			quote.setText(text);
 			quote.setComment(comment);
-			quote.setBook(dbHandler.getBook(bookId));
+			quote.setBook(books.get(cmbBook.getSelectedIndex()));
 			quote.setPages(txtPages.getText());
-
-			setVisible(false);
+			dispose();
 		}
 	}
 
 	private void clickedCancel() {
-		setVisible(false);
+		result = false;
+		dispose();
 	}
 }

@@ -12,26 +12,25 @@ import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPopupMenu;
 import javax.swing.JSeparator;
-import javax.swing.SwingConstants;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
-import javax.swing.event.TableModelEvent;
-import javax.swing.event.TableModelListener;
 import javax.swing.table.AbstractTableModel;
-import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 
 import de.senft.jlibre.model.Book;
+import de.senft.jlibre.model.LibreCollection;
 import de.senft.jlibre.model.Quote;
 
 public class BookOverviewPanel extends OverviewPanel {
 
 	private List<Book> books;
+	private LibreCollection collection;
 
-	public BookOverviewPanel(List<Book> books) {
+	public BookOverviewPanel(LibreCollection collection) {
 		super();
-		this.books = books;
+		this.books = collection.getBooks();
+		this.collection = collection;
 		tableModel = new BookTableModel(books);
 		table.setModel(tableModel);
 
@@ -40,26 +39,7 @@ public class BookOverviewPanel extends OverviewPanel {
 		table.getSelectionModel().addListSelectionListener(
 				makeListSelectionListener());
 
-		tableModel.addTableModelListener(new TableModelListener() {
-			@Override
-			public void tableChanged(TableModelEvent e) {
-				logger.debug(String.format("Table data in %s changed",
-						this.toString()));
-			}
-		});
-
-		table.getColumnModel().getColumn(0).setResizable(false);
-		table.getColumnModel().getColumn(0).setMaxWidth(75);
-
-		// TODO What the fuck is this shit? There has got to be an easier
-		// way!
-		table.getColumnModel().getColumn(0)
-				.setCellRenderer(new DefaultTableCellRenderer() {
-				});
-		((DefaultTableCellRenderer) table.getColumnModel().getColumn(0)
-				.getCellRenderer()).setHorizontalAlignment(SwingConstants.LEFT);
-
-		table.getColumnModel().getColumn(6)
+		table.getColumnModel().getColumn(BookTableModel.COLUMN_STATUS)
 				.setCellRenderer(new IsReadCellRenderer());
 
 		popupMenu = new JPopupMenu();
@@ -181,36 +161,26 @@ public class BookOverviewPanel extends OverviewPanel {
 	@Override
 	protected boolean addNew() {
 		boolean success = false;
-		BookDialog dialog = new BookDialog();
-		Book book = dialog.showDialog();
+		Book book = new Book();
+		BookDialog dialog = new BookDialog(book, collection.getAuthors());
 
-		if (book != null) {
-//			int id = dbHandler.makeBook(book);
-//
-//			if (id != -1) {
-//				Vector<Object> vecBook = new Vector<Object>();
-//				vecBook.add(id);
-//				vecBook.add(book.getTitle());
-//				vecBook.add(book.getAuthor().toString());
-//				vecBook.add(book.getPublicationYear());
-//				vecBook.add(book.getEpoche());
-//				vecBook.add(book.getGenre());
-//				vecBook.add(Book.datesRead(book.getStartedReading(),
-//						book.getFinishedReading()));
-//				rowData.add(vecBook);
-//
-//				tableModel.fireTableDataChanged();
-//				int newRow = rowData.size() - 1;
-//				table.getSelectionModel().setSelectionInterval(newRow, newRow);
-//
-//				success = true;
-			// } else {
-			// JOptionPane.showMessageDialog(this,
-			// "Could not add the book to the database.",
-			// "Database error", JOptionPane.ERROR_MESSAGE);
-			// }
+		if (dialog.showDialog()) {
+			books.add(book);
+			tableModel.fireTableDataChanged();
+			success = true;
 		}
 		return success;
+	}
+
+	public boolean editSelected() {
+		Book oldBook = this.getSelected();
+		BookDialog dialog = new BookDialog(oldBook, collection.getAuthors());
+
+		if (dialog.showDialog()) {
+			tableModel.fireTableDataChanged();
+		}
+
+		return true;
 	}
 
 	@Override
@@ -223,51 +193,11 @@ public class BookOverviewPanel extends OverviewPanel {
 				new String[] { "No", "Yes" }, null);
 
 		if (choice == 1) { // User clicked "Yes"
-		// dbHandler.delete(getSelected());
+			// dbHandler.delete(getSelected());
 
 			int selectedRow = table.getSelectedRow();
 			rowData.remove(selectedRow);
 			tableModel.fireTableDataChanged();
-			success = true;
-		}
-		return success;
-	}
-
-	@Override
-	protected boolean editSelected() {
-		boolean success = false;
-		Book oldBook = this.getSelected();
-
-		BookDialog dialog = new BookDialog(oldBook.getId(), oldBook.getTitle(),
-				oldBook.getAuthor(), oldBook.getStartedReading(),
-				oldBook.getFinishedReading(), oldBook.getComment(),
-				oldBook.getPublicationYear(), oldBook.getEpoche(),
-				oldBook.getGenre());
-		Book newBook = dialog.showDialog();
-
-		if (newBook != null) {
-			newBook.setId(oldBook.getId()); // Set new books ID to old books ID,
-											// so we can overwrite
-
-			// dbHandler.updateBook(newBook);
-
-			// Publish changes to table
-			int selectedRow = table.getSelectedRow();
-			//
-			// Vector<Object> vecBook = new Vector<Object>();
-			// vecBook.add(newBook.getId());
-			// vecBook.add(newBook.getTitle());
-			// vecBook.add(newBook.getAuthor().toString());
-			// vecBook.add(newBook.getPublicationYear());
-			// vecBook.add(newBook.getEpoche());
-			// vecBook.add(newBook.getGenre());
-			//
-			// rowData.set(selectedRow, vecBook);
-
-			tableModel.fireTableDataChanged();
-			table.getSelectionModel().setSelectionInterval(selectedRow,
-					selectedRow);
-
 			success = true;
 		}
 		return success;

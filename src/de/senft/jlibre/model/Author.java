@@ -16,10 +16,15 @@ import javax.persistence.Transient;
 @Entity
 public class Author implements Serializable {
 
-	private int id = 0;
+	// TODO: All entities need sane defaults for the ID, so the DB knows when
+	// this object is new (create new entry) or old (update entry) when closing
+	// the application. Maybe -1 will do
+	private int id = -1;
 	private String firstname;
 	private String lastname;
 	private String country;
+
+	// TODO: sane defaults
 	private int born;
 	private int died;
 

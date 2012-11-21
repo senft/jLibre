@@ -9,22 +9,20 @@ import de.senft.jlibre.model.Book;
 
 public class BookTableModel extends AbstractTableModel {
 
-	private static final int COLUMN_ID = 0;
-	private static final int COLUMN_TITLE = 1;
-	private static final int COLUMN_AUTHOR = 2;
-	private static final int COLUMN_PUBYEAR = 3;
-	private static final int COLUMN_EPOCHE = 4;
-	private static final int COLUMN_GENRE = 5;
-	private static final int COLUMN_STATUS = 6;
+	public static final int COLUMN_TITLE = 0;
+	public static final int COLUMN_AUTHOR = 1;
+	public static final int COLUMN_PUBYEAR = 2;
+	public static final int COLUMN_EPOCHE = 3;
+	public static final int COLUMN_GENRE = 4;
+	public static final int COLUMN_STATUS = 5;
 
 	List<Book> books = null;
-	private String[] columnNames = new String[] { "ID", "Title", "Author",
+	private String[] columnNames = new String[] { "Title", "Author",
 			"Year of publication", "Epoche", "Genre", "Status" };
 
 	@SuppressWarnings("rawtypes")
-	private Class[] columnClasses = new Class[] { Integer.class, String.class,
-			String.class, Integer.class, String.class, String.class,
-			ImageIcon.class };
+	private Class[] columnClasses = new Class[] { String.class, String.class,
+			Integer.class, String.class, String.class, ImageIcon.class };
 
 	public BookTableModel(List<Book> books) {
 		this.books = books;
@@ -37,7 +35,7 @@ public class BookTableModel extends AbstractTableModel {
 
 	@Override
 	public int getColumnCount() {
-		return 7;
+		return columnNames.length;
 	}
 
 	public Book getBookAt(int rowIndex) {
@@ -49,8 +47,6 @@ public class BookTableModel extends AbstractTableModel {
 		Book book = books.get(rowIndex);
 
 		switch (columnIndex) {
-		case COLUMN_ID:
-			return book.getId();
 		case COLUMN_TITLE:
 			return book.getTitle();
 		case COLUMN_AUTHOR:

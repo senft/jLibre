@@ -8,19 +8,19 @@ import de.senft.jlibre.model.Author;
 
 public class AuthorTableModel extends AbstractTableModel {
 
-	private static final int COLUMN_ID = 0;
-	private static final int COLUMN_FIRSTNAME = 1;
-	private static final int COLUMN_LASTNAME = 2;
-	private static final int COLUMN_BORN = 3;
-	private static final int COLUMN_DIED = 4;
-	private static final int COLUMN_COUNTRY = 5;
+	public static final int COLUMN_FIRSTNAME = 0;
+	public static final int COLUMN_LASTNAME = 1;
+	public static final int COLUMN_BORN = 2;
+	public static final int COLUMN_DIED = 3;
+	public static final int COLUMN_COUNTRY = 4;
 
 	List<Author> authors = null;
-	private String[] columnNames = new String[] { "ID", "Firstname",
-			"Lastname", "Born", "Died", "Country" };
+
+	private String[] columnNames = new String[] { "Firstname", "Lastname",
+			"Born", "Died", "Country" };
 
 	@SuppressWarnings("rawtypes")
-	private Class[] columnClasses = new Class[] { Integer.class, String.class,
+	private Class[] columnClasses = new Class[] { String.class,
 			String.class, Integer.class, Integer.class, String.class };
 
 	public AuthorTableModel(List<Author> books) {
@@ -34,7 +34,7 @@ public class AuthorTableModel extends AbstractTableModel {
 
 	@Override
 	public int getColumnCount() {
-		return 6;
+		return columnNames.length;
 	}
 
 	@Override
@@ -42,8 +42,6 @@ public class AuthorTableModel extends AbstractTableModel {
 		Author author = authors.get(rowIndex);
 
 		switch (columnIndex) {
-		case COLUMN_ID:
-			return author.getId();
 		case COLUMN_FIRSTNAME:
 			return author.getFirstname();
 		case COLUMN_LASTNAME:

@@ -8,18 +8,16 @@ import de.senft.jlibre.model.Quote;
 
 public class QuoteTableModel extends AbstractTableModel {
 
-	private static final int COLUMN_ID = 0;
-	private static final int COLUMN_TEXT = 1;
-	private static final int COLUMN_BOOK = 2;
-	private static final int COLUMN_AUTHOR = 3;
+	public static final int COLUMN_TEXT = 0;
+	public static final int COLUMN_BOOK = 1;
+	public static final int COLUMN_AUTHOR = 2;
 
 	List<Quote> quotes = null;
-	private String[] columnNames = new String[] { "ID", "Text", "Book",
-			"Author" };
+	private String[] columnNames = new String[] { "Text", "Book", "Author" };
 
 	@SuppressWarnings("rawtypes")
-	private Class[] columnClasses = new Class[] { Integer.class, String.class,
-			String.class, String.class };
+	private Class[] columnClasses = new Class[] { String.class, String.class,
+			String.class };
 
 	public QuoteTableModel(List<Quote> books) {
 		this.quotes = books;
@@ -32,7 +30,7 @@ public class QuoteTableModel extends AbstractTableModel {
 
 	@Override
 	public int getColumnCount() {
-		return 4;
+		return columnNames.length;
 	}
 
 	@Override
@@ -40,8 +38,6 @@ public class QuoteTableModel extends AbstractTableModel {
 		Quote quote = quotes.get(rowIndex);
 
 		switch (columnIndex) {
-		case COLUMN_ID:
-			return quote.getId();
 		case COLUMN_TEXT:
 			return quote.getText();
 		case COLUMN_BOOK:
