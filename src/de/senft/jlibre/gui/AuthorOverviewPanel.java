@@ -91,28 +91,23 @@ public class AuthorOverviewPanel extends OverviewPanel {
 	}
 
 	@Override
-	protected boolean addNew() {
-		boolean success = false;
+	protected void addNew() {
 		Author author = new Author();
 		AuthorDialog dialog = new AuthorDialog(author);
 
 		if (dialog.showDialog()) {
 			authors.add(author);
 			tableModel.fireTableDataChanged();
-			success = true;
 		}
-		return success;
 	}
 
-	public boolean editSelected() {
+	public void editSelected() {
 		Author oldAuthor = this.getSelected();
 		AuthorDialog dialog = new AuthorDialog(oldAuthor);
 
 		if (dialog.showDialog()) {
 			tableModel.fireTableDataChanged();
 		}
-
-		return true;
 	}
 
 	@Override

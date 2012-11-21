@@ -159,28 +159,23 @@ public class BookOverviewPanel extends OverviewPanel {
 	}
 
 	@Override
-	protected boolean addNew() {
-		boolean success = false;
+	protected void addNew() {
 		Book book = new Book();
 		BookDialog dialog = new BookDialog(book, collection.getAuthors());
 
 		if (dialog.showDialog()) {
 			books.add(book);
 			tableModel.fireTableDataChanged();
-			success = true;
 		}
-		return success;
 	}
 
-	public boolean editSelected() {
+	public void editSelected() {
 		Book oldBook = this.getSelected();
 		BookDialog dialog = new BookDialog(oldBook, collection.getAuthors());
 
 		if (dialog.showDialog()) {
 			tableModel.fireTableDataChanged();
 		}
-
-		return true;
 	}
 
 	@Override

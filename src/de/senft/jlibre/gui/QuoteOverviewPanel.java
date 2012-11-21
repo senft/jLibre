@@ -64,16 +64,13 @@ public class QuoteOverviewPanel extends OverviewPanel {
 	}
 
 	@Override
-	protected boolean addNew() {
-		boolean success = false;
+	protected void addNew() {
 		Quote quote = new Quote();
 		QuoteDialog dialog = new QuoteDialog(quote, collection.getBooks());
 		if (dialog.showDialog()) {
 			quotes.add(quote);
 			tableModel.fireTableDataChanged();
-			success = true;
 		}
-		return success;
 	}
 
 	@Override
@@ -82,15 +79,13 @@ public class QuoteOverviewPanel extends OverviewPanel {
 	}
 
 	@Override
-	protected boolean editSelected() {
+	protected void editSelected() {
 		Quote oldQuote = this.getSelected();
 		QuoteDialog dialog = new QuoteDialog(oldQuote, collection.getBooks());
 
 		if (dialog.showDialog()) {
 			tableModel.fireTableDataChanged();
 		}
-
-		return true;
 	}
 
 	/**

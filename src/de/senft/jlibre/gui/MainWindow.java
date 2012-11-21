@@ -146,13 +146,7 @@ public class MainWindow extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				OverviewPanel currentPanel = (OverviewPanel) tabbedPane
 						.getSelectedComponent();
-
-				boolean dataChanged = currentPanel.editSelected();
-
-				if (dataChanged) {
-					bookPanel.updateData();
-					quotePanel.updateData();
-				}
+				currentPanel.editSelected();
 			}
 		});
 

@@ -64,14 +64,14 @@ public abstract class OverviewPanel extends JPanel {
 	 * 
 	 * @return true if successful
 	 */
-	protected abstract boolean addNew();
+	protected abstract void addNew();
 
 	/**
 	 * Pops up an editing dialog to edit the currently selected entity.
 	 * 
 	 * @return true if successful
 	 */
-	protected abstract boolean editSelected();
+	protected abstract void editSelected();
 
 	/**
 	 * Deletes the currently selected entity.
