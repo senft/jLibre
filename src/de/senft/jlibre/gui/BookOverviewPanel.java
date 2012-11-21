@@ -5,10 +5,9 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.text.DateFormat;
 import java.util.Date;
+import java.util.List;
 import java.util.Set;
-import java.util.Vector;
 
-import javax.swing.ImageIcon;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPopupMenu;
@@ -16,13 +15,19 @@ import javax.swing.JSeparator;
 import javax.swing.SwingConstants;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
+import javax.swing.event.TableModelEvent;
+import javax.swing.event.TableModelListener;
+import javax.swing.table.AbstractTableModel;
 import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.TableModel;
+import javax.swing.table.TableRowSorter;
 
 import de.senft.jlibre.model.Book;
 import de.senft.jlibre.model.Quote;
 
 public class BookOverviewPanel extends OverviewPanel {
 
+	private List<Book> books;
 
 	public BookOverviewPanel(List<Book> books) {
 		super();
@@ -46,7 +51,8 @@ public class BookOverviewPanel extends OverviewPanel {
 		table.getColumnModel().getColumn(0).setResizable(false);
 		table.getColumnModel().getColumn(0).setMaxWidth(75);
 
-		// TODO What the fuck is this shit? There has got to be an easier way!
+		// TODO What the fuck is this shit? There has got to be an easier
+		// way!
 		table.getColumnModel().getColumn(0)
 				.setCellRenderer(new DefaultTableCellRenderer() {
 				});
@@ -55,8 +61,6 @@ public class BookOverviewPanel extends OverviewPanel {
 
 		table.getColumnModel().getColumn(6)
 				.setCellRenderer(new IsReadCellRenderer());
-
-		rowData = dbHandler.getBooksForTable();
 
 		popupMenu = new JPopupMenu();
 
@@ -98,6 +102,7 @@ public class BookOverviewPanel extends OverviewPanel {
 
 	@Override
 	protected ListSelectionListener makeListSelectionListener() {
+		// TODO Move out!
 		return new ListSelectionListener() {
 
 			@Override
@@ -180,30 +185,30 @@ public class BookOverviewPanel extends OverviewPanel {
 		Book book = dialog.showDialog();
 
 		if (book != null) {
-			int id = dbHandler.makeBook(book);
-
-			if (id != -1) {
-				Vector<Object> vecBook = new Vector<Object>();
-				vecBook.add(id);
-				vecBook.add(book.getTitle());
-				vecBook.add(book.getAuthor().toString());
-				vecBook.add(book.getPublicationYear());
-				vecBook.add(book.getEpoche());
-				vecBook.add(book.getGenre());
-				vecBook.add(Book.datesRead(book.getStartedReading(),
-						book.getFinishedReading()));
-				rowData.add(vecBook);
-
-				tableModel.fireTableDataChanged();
-				int newRow = rowData.size() - 1;
-				table.getSelectionModel().setSelectionInterval(newRow, newRow);
-
-				success = true;
-			} else {
-				JOptionPane.showMessageDialog(this,
-						"Could not add the book to the database.",
-						"Database error", JOptionPane.ERROR_MESSAGE);
-			}
+//			int id = dbHandler.makeBook(book);
+//
+//			if (id != -1) {
+//				Vector<Object> vecBook = new Vector<Object>();
+//				vecBook.add(id);
+//				vecBook.add(book.getTitle());
+//				vecBook.add(book.getAuthor().toString());
+//				vecBook.add(book.getPublicationYear());
+//				vecBook.add(book.getEpoche());
+//				vecBook.add(book.getGenre());
+//				vecBook.add(Book.datesRead(book.getStartedReading(),
+//						book.getFinishedReading()));
+//				rowData.add(vecBook);
+//
+//				tableModel.fireTableDataChanged();
+//				int newRow = rowData.size() - 1;
+//				table.getSelectionModel().setSelectionInterval(newRow, newRow);
+//
+//				success = true;
+			// } else {
+			// JOptionPane.showMessageDialog(this,
+			// "Could not add the book to the database.",
+			// "Database error", JOptionPane.ERROR_MESSAGE);
+			// }
 		}
 		return success;
 	}
@@ -218,14 +223,12 @@ public class BookOverviewPanel extends OverviewPanel {
 				new String[] { "No", "Yes" }, null);
 
 		if (choice == 1) { // User clicked "Yes"
-			boolean dataChanged = dbHandler.delete(getSelected());
+		// dbHandler.delete(getSelected());
 
-			if (dataChanged) {
-				int selectedRow = table.getSelectedRow();
-				rowData.remove(selectedRow);
-				tableModel.fireTableDataChanged();
-				success = true;
-			}
+			int selectedRow = table.getSelectedRow();
+			rowData.remove(selectedRow);
+			tableModel.fireTableDataChanged();
+			success = true;
 		}
 		return success;
 	}
@@ -246,33 +249,26 @@ public class BookOverviewPanel extends OverviewPanel {
 			newBook.setId(oldBook.getId()); // Set new books ID to old books ID,
 											// so we can overwrite
 
-			boolean dataChanged = dbHandler.updateBook(newBook);
+			// dbHandler.updateBook(newBook);
 
-			if (dataChanged) {
-				// Publish changes to table
-				int selectedRow = table.getSelectedRow();
+			// Publish changes to table
+			int selectedRow = table.getSelectedRow();
+			//
+			// Vector<Object> vecBook = new Vector<Object>();
+			// vecBook.add(newBook.getId());
+			// vecBook.add(newBook.getTitle());
+			// vecBook.add(newBook.getAuthor().toString());
+			// vecBook.add(newBook.getPublicationYear());
+			// vecBook.add(newBook.getEpoche());
+			// vecBook.add(newBook.getGenre());
+			//
+			// rowData.set(selectedRow, vecBook);
 
-				Vector<Object> vecBook = new Vector<Object>();
-				vecBook.add(newBook.getId());
-				vecBook.add(newBook.getTitle());
-				vecBook.add(newBook.getAuthor().toString());
-				vecBook.add(newBook.getPublicationYear());
-				vecBook.add(newBook.getEpoche());
-				vecBook.add(newBook.getGenre());
+			tableModel.fireTableDataChanged();
+			table.getSelectionModel().setSelectionInterval(selectedRow,
+					selectedRow);
 
-				rowData.set(selectedRow, vecBook);
-
-				tableModel.fireTableDataChanged();
-				table.getSelectionModel().setSelectionInterval(selectedRow,
-						selectedRow);
-
-				success = true;
-			} else {
-				JOptionPane.showMessageDialog(this,
-						"Couldn't update the book. "
-								+ "No data has been changed.",
-						"Database error", JOptionPane.ERROR_MESSAGE);
-			}
+			success = true;
 		}
 		return success;
 	}
@@ -285,13 +281,14 @@ public class BookOverviewPanel extends OverviewPanel {
 	 */
 	protected Book getSelected() {
 		int selectedRow = table.getSelectedRow();
-		int id = Integer.parseInt(table.getModel().getValueAt(selectedRow, 0)
-				.toString()); // Column 0 is id
-		return dbHandler.getBook(id);
+		return books.get(selectedRow);
 	}
 
 	@Override
 	public void updateData() {
-		rowData = dbHandler.getBooksForTable();
+		// rowData = dbHandler.getBooksForTable();
+		((AbstractTableModel) this.table.getModel())
+				.fireTableStructureChanged();
+		((AbstractTableModel) this.table.getModel()).fireTableDataChanged();
 	}
 }

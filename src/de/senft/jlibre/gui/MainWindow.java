@@ -32,6 +32,7 @@ import javax.swing.event.TableModelListener;
 import org.apache.log4j.Logger;
 
 import de.senft.jlibre.io.HSQLHibernateHandler;
+import de.senft.jlibre.model.LibreCollection;
 
 public class MainWindow extends JFrame {
 
@@ -45,6 +46,8 @@ public class MainWindow extends JFrame {
 	private JLabel lblStatusbar;
 	private JButton btnEditSelected;
 	private JButton btnDeleteSelected;
+
+	private LibreCollection libreCollection;
 
 	/**
 	 * Create the frame.
@@ -61,6 +64,8 @@ public class MainWindow extends JFrame {
 		setBounds(100, 100, 850, 539);
 
 		// TODO Setting colors here, probably isnt needed
+		libreCollection = new LibreCollection();
+
 		JMenuBar menuBar = new JMenuBar();
 		setJMenuBar(menuBar);
 
@@ -190,7 +195,7 @@ public class MainWindow extends JFrame {
 
 		contentPane.add(tabbedPane, BorderLayout.CENTER);
 
-		bookPanel = new BookOverviewPanel();
+		bookPanel = new BookOverviewPanel(libreCollection.getBooks());
 		bookPanel.addListSelectionListener(new ListSelectionListener() {
 			@Override
 			public void valueChanged(ListSelectionEvent e) {
@@ -203,7 +208,7 @@ public class MainWindow extends JFrame {
 		tabbedPane.addTab("Books", null, bookPanel, null);
 		tabbedPane.setMnemonicAt(0, KeyEvent.VK_1);
 
-		authorPanel = new AuthorOverviewPanel();
+		authorPanel = new AuthorOverviewPanel(libreCollection.getAuthors());
 		authorPanel.addListSelectionListener(new ListSelectionListener() {
 			@Override
 			public void valueChanged(ListSelectionEvent e) {
@@ -216,7 +221,7 @@ public class MainWindow extends JFrame {
 		tabbedPane.addTab("Authors", null, authorPanel, null);
 		tabbedPane.setMnemonicAt(1, KeyEvent.VK_2);
 
-		quotePanel = new QuoteOverviewPanel();
+		quotePanel = new QuoteOverviewPanel(libreCollection.getQuotes());
 		quotePanel.addListSelectionListener(new ListSelectionListener() {
 			@Override
 			public void valueChanged(ListSelectionEvent e) {

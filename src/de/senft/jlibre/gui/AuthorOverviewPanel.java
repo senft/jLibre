@@ -1,5 +1,6 @@
 package de.senft.jlibre.gui;
 
+import java.util.List;
 import java.util.Set;
 import java.util.Vector;
 
@@ -15,7 +16,11 @@ import de.senft.jlibre.model.Quote;
 
 public class AuthorOverviewPanel extends OverviewPanel {
 
+	private List<Author> authors;
 
+	public AuthorOverviewPanel(List<Author> authors) {
+		super();
+		this.authors = authors;
 		tableModel = new AuthorTableModel(authors);
 		table.setModel(tableModel);
 
@@ -51,13 +56,15 @@ public class AuthorOverviewPanel extends OverviewPanel {
 					Set<Quote> quotes = author.getQuotes();
 
 					sb.append("<html><B>Name:</B><br>")
-							.append("<div style=\"margin-left: " + INFOPANEL_LINEFEED + "px;\">")
+							.append("<div style=\"margin-left: "
+									+ INFOPANEL_LINEFEED + "px;\">")
 							.append(firstname).append(" ").append(lastname)
 							.append("</div>");
 
 					sb.append("<p><B>Books from this author:</B><br>");
 					if (books.isEmpty())
-						sb.append("<div style=\"margin-left: " + INFOPANEL_LINEFEED + "px;\">-</div>");
+						sb.append("<div style=\"margin-left: "
+								+ INFOPANEL_LINEFEED + "px;\">-</div>");
 					else {
 						sb.append("<ul>");
 						for (Book b : books) {
@@ -72,7 +79,8 @@ public class AuthorOverviewPanel extends OverviewPanel {
 
 					sb.append("<p><B>Quotes from this author:</B><br>");
 					if (quotes.isEmpty())
-						sb.append("<div style=\"margin-left: " + INFOPANEL_LINEFEED + "px;\">-</div>");
+						sb.append("<div style=\"margin-left: "
+								+ INFOPANEL_LINEFEED + "px;\">-</div>");
 					else {
 						sb.append("<ul>");
 						for (Quote q : quotes) {
@@ -100,28 +108,15 @@ public class AuthorOverviewPanel extends OverviewPanel {
 		Author author = dialog.showDialog();
 
 		if (author != null) {
-			int id = dbHandler.makeAuthor(author);
+			// int id = dbHandler.makeAuthor(author);
 
-			if (id != -1) {
-				Vector<Object> vecAuthor = new Vector<Object>();
-				vecAuthor.add(id);
-				vecAuthor.add(author.getFirstname());
-				vecAuthor.add(author.getLastname());
-				vecAuthor.add(author.getBorn());
-				vecAuthor.add(author.getDied());
-				vecAuthor.add(author.getCountry());
-				rowData.add(vecAuthor);
+			authors.add(author);
+			
+			tableModel.fireTableDataChanged();
+//			int newRow = rowData.size() - 1;
+//			table.getSelectionModel().setSelectionInterval(newRow, newRow);
 
-				tableModel.fireTableDataChanged();
-				int newRow = rowData.size() - 1;
-				table.getSelectionModel().setSelectionInterval(newRow, newRow);
-
-				success = true;
-			} else {
-				JOptionPane.showMessageDialog(this,
-						"Could not add the author to the database.",
-						"Database error", JOptionPane.ERROR_MESSAGE);
-			}
+			success = true;
 		}
 		return success;
 	}
@@ -142,33 +137,27 @@ public class AuthorOverviewPanel extends OverviewPanel {
 												// authors ID, so we can
 												// overwrite
 
-			boolean dataChanged = dbHandler.updateAuthor(newAuthor);
+			// dbHandler.updateAuthor(newAuthor);
 
-			if (dataChanged) {
-				// Publish changes to table
-				int selectedRow = table.getSelectedRow();
+			// Publish changes to table
+			int selectedRow = table.getSelectedRow();
 
-				Vector<Object> vecAuthor = new Vector<Object>();
-				vecAuthor.add(newAuthor.getId());
-				vecAuthor.add(newAuthor.getFirstname());
-				vecAuthor.add(newAuthor.getLastname());
-				vecAuthor.add(newAuthor.getBorn());
-				vecAuthor.add(newAuthor.getDied());
-				vecAuthor.add(newAuthor.getCountry());
+			Vector<Object> vecAuthor = new Vector<Object>();
+			vecAuthor.add(newAuthor.getId());
+			vecAuthor.add(newAuthor.getFirstname());
+			vecAuthor.add(newAuthor.getLastname());
+			vecAuthor.add(newAuthor.getBorn());
+			vecAuthor.add(newAuthor.getDied());
+			vecAuthor.add(newAuthor.getCountry());
 
-				rowData.set(selectedRow, vecAuthor);
+			rowData.set(selectedRow, vecAuthor);
 
-				tableModel.fireTableDataChanged();
-				table.getSelectionModel().setSelectionInterval(selectedRow,
-						selectedRow);
+			tableModel.fireTableDataChanged();
+			table.getSelectionModel().setSelectionInterval(selectedRow,
+					selectedRow);
 
-				success = true;
-			} else {
-				JOptionPane.showMessageDialog(this,
-						"Couldn't update the author. "
-								+ "No data has been changed.",
-						"Database error", JOptionPane.ERROR_MESSAGE);
-			}
+			success = true;
+
 		}
 		return success;
 	}
@@ -183,14 +172,12 @@ public class AuthorOverviewPanel extends OverviewPanel {
 				new String[] { "No", "Yes" }, null);
 
 		if (choice == 1) { // User clicked "Yes"
-			boolean dataChanged = dbHandler.delete(getSelected());
+			// dbHandler.delete(getSelected());
 
-			if (dataChanged) {
-				int selectedRow = table.getSelectedRow();
-				rowData.remove(selectedRow);
-				tableModel.fireTableDataChanged();
-				success = true;
-			}
+			int selectedRow = table.getSelectedRow();
+			rowData.remove(selectedRow);
+			tableModel.fireTableDataChanged();
+			success = true;
 		}
 		return success;
 	}
@@ -203,13 +190,11 @@ public class AuthorOverviewPanel extends OverviewPanel {
 	 */
 	protected Author getSelected() {
 		int selectedRow = table.getSelectedRow();
-		int id = Integer.parseInt(table.getModel().getValueAt(selectedRow, 0)
-				.toString()); // Column 0 is id
-		return dbHandler.getAuthor(id);
+		return authors.get(selectedRow);
 	}
 
 	@Override
 	public void updateData() {
-		rowData = dbHandler.getAuthorsForTable();
+		// tableModel.sdbHandler.getAuthors();
 	}
 }

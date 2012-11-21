@@ -17,22 +17,14 @@ import javax.swing.ScrollPaneConstants;
 import javax.swing.UIManager;
 import javax.swing.border.LineBorder;
 import javax.swing.event.ListSelectionListener;
-import javax.swing.event.TableModelEvent;
-import javax.swing.event.TableModelListener;
 import javax.swing.table.AbstractTableModel;
-import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 
 import org.apache.log4j.Logger;
 
-import de.senft.jlibre.io.DBHandler;
-import de.senft.jlibre.io.HSQLHibernateHandler;
-
 public abstract class OverviewPanel extends JPanel {
 
 	protected static Logger logger = Logger.getLogger(OverviewPanel.class);
-
-	protected DBHandler dbHandler;
 
 	private JTextField filterTextField;
 	protected JTable table;
@@ -104,8 +96,6 @@ public abstract class OverviewPanel extends JPanel {
 	 * Create the panel.
 	 */
 	public OverviewPanel() {
-		dbHandler = HSQLHibernateHandler.getInstance();
-
 		setLayout(new BorderLayout(0, 0));
 
 		filterTextField = new JTextField();
@@ -129,49 +119,23 @@ public abstract class OverviewPanel extends JPanel {
 		tablePanel.setResizeWeight(0.7);
 		add(tablePanel, BorderLayout.CENTER);
 
-		tableModel = new AbstractTableModel() {
-
-			@Override
-			public Object getValueAt(int rowIndex, int columnIndex) {
-				return rowData.elementAt(rowIndex).elementAt(columnIndex);
-			}
-
-			@Override
-			public int getRowCount() {
-				return rowData.size();
-			}
-
-			@Override
-			public int getColumnCount() {
-				return columnNames.size();
-			}
-
-			@Override
-			public String getColumnName(int columnIndex) {
-				return columnNames.elementAt(columnIndex).toString();
-			}
-
-			@SuppressWarnings({ "unchecked", "rawtypes" })
-			@Override
-			public Class getColumnClass(int columnIndex) {
-				return columnClasses[columnIndex];
-			}
-		};
-
-		table = new JTable(tableModel);
+		table = new JTable();
 
 		table.setFillsViewportHeight(true);
-		table.setRowSorter(new TableRowSorter<TableModel>(table.getModel()));
+
 		table.getSelectionModel().addListSelectionListener(
 				makeListSelectionListener());
 
-		tableModel.addTableModelListener(new TableModelListener() {
-			@Override
-			public void tableChanged(TableModelEvent e) {
-				logger.debug(String.format("Table data in %s changed",
-						this.toString()));
-			}
-		});
+		// TODO
+//		table.setRowSorter(new TableRowSorter<TableModel>(table.getModel()));
+//
+//		tableModel.addTableModelListener(new TableModelListener() {
+//			@Override
+//			public void tableChanged(TableModelEvent e) {
+//				logger.debug(String.format("Table data in %s changed", this
+//						.getClass().toString()));
+//			}
+		// });
 
 		JScrollPane scrollPane = new JScrollPane(table);
 

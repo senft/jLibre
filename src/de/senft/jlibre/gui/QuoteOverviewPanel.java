@@ -1,8 +1,8 @@
 package de.senft.jlibre.gui;
 
+import java.util.List;
 import java.util.Vector;
 
-import javax.swing.JOptionPane;
 import javax.swing.SwingConstants;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
@@ -14,6 +14,7 @@ import de.senft.jlibre.model.Quote;
 
 public class QuoteOverviewPanel extends OverviewPanel {
 
+	private List<Quote> quotes;
 
 	public QuoteOverviewPanel(List<Quote> quotes) {
 		super();
@@ -79,26 +80,26 @@ public class QuoteOverviewPanel extends OverviewPanel {
 		Quote quote = dialog.showDialog();
 
 		if (quote != null) {
-			int id = dbHandler.makeQuote(quote);
-
-			if (id != -1) {
-				Vector<Object> vecQuote = new Vector<Object>();
-				vecQuote.add(id);
-				vecQuote.add(quote.getText());
-				vecQuote.add(quote.getBook().getTitle());
-				vecQuote.add(quote.getBook().getAuthor().toString());
-				rowData.add(vecQuote);
-
-				tableModel.fireTableDataChanged();
-				int newRow = rowData.size() - 1;
-				table.getSelectionModel().setSelectionInterval(newRow, newRow);
-
-				success = true;
-			} else {
-				JOptionPane.showMessageDialog(this,
-						"Could not add the quote to the database.",
-						"Database error", JOptionPane.ERROR_MESSAGE);
-			}
+			// int id = dbHandler.makeQuote(quote);
+			//
+			// if (id != -1) {
+			// Vector<Object> vecQuote = new Vector<Object>();
+			// vecQuote.add(id);
+			// vecQuote.add(quote.getText());
+			// vecQuote.add(quote.getBook().getTitle());
+			// vecQuote.add(quote.getBook().getAuthor().toString());
+			// rowData.add(vecQuote);
+			//
+			// tableModel.fireTableDataChanged();
+			// int newRow = rowData.size() - 1;
+			// table.getSelectionModel().setSelectionInterval(newRow, newRow);
+			//
+			// success = true;
+			// } else {
+			// JOptionPane.showMessageDialog(this,
+			// "Could not add the quote to the database.",
+			// "Database error", JOptionPane.ERROR_MESSAGE);
+			// }
 		}
 		return success;
 	}
@@ -122,9 +123,8 @@ public class QuoteOverviewPanel extends OverviewPanel {
 												// authors ID, so we can
 												// overwrite
 
-			boolean dataChanged = dbHandler.updateQuote(newQuote);
+			// dbHandler.updateQuote(newQuote);
 
-			if (dataChanged) {
 				// Publish changes to table
 				int selectedRow = table.getSelectedRow();
 
@@ -139,12 +139,6 @@ public class QuoteOverviewPanel extends OverviewPanel {
 				tableModel.fireTableDataChanged();
 				table.getSelectionModel().setSelectionInterval(selectedRow,
 						selectedRow);
-			} else {
-				JOptionPane.showMessageDialog(this,
-						"Couldn't update the quote. "
-								+ "No data has been changed.",
-						"Database error", JOptionPane.ERROR_MESSAGE);
-			}
 		}
 		return success;
 	}
@@ -157,13 +151,11 @@ public class QuoteOverviewPanel extends OverviewPanel {
 	 */
 	protected Quote getSelected() {
 		int selectedRow = table.getSelectedRow();
-		int id = Integer.parseInt(table.getModel().getValueAt(selectedRow, 0)
-				.toString()); // Column 0 is id
-		return dbHandler.getQuote(id);
+		return quotes.get(selectedRow);
 	}
 
 	@Override
 	public void updateData() {
-		rowData = dbHandler.getQuotesForTable();
+		// rowData = dbHandler.getQuotesForTable();
 	}
 }
