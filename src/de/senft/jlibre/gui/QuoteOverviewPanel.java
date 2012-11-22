@@ -71,6 +71,8 @@ public class QuoteOverviewPanel extends OverviewPanel {
 			quotes.add(quote);
 			tableModel.fireTableDataChanged();
 		}
+		int lastRow = table.getRowCount() - 1;
+		table.getSelectionModel().setSelectionInterval(lastRow, lastRow);
 	}
 
 	@Override
@@ -82,12 +84,15 @@ public class QuoteOverviewPanel extends OverviewPanel {
 
 	@Override
 	protected void editSelected() {
+		int selectedIndex = table.getSelectedRow();
 		Quote oldQuote = this.getSelected();
 		QuoteDialog dialog = new QuoteDialog(oldQuote, collection.getBooks());
 
 		if (dialog.showDialog()) {
 			tableModel.fireTableDataChanged();
 		}
+		table.getSelectionModel().setSelectionInterval(selectedIndex,
+				selectedIndex);
 	}
 
 	/**

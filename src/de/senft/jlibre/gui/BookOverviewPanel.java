@@ -167,9 +167,12 @@ public class BookOverviewPanel extends OverviewPanel {
 			books.add(book);
 			tableModel.fireTableDataChanged();
 		}
+		int lastRow = table.getRowCount() - 1;
+		table.getSelectionModel().setSelectionInterval(lastRow, lastRow);
 	}
 
 	public void editSelected() {
+		int selectedIndex = table.getSelectedRow();
 		Book oldBook = this.getSelected();
 		BookDialog dialog = new BookDialog(oldBook, collection.getAuthors(),
 				collection.getCommonEpoches(), collection.getCommonGenres());
@@ -177,6 +180,8 @@ public class BookOverviewPanel extends OverviewPanel {
 		if (dialog.showDialog()) {
 			tableModel.fireTableDataChanged();
 		}
+		table.getSelectionModel().setSelectionInterval(selectedIndex,
+				selectedIndex);
 	}
 
 	@Override

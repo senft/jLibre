@@ -97,15 +97,20 @@ public class AuthorOverviewPanel extends OverviewPanel {
 			authors.add(author);
 			tableModel.fireTableDataChanged();
 		}
+		int lastRow = table.getRowCount() - 1;
+		table.getSelectionModel().setSelectionInterval(lastRow, lastRow);
 	}
 
 	public void editSelected() {
+		int selectedIndex = table.getSelectedRow();
 		Author oldAuthor = this.getSelected();
 		AuthorDialog dialog = new AuthorDialog(oldAuthor);
 
 		if (dialog.showDialog()) {
 			tableModel.fireTableDataChanged();
 		}
+		table.getSelectionModel().setSelectionInterval(selectedIndex,
+				selectedIndex);
 	}
 
 	@Override

@@ -73,6 +73,9 @@ public class MainWindow extends JFrame {
 		JMenu mnFile = new JMenu("File");
 		menuBar.add(mnFile);
 
+		JMenuItem mntmSave = new JMenuItem("Save");
+		mnFile.add(mntmSave);
+
 		mnFile.add(new JSeparator());
 
 		JMenuItem mntmExit = new JMenuItem("Exit");
