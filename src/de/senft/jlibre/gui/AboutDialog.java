@@ -50,7 +50,7 @@ public class AboutDialog extends JDialog {
 		JTextPane lblVersionBuild = new JTextPane();
 		lblVersionBuild.setContentType("text/html");
 		lblVersionBuild
-				.setText("Version: dev\n<p>\n(c) Julian Wulfheide 20011.  All rights reserved.\n</p>\n<ul>\n<li>HSQLDB - <a href=\"http://hsqldb.org/\">http://hsqldb.org/</a></li>\n<li>log4j - <a href=\"http://logging.apache.org/log4j/\">http://logging.apache.org/log4j/</a></li>\n<li>jCalendar - <a href=\"http://www.toedter.com/en/jcalendar/\">http://www.toedter.com/en/jcalendar/</a></li></ul>\n<p>Some icons taken from the <a href=\"http://tango.freedesktop.org/Tango_Desktop_Project\">Tango Desktop Projekt</a>.</p>");
+				.setText("Version: dev\n<p>\n(c) senft 20011.  All rights reserved.\n</p>\n<ul>\n<li>HSQLDB - <a href=\"http://hsqldb.org/\">http://hsqldb.org/</a></li>\n<li>log4j - <a href=\"http://logging.apache.org/log4j/\">http://logging.apache.org/log4j/</a></li>\n<li>jCalendar - <a href=\"http://www.toedter.com/en/jcalendar/\">http://www.toedter.com/en/jcalendar/</a></li></ul>\n<p>Some icons taken from the <a href=\"http://tango.freedesktop.org/Tango_Desktop_Project\">Tango Desktop Projekt</a>.</p>");
 		lblVersionBuild.setBackground(UIManager.getColor("window"));
 		lblVersionBuild.setEditable(false);
 		lblVersionBuild.setFont(new Font("Dialog", Font.PLAIN, 12));
